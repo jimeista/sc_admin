@@ -1,0 +1,47 @@
+.App {
+  display: flex;
+  height: calc(100vh - 50px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 50px;
+}
+
+.header-user-wrapper {
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.main-content-panel {
+  margin: 0 1rem;
+  box-sizing: border-box;
+  width: 95%;
+  height: calc(100vh - 70px);
+}
+
+/* admin side nav menu */
+.Admin_main_style_content .ant-row.ant-form-item.avatar-item {
+  width: 30px;
+}
+
+.Admin_main_style_content
+  .ant-upload.ant-upload-select.ant-upload-select-picture-card {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+.avatar-uploader {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
