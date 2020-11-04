@@ -7,6 +7,7 @@ import { Home } from './Home'
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
   const { auth } = useSelector((state) => state.admin)
 
+  // console.log(auth)
   return (
     <Route
       {...rest}
@@ -19,7 +20,9 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
           )
         } else {
           return (
-            <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+            <Redirect
+              to={{ pathname: '/signin', state: { from: props.location } }}
+            />
           )
         }
       }}

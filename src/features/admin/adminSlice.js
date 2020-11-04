@@ -17,7 +17,7 @@ export const getCurrentUser = createAsyncThunk(
     const url = '/sc-api-gateway/acl/users/current'
     const res = await axios
       .get(url)
-      .then((res) => console.log(res))
+      .then((res) => res.data)
       .catch((err) => console.log(err))
 
     return res
