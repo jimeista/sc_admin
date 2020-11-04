@@ -30,7 +30,7 @@ const Roles = () => {
   }, [dispatch])
 
   useEffect(() => {
-    dispatch(getRoleModules(roles))
+    dispatch(getRoleModules(roles.data))
 
     return () => dispatch(resetRoleModules())
   }, [roles, dispatch])
@@ -43,22 +43,18 @@ const Roles = () => {
     return modules.data.map((i) => ({ value: i.name, id: i.id }))
   }, [modules])
 
-  let table = useMemo(() => {
-    return (
-      <Table
-        columns={setRoleColumns(options)}
-        data={data}
-        setData={setData}
-        loading={role_modules.status === 'success' ? false : true}
-      />
-    )
-  }, [role_modules, options, data])
-
   return (
     <>
       {<RoleControllers options={options} />}
       {/* <Table columns={columns} data={dataSource} setData={setDataSource} /> */}
-      {table}
+      {
+        <Table
+          columns={setRoleColumns(options)}
+          data={data}
+          setData={setData}
+          loading={role_modules.status === 'success' ? false : true}
+        />
+      }
     </>
   )
 }

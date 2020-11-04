@@ -40,7 +40,7 @@ export const getRoleModules = createAsyncThunk(
     let modules = []
     for (const role of roles) {
       const url = `/sc-api-gateway/acl/roles/${role.id}/authorities`
-      modules = await axios
+      let data = await axios
         .get(url)
         .then((res) => {
           return {
@@ -49,6 +49,8 @@ export const getRoleModules = createAsyncThunk(
           }
         })
         .catch((err) => console.log(err))
+
+      modules = [...modules, data]
     }
 
     return modules

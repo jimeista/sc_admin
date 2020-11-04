@@ -14,9 +14,7 @@ export const SignIn = () => {
 
   if (auth.data && auth.data.username) {
     return (
-      <Route
-        render={() => <Redirect exact path='/Роли' from='/авторизация' />}
-      />
+      <Route render={() => <Redirect exact to='/Роли' from='/авторизация' />} />
     )
   }
 
