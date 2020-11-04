@@ -29,7 +29,7 @@ export const EditableCell = ({
         )
       case 'multi-select':
         function tagRender(props) {
-          const { label, closable, onClose, abr } = props
+          const { label, closable, onClose } = props
 
           return (
             <Tag
@@ -51,7 +51,13 @@ export const EditableCell = ({
           />
         )
       default:
-        return <Input className='Edit_input_style' />
+        return (
+          <Input
+            className='Edit_input_style'
+            placeholder={placeholder}
+            allowClear
+          />
+        )
     }
   }
 

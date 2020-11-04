@@ -8,15 +8,15 @@ export const SignIn = () => {
   const dispatch = useDispatch()
   const { auth } = useSelector((state) => state.admin)
 
-  console.log(auth)
-
   useEffect(() => {
     dispatch(getCurrentUser())
   }, [dispatch])
 
   if (auth.data && auth.data.username) {
     return (
-      <Route render={() => <Redirect exact path='/Роли' from='/signin' />} />
+      <Route
+        render={() => <Redirect exact path='/Роли' from='/авторизация' />}
+      />
     )
   }
 

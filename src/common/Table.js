@@ -138,6 +138,7 @@ export const CustomTable = (props) => {
         pagination={{
           onChange: cancel,
         }}
+        loading={props.loading}
       />
     </Form>
   )

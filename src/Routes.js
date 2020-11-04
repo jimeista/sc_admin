@@ -17,7 +17,7 @@ export const Routes = () => {
       {/* <Route path='/Инфопанели' component={InfoPanel} /> */}
       <ProtectedRoute exact path='/Роли' component={Roles} />
       <ProtectedRoute exact path='/Пользователи' component={Users} />
-      <Route exact path='/signin' component={SignIn} />
+      <Route exact path='/авторизация' component={SignIn} />
       <Route exact path='*' render={() => <div>Page not found</div>} />
     </Switch>
   )
