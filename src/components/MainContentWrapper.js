@@ -6,7 +6,7 @@ import { QuestionOutlined } from '@ant-design/icons'
 export const MainContentWrapper = ({ children }) => {
   return (
     <div
-      style={{ width: 'calc(100% - 350px)', height: '100%' }}
+      style={{ width: '100%', height: '100%' }}
       className='MainContent_style'
     >
       <div className='header header-user-wrapper MainContent_style_header'>

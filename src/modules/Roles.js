@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Form, Button, Select, Tag } from 'antd'
+import { useDispatch } from 'react-redux'
+import { getRoles } from '../features/admin/adminSlice'
 
-import { CustomTable as Table } from '../common/Table'
+// import { CustomTable as Table } from '../common/Table'
 
 const Roles = () => {
   const [dataSource, setDataSource] = useState([
@@ -28,10 +30,16 @@ const Roles = () => {
     },
   ])
 
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getRoles())
+  }, [dispatch])
+
   return (
     <>
       <RoleControllers setDataSource={setDataSource} />
-      <Table columns={columns} data={dataSource} setData={setDataSource} />
+      {/* <Table columns={columns} data={dataSource} setData={setDataSource} /> */}
     </>
   )
 }
