@@ -44,8 +44,8 @@ export const getRoleModules = createAsyncThunk(
         .get(url)
         .then((res) => {
           return {
-            role: role.repr,
-            modules: res.data.map((i) => i['module-name']),
+            repr: role.repr,
+            'permitted-modules': res.data.map((i) => i['module-name']),
           }
         })
         .catch((err) => console.log(err))
@@ -54,6 +54,30 @@ export const getRoleModules = createAsyncThunk(
     }
 
     return modules
+  }
+)
+
+export const postRoleModules = createAsyncThunk(
+  'admin/postRoleModules',
+  async (data) => {
+    let ids = []
+    let ob = {}
+    let modules = []
+
+    data.arr.forEach((i) => {
+      if (data.row['permitted-modules'].includes(i.value)) {
+        ids = [...ids, i.id]
+        modules = [...modules, i.value]
+      }
+    })
+
+    ob = { ...data.row, 'permitted-modules': ids }
+
+    await axios.post('/sc-api-gateway/acl/roles', ob).then((res) => res.data)
+
+    console.log(ob, { ...data.row, 'permitted-modules': modules })
+
+    return { ...data.row, 'permitted-modules': modules }
   }
 )
 
@@ -140,6 +164,18 @@ const adminSlice = createSlice({
       state.role_modules.data = action.payload
     },
     [getRoleModules.failed]: (state, action) => {
+      state.role_modules.status = 'failed'
+      state.role_modules.error = action.payload
+    },
+    [postRoleModules.pending]: (state, action) => {
+      state.role_modules.status = 'loading'
+    },
+    [postRoleModules.fulfilled]: (state, action) => {
+      console.log(action.payload)
+      state.role_modules.status = 'success'
+      state.role_modules.data = [action.payload, ...state.role_modules.data]
+    },
+    [postRoleModules.failed]: (state, action) => {
       state.role_modules.status = 'failed'
       state.role_modules.error = action.payload
     },

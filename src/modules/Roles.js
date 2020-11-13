@@ -6,6 +6,7 @@ import {
   getRoles,
   getModules,
   getRoleModules,
+  postRoleModules,
   resetModules,
   resetRoleModules,
   resetRoles,
@@ -17,7 +18,7 @@ import { CustomTable as Table } from '../common/Table'
 const Roles = () => {
   const dispatch = useDispatch()
   const { modules, roles, role_modules } = useSelector((state) => state.admin)
-  const [data, setData] = useState()
+  const [data, setData] = useState([])
 
   useEffect(() => {
     dispatch(getRoles())
@@ -30,13 +31,14 @@ const Roles = () => {
   }, [dispatch])
 
   useEffect(() => {
-    dispatch(getRoleModules(roles.data))
+    roles.status === 'success' && dispatch(getRoleModules(roles.data))
 
     return () => dispatch(resetRoleModules())
   }, [roles, dispatch])
 
   useEffect(() => {
-    setData(setRoleDataSource(role_modules.data))
+    role_modules.status === 'success' &&
+      setData(setRoleDataSource(role_modules.data))
   }, [role_modules])
 
   let options = useMemo(() => {
@@ -45,8 +47,7 @@ const Roles = () => {
 
   return (
     <>
-      {<RoleControllers options={options} />}
-      {/* <Table columns={columns} data={dataSource} setData={setDataSource} /> */}
+      {<RoleControllers options={options} dispatch={dispatch} />}
       {
         <Table
           columns={setRoleColumns(options)}
@@ -61,7 +62,7 @@ const Roles = () => {
 
 export default withRouter(Roles)
 
-const RoleControllers = ({ options }) => {
+const RoleControllers = ({ options, dispatch }) => {
   const [form] = Form.useForm()
 
   const handleAdd = async () => {
@@ -76,6 +77,15 @@ const RoleControllers = ({ options }) => {
       //     Модуль: row.modules,
       //   },
       // ])
+
+      let row = await form.validateFields()
+      // row = {
+      //   ...row,
+      //   'permitted-modules': getModuleIds(row['permitted-modules'], options),
+      // }
+
+      dispatch(postRoleModules({ row, arr: options }))
+
       form.resetFields()
     } catch (err) {
       console.log(err)
@@ -94,7 +104,7 @@ const RoleControllers = ({ options }) => {
       onFinishFailed={onFinishFailed}
     >
       <Form.Item
-        name='role'
+        name='repr'
         rules={[
           {
             required: true,
@@ -105,7 +115,7 @@ const RoleControllers = ({ options }) => {
         <Input placeholder='Роли' allowClear style={{ width: '60%' }} />
       </Form.Item>
       <Form.Item
-        name='modules'
+        name='permitted-modules'
         rules={[
           {
             required: true,
@@ -139,39 +149,3 @@ function tagRender(props) {
     </Tag>
   )
 }
-
-//hardcoded data
-
-// const columns = [
-//   {
-//     title: 'Роль',
-//     dataIndex: 'Роль',
-//     width: '30%',
-//     editable: true,
-//     type: 'select',
-//     placeholder: 'Роли',
-//     data: roles,
-//   },
-//   {
-//     title: 'Модуль',
-//     dataIndex: 'Модуль',
-//     type: 'multi-select',
-//     editable: true,
-//     data: options,
-//     render: (tags) => (
-//       <span>
-//         {tags.map((tag) => {
-//           let color = tag.length > 5 ? 'geekblue' : 'green'
-//           if (tag === 'loser') {
-//             color = 'volcano'
-//           }
-//           return (
-//             <Tag color={color} key={tag} style={{ margin: '5px 5px' }}>
-//               {tag.toUpperCase()}
-//             </Tag>
-//           )
-//         })}
-//       </span>
-//     ),
-//   },
-// ]

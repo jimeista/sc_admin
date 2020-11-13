@@ -5,14 +5,14 @@ export const setRoleColumns = (options) => {
   return [
     {
       title: 'Роль',
-      dataIndex: 'role',
+      dataIndex: 'repr',
       width: '30%',
       editable: true,
       placeholder: 'Роли',
     },
     {
       title: 'Модули',
-      dataIndex: 'modules',
+      dataIndex: 'permitted-modules',
       type: 'multi-select',
       editable: true,
       data: options,
@@ -36,8 +36,8 @@ export const setRoleDataSource = (data) => {
   return data.map((i, index) => {
     return {
       key: index,
-      role: i.role,
-      modules: i.modules,
+      repr: i.repr,
+      'permitted-modules': i['permitted-modules'],
     }
   })
 }
