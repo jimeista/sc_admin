@@ -1,39 +1,79 @@
 import React, { useState, useMemo } from 'react'
-import { useSelector } from 'react-redux'
-import { Form } from 'antd'
+import { useSelector, useDispatch } from 'react-redux'
+import { Form, Input } from 'antd'
+
+import { deleteRoadMap } from '../../features/roadmap/roadmapSlice'
 
 import { CrossDetailsModal } from './CrossDetailsModal'
-import { CustomTable as Table } from '../../common'
+import { CustomTable as Table } from '../../../../common/Table'
 import {
   setCrossListTableColumnsHelper,
   setCrossListDataSourceHelper,
 } from '../../utils/table_helper'
 
 export const CrossListTable = () => {
-  const { categories, intersections, data, status } = useSelector(
+  const { categories, intersections, data } = useSelector(
     (state) => state.roadmap
   )
+  const dispatch = useDispatch()
+
   const [visible, setVisible] = useState(false)
   const [record, setRecord] = useState({})
+  const [dataSource, setDataSource] = useState([])
+  const [filtered, setFiltered] = useState()
 
   const [form] = Form.useForm()
 
   const columns = useMemo(() => {
     return setCrossListTableColumnsHelper(
-      categories,
       setVisible,
       setRecord,
-      intersections
+      intersections,
+      categories
     )
-  }, [categories, setVisible, setRecord, intersections])
+  }, [setVisible, setRecord, intersections, categories])
+
+  useMemo(() => {
+    setDataSource(setCrossListDataSourceHelper(data, intersections))
+  }, [data, intersections])
+
+  const onEdit = (record) => {
+    console.log(record, 'run bitch')
+  }
+
+  const onDelete = (record) => {
+    // console.log(record)
+    dispatch(deleteRoadMap(record.id))
+  }
+
+  const onSearch = (e) => {
+    setFiltered(
+      dataSource.filter(
+        (i) =>
+          i.address &&
+          i.address.toLowerCase().includes(e.target.value.toLowerCase())
+      )
+    )
+  }
 
   return (
     <Form form={form}>
+      <Form.Item name={'search'}>
+        <Input
+          allowClear
+          placeholder={'Поиск по улице'}
+          onChange={onSearch}
+          style={{ width: 300 }}
+        />
+      </Form.Item>
       <Form.Item name='table'>
         <Table
           columns={columns}
-          dataSource={setCrossListDataSourceHelper(data, intersections)}
-          loading={status === 'loading' ? true : false}
+          data={filtered ? filtered : dataSource}
+          setData={setDataSource}
+          handleEdit={onEdit}
+          handleDelete={onDelete}
+          loading={intersections.status !== 'success' ? true : false}
         />
       </Form.Item>
       {visible && (

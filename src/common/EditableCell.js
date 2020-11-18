@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, Form, Select, Tag } from 'antd'
+import { Input, InputNumber, Form, Select, Tag } from 'antd'
 
 export const EditableCell = ({
   editing,
@@ -27,6 +27,7 @@ export const EditableCell = ({
             ))}
           </Select>
         )
+
       case 'multi-select':
         function tagRender(props) {
           const { label, closable, onClose } = props
@@ -48,6 +49,15 @@ export const EditableCell = ({
             tagRender={tagRender}
             style={{ width: '100%', marginBottom: 15 }}
             options={data}
+          />
+        )
+      case 'number':
+        return (
+          <InputNumber
+            min={0}
+            max={100}
+            formatter={(value) => `${value}%`}
+            parser={(value) => value.replace('%', '')}
           />
         )
       default:

@@ -3,12 +3,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Form, Input } from 'antd'
 
 import { WorkDetailsModal } from './WorkDetailsModal'
-import { CustomTable as Table } from '../../common'
+import { CustomTable as Table } from '../../../../common/Table'
 import {
   setWorkListTableColumnsHelper,
   setWorkListDataSourceHelper,
 } from '../../utils/table_helper'
-import { putRoadMap } from '../../features/roadmap/roadmapSlice'
+import { deleteRoadMap, putRoadMap } from '../../features/roadmap/roadmapSlice'
 
 export const WorkListTable = () => {
   const { organisations, categories, status, data } = useSelector(
@@ -17,6 +17,7 @@ export const WorkListTable = () => {
   const dispatch = useDispatch()
   const [visible, setVisible] = useState(false)
   const [record, setRecord] = useState({})
+  const [dataSource, setDataSource] = useState([])
   const [filtered, setFiltered] = useState()
 
   const [form] = Form.useForm()
@@ -30,24 +31,28 @@ export const WorkListTable = () => {
     )
   }, [organisations, categories, setVisible, setRecord])
 
-  const datasource = useMemo(() => {
-    let arr = filtered ? filtered : data
-    return setWorkListDataSourceHelper(arr)
-  }, [data, filtered])
+  useMemo(() => {
+    setDataSource(setWorkListDataSourceHelper(data))
+  }, [data])
 
-  const save = async (record, setEditingKey, form) => {
-    try {
-      const row = await form.validateFields()
-      setEditingKey('')
-      dispatch(putRoadMap({ status: row, id: record.id }))
-    } catch (errInfo) {
-      console.log('Validate Failed:', errInfo)
-    }
+  const onEdit = (record) => {
+    dispatch(
+      putRoadMap({
+        status: {
+          percentage: record.percentage,
+        },
+        id: record.id,
+      })
+    )
+  }
+
+  const onDelete = (record) => {
+    dispatch(deleteRoadMap(record.id))
   }
 
   const onSearch = (e) => {
     setFiltered(
-      Object.values(data).filter(
+      dataSource.filter(
         (i) =>
           i.address &&
           i.address.toLowerCase().includes(e.target.value.toLowerCase())
@@ -68,10 +73,11 @@ export const WorkListTable = () => {
       <Form.Item name='table'>
         <Table
           columns={columns}
-          dataSource={datasource}
+          data={filtered ? filtered : dataSource}
+          setData={setDataSource}
+          handleEdit={onEdit}
+          handleDelete={onDelete}
           loading={status === 'loading' ? true : false}
-          isEditable={true}
-          save={save}
         />
       </Form.Item>
       {visible && (

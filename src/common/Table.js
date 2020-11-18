@@ -18,13 +18,15 @@ export const CustomTable = (props) => {
     {
       title: 'Действие',
       dataIndex: '',
+      width: '5%',
+      align: 'center',
       key: 'x',
       render: (_, record) => {
         const editable = isEditing(record)
         return editable ? (
           <span>
             <a
-              onClick={() => save(record.key)}
+              onClick={() => onSave(record.key)}
               style={{
                 marginRight: 8,
               }}
@@ -51,7 +53,7 @@ export const CustomTable = (props) => {
             </a>
             <Popconfirm
               title='Вы уверены что хотите удалить даныне?'
-              onConfirm={() => handleDelete(record)}
+              onConfirm={() => onDelete(record)}
             >
               <DeleteOutlined className='icon_edit_btn_style' title='Удалить' />
             </Popconfirm>
@@ -74,34 +76,41 @@ export const CustomTable = (props) => {
     setEditingKey('')
   }
 
-  const save = async (key) => {
+  const onSave = async (key) => {
     try {
       const row = await form.validateFields()
       const newData = [...props.data]
       const index = newData.findIndex((item) => key === item.key)
+      const item = newData[index]
+      props.handleEdit({ ...item, ...row })
+      setEditingKey('')
 
-      if (index > -1) {
-        const item = newData[index]
-        newData.splice(index, 1, { ...item, ...row })
-        props.setData(newData)
-        setEditingKey('')
-      } else {
-        newData.push(row)
-        props.setData(newData)
-        setEditingKey('')
-      }
+      // if (index > -1) {
+      //   const item = newData[index]
+      //   newData.splice(index, 1, { ...item, ...row })
+      //   // props.setData(newData)
+      //   props.handleEdit({ ...item, ...row })
+      //   setEditingKey('')
+      // } else {
+      //   newData.push(row)
+      //   props.setData(newData)
+      //   props.handleEdit(row)
+      //   setEditingKey('')
+      // }
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo)
     }
   }
 
-  const handleDelete = async (record) => {
-    try {
-      let newData = [...props.data]
-      props.setData(newData.filter((item) => item.key !== record.key))
-    } catch (errInfo) {
-      console.log('Validate Failed:', errInfo)
-    }
+  const onDelete = async (record) => {
+    // try {
+    //   let newData = [...props.data]
+    //   props.setData(newData.filter((item) => item.key !== record.key))
+    //   props.handleDelete(record)
+    // } catch (errInfo) {
+    //   console.log('Validate Failed:', errInfo)
+    // }
+    props.handleDelete(record)
   }
 
   const mergedColumns = arr.map((col) => {

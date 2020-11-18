@@ -80,7 +80,11 @@ export const postIntersections = createAsyncThunk(
 export const putRoadMap = createAsyncThunk(
   'roadmap/putRoadMap',
   async (updatedPost) => {
-    await axios.put(`${BASE_ROADMAP_URL}/${updatedPost.id}`, updatedPost.status)
+    let res = await axios.put(`${BASE_ROADMAP_URL}/${updatedPost.id}`, {
+      status: updatedPost.status,
+    })
+
+    console.log(res)
     return updatedPost
   }
 )

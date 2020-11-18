@@ -1,22 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button, Modal, Form } from 'antd'
+
+import { CustomSteps as Steps } from './form/Steps'
 
 import {
   formValidate,
   setCurrent,
   postRoadMap,
   resetForm,
-  setCanvas,
-  setClosured,
 } from '../../features/roadmap/roadmapSlice'
-import { CustomSteps as Steps } from '../../common'
-import {
-  WorkDescription,
-  WorkContractor,
-  WorkStatus,
-  WorkConfirm,
-} from './form'
 import { postNewRoadWork } from '../../utils/helper'
 
 export const WorkListModal = () => {
@@ -30,22 +23,10 @@ export const WorkListModal = () => {
     current,
     status,
     mapData,
-    isCanvas,
-    isClosured,
   } = useSelector((state) => state.roadmap)
   const [form] = Form.useForm()
 
-  const steps = setSteps(
-    organisations,
-    regions,
-    categories,
-    formData,
-    isClosured,
-    isCanvas,
-    dispatch
-  )
-
-  const postFormData = async () => {
+  const postFormData = useCallback(async () => {
     try {
       let ob = postNewRoadWork(formData, categories, organisations, regions)
 
@@ -75,7 +56,7 @@ export const WorkListModal = () => {
     } catch (err) {
       console.log(err.message)
     }
-  }
+  }, [categories, formData, dispatch, mapData, organisations, status, regions])
 
   return (
     <>
@@ -113,7 +94,6 @@ export const WorkListModal = () => {
             }}
           >
             <Steps
-              steps={steps}
               current={current}
               setCurrent={setCurrent}
               formValidate={formValidate}
@@ -128,41 +108,3 @@ export const WorkListModal = () => {
     </>
   )
 }
-
-const setSteps = (
-  organisations,
-  regions,
-  categories,
-  formData,
-  closured,
-  canvas,
-  dispatch
-) => [
-  {
-    title: 'Описание работ',
-    content: (
-      <WorkDescription
-        organisations={organisations}
-        regions={regions}
-        categories={categories}
-        isCanvas={canvas}
-        isClosured={closured}
-        dispatch={dispatch}
-        setCanvas={setCanvas}
-        setClosured={setClosured}
-      />
-    ),
-  },
-  {
-    title: 'Данные подрядчика',
-    content: <WorkContractor />,
-  },
-  {
-    title: 'Статус работ',
-    content: <WorkStatus />,
-  },
-  {
-    title: 'Отправка данных',
-    content: <WorkConfirm ob={formData} />,
-  },
-]

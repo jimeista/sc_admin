@@ -18,7 +18,6 @@ export const setWorkListDataSourceHelper = (arr) => {
     let keys = { key: i.id }
     Object.keys(i).forEach((key) => {
       if (key === 'status') {
-        // Object.keys(i[key]).forEach((k) => (keys = { ...keys, [k]: i[key][k] }))
         keys = { ...keys, percentage: i[key].percentage }
       } else {
         keys = { ...keys, [key]: i[key] }
@@ -30,10 +29,10 @@ export const setWorkListDataSourceHelper = (arr) => {
   return dataSource
 }
 
-export const setCrossListDataSourceHelper = (arr, intersections) => {
-  let columns = []
+export const setCrossListDataSourceHelper = (data, intersections) => {
+  let dataSource = []
   if (intersections.status === 'success') {
-    columns = intersections.data.map((i, index) => {
+    dataSource = intersections.data.map((i, index) => {
       let ob = {
         '№': index + 1,
         key: index + 1,
@@ -41,26 +40,25 @@ export const setCrossListDataSourceHelper = (arr, intersections) => {
       }
 
       i['roadwork-ids'].forEach((id, key) => {
+        let item = data.find((i) => i.id === id)
         ob = {
           ...ob,
-          category: arr.find((i) => i.id === id).category,
+          category: item ? item.category : '',
           [`Работа ${key + 1}`]: id,
         }
       })
 
       return ob
     })
-
-    return columns
   }
 
-  const dataSource = arr.map((i, index) => {
-    let keys = { '№': index + 1, key: index + 1 }
-    Object.keys(i).forEach((key) => {
-      keys = { ...keys, [key]: i[key] }
-    })
-    return keys
-  })
+  // const dataSource = data.map((i, index) => {
+  //   let keys = { '№': index + 1, key: index + 1 }
+  //   Object.keys(i).forEach((key) => {
+  //     keys = { ...keys, [key]: i[key] }
+  //   })
+  //   return keys
+  // })
 
   return dataSource
 }
@@ -134,15 +132,15 @@ export const setWorkListTableColumnsHelper = (
     width: '5%',
     rule: true,
     type: 'number',
+    align: 'center',
   },
 ]
 
 export const setCrossListTableColumnsHelper = (
-  categories,
   setVisible,
   setRecord,
   intersections,
-  data
+  categories
 ) => {
   let arr = []
 
@@ -180,6 +178,7 @@ export const setCrossListTableColumnsHelper = (
       title: 'Улица',
       dataIndex: 'address',
       key: 'address',
+      width: '20%',
       render: (text, record) => {
         return (
           <a
@@ -196,7 +195,10 @@ export const setCrossListTableColumnsHelper = (
     {
       title: 'Категория работ',
       dataIndex: 'category',
+      width: '30%',
       key: 'category',
+      filters: setFilterSelectsHelper(categories),
+      onFilter: (value, record) => record.category.indexOf(value) === 0,
     },
   ]
 
