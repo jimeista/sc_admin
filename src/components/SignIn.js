@@ -4,7 +4,8 @@ import { Route, Redirect } from 'react-router-dom'
 
 import { getCurrentUser } from '../features/admin/adminSlice'
 
-export const SignIn = () => {
+export const SignIn = (props) => {
+  console.log(props)
   const dispatch = useDispatch()
   const { auth } = useSelector((state) => state.admin)
 
@@ -14,7 +15,16 @@ export const SignIn = () => {
 
   if (auth.data && auth.data.username) {
     return (
-      <Route render={() => <Redirect exact to='/Роли' from='/авторизация' />} />
+      <Route
+        render={() => (
+          <Redirect
+            exact
+            // to={props.history.location.state.pathname}
+            to={'/Роли'}
+            from='/авторизация'
+          />
+        )}
+      />
     )
   }
 

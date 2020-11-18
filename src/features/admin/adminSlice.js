@@ -123,6 +123,7 @@ const adminSlice = createSlice({
     },
   },
   extraReducers: {
+    //fetch roles
     [getRoles.pending]: (state, action) => {
       state.roles.status = 'loading'
     },
@@ -134,6 +135,8 @@ const adminSlice = createSlice({
       state.roles.status = 'failed'
       state.roles.error = action.payload
     },
+
+    //fetch current user info
     [getCurrentUser.pending]: (state, action) => {
       state.auth.status = 'loading'
     },
@@ -145,6 +148,8 @@ const adminSlice = createSlice({
       state.modules.status = 'failed'
       state.modules.error = action.payload
     },
+
+    //fetch all available modules
     [getModules.pending]: (state, action) => {
       state.modules.status = 'loading'
     },
@@ -156,6 +161,8 @@ const adminSlice = createSlice({
       state.modules.status = 'failed'
       state.modules.error = action.payload
     },
+
+    //get all roles' modules
     [getRoleModules.pending]: (state, action) => {
       state.role_modules.status = 'loading'
     },
@@ -167,6 +174,8 @@ const adminSlice = createSlice({
       state.role_modules.status = 'failed'
       state.role_modules.error = action.payload
     },
+
+    //post new role
     [postRoleModules.pending]: (state, action) => {
       state.role_modules.status = 'loading'
     },
