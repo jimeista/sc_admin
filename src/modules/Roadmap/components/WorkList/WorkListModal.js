@@ -53,11 +53,11 @@ export const WorkListModal = () => {
         geometries: mapData.map((i) => {
           let arr = []
           if (i.type === 'polyline') {
-            arr = i.coordinates.map((ii) => ({ x: ii[1], y: ii[0] }))
+            arr = i.coordinates.map((ii) => ({ y: ii[1], x: ii[0] }))
           } else if (i.type === 'polygon') {
-            arr = i.coordinates[0].map((k) => ({ x: k[1], y: k[0] }))
+            arr = i.coordinates[0].map((k) => ({ y: k[1], x: k[0] }))
           } else {
-            arr = [{ x: i.coordinates[1], y: i.coordinates[0] }]
+            arr = [{ y: i.coordinates[1], x: i.coordinates[0] }]
           }
           return arr
         }),

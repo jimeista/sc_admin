@@ -5,7 +5,7 @@ import { Route, Redirect } from 'react-router-dom'
 import { getCurrentUser } from '../features/admin/adminSlice'
 
 export const SignIn = (props) => {
-  console.log(props)
+  // console.log(props)
   const dispatch = useDispatch()
   const { auth } = useSelector((state) => state.admin)
 

@@ -73,7 +73,6 @@ export const findLotName = (id, data) =>
 
 export const postNewRoadWork = (data, categories, organisations, regions) => {
   let ob = {}
-  // console.log(data, data['percentage'])
   Object.keys(data).forEach((key) => {
     if (data[key]) {
       if (
@@ -94,27 +93,21 @@ export const postNewRoadWork = (data, categories, organisations, regions) => {
         } else if (key === 'region') {
           const id = regions.data.find((o) => o.name === data[key]).id
           ob = { ...ob, [key]: id }
-        } else if (key === 'percentage') {
-          const obb = {
-            percentage: data[key],
-            'is-hidden': data['is-hidden'],
-            'is-canceled': data['is-canceled'],
-            commentray: data.commentary,
-          }
-
-          let new_obb = {}
-
-          Object.keys(obb).forEach((o) => {
-            if (obb[o] !== undefined) {
-              new_obb = { ...new_obb, [o]: obb[o] }
-            }
-          })
-
-          ob = { ...ob, status: new_obb }
         } else {
           ob = { ...ob, [key]: data[key] }
         }
       }
+    }
+    if (key === 'percentage') {
+      const obb = {
+        percentage: data[key],
+        'is-hidden':
+          data['is-hidden'] === undefined ? false : data['is-hidden'],
+        'is-canceled':
+          data['is-canceled'] === undefined ? false : data['is-canceled'],
+        commentray: data.commentary === undefined ? null : data.commentary,
+      }
+      ob = { ...ob, status: obb }
     }
     if (key === 'is-canvas-opened' || key === 'is-closured') {
       ob = { ...ob, [key]: false }
