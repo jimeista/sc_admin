@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Form, Input } from 'antd'
 
-import { deleteRoadMap } from '../../features/roadmap/roadmapSlice'
+import { deleteRoadMap, setEditedId } from '../../features/roadmap/roadmapSlice'
 
 import { CrossDetailsModal } from './CrossDetailsModal'
 import { CustomTable as Table } from '../../../../common/Table'
@@ -12,7 +12,7 @@ import {
 } from '../../utils/table_helper'
 
 export const CrossListTable = () => {
-  const { categories, intersections, data } = useSelector(
+  const { categories, intersections, data, editedId } = useSelector(
     (state) => state.roadmap
   )
   const dispatch = useDispatch()
@@ -23,6 +23,15 @@ export const CrossListTable = () => {
   const [filtered, setFiltered] = useState()
 
   const [form] = Form.useForm()
+
+  useEffect(() => {
+    if (editedId && filtered) {
+      let item = dataSource.find((i) => i.id === editedId)
+      console.log('editing filtered data')
+      setFiltered((state) => state.map((i) => (i.id === editedId ? item : i)))
+      dispatch(setEditedId({ just_id: false }))
+    }
+  }, [dataSource, editedId, filtered])
 
   const columns = useMemo(() => {
     return setCrossListTableColumnsHelper(

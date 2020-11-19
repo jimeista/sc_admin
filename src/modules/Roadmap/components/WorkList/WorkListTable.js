@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Form, Input } from 'antd'
 
@@ -8,10 +8,14 @@ import {
   setWorkListTableColumnsHelper,
   setWorkListDataSourceHelper,
 } from '../../utils/table_helper'
-import { deleteRoadMap, putRoadMap } from '../../features/roadmap/roadmapSlice'
+import {
+  deleteRoadMap,
+  putRoadMap,
+  setEditedId,
+} from '../../features/roadmap/roadmapSlice'
 
 export const WorkListTable = () => {
-  const { organisations, categories, status, data } = useSelector(
+  const { organisations, categories, status, data, editedId } = useSelector(
     (state) => state.roadmap
   )
   const dispatch = useDispatch()
@@ -31,7 +35,17 @@ export const WorkListTable = () => {
     )
   }, [organisations, categories, setVisible, setRecord])
 
+  useEffect(() => {
+    if (editedId && filtered) {
+      let item = dataSource.find((i) => i.id === editedId)
+      console.log('editing filtered data')
+      setFiltered((state) => state.map((i) => (i.id === editedId ? item : i)))
+      dispatch(setEditedId({ just_id: true }))
+    }
+  }, [dataSource, editedId, filtered])
+
   useMemo(() => {
+    console.log('editing dataSource')
     setDataSource(setWorkListDataSourceHelper(data))
   }, [data])
 

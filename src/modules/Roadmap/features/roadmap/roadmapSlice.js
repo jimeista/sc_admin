@@ -80,11 +80,11 @@ export const postIntersections = createAsyncThunk(
 export const putRoadMap = createAsyncThunk(
   'roadmap/putRoadMap',
   async (updatedPost) => {
-    let res = await axios.put(`${BASE_ROADMAP_URL}/${updatedPost.id}`, {
-      status: updatedPost.status,
+    await axios.put(`${BASE_ROADMAP_URL}/${updatedPost.id}`, {
+      'status-form': updatedPost.status,
     })
 
-    console.log(res)
+    // console.log(res)
     return updatedPost
   }
 )
@@ -123,6 +123,8 @@ export const roadmapSlice = createSlice({
     formData: {},
     current: 0,
     mapData: [],
+    editedId: null,
+    editedIntersectionId: null,
     crossListMapData: {},
     intersections: {
       status: 'idle',
@@ -155,6 +157,13 @@ export const roadmapSlice = createSlice({
     },
     setCanvas: (state, action) => {
       state.isCanvas = action.payload
+    },
+    setEditedId: (state, action) => {
+      if (action.payload.just_id) {
+        state.editedId = null
+      } else {
+        state.editedIntersectionId = null
+      }
     },
   },
   extraReducers: {
@@ -213,6 +222,9 @@ export const roadmapSlice = createSlice({
       state.intersections.status = 'failed'
       state.intersections.error = action.payload
     },
+    [postRoadMap.pending]: (state) => {
+      state.status = 'loading'
+    },
     [postRoadMap.fulfilled]: (state, action) => {
       state.status = 'success'
       let ob = action.payload.data
@@ -230,19 +242,20 @@ export const roadmapSlice = createSlice({
       ob = { ...ob, category, region, organisation, id, geometries }
       state.data = [ob, ...state.data]
     },
-    [postRoadMap.pending]: (state) => {
-      state.status = 'loading'
+    [postIntersections.pending]: (state, action) => {
+      state.intersections.status = 'loading'
     },
     [postIntersections.succes]: (state, action) => {
       state.intersections.data = [action.payload, ...state.intersections.data]
     },
-    [putRoadMap.fulfilled]: (state, action) => {
-      state.status = 'success'
-      state.data.find((i) => i.id === action.payload.id).status =
-        action.payload.status
-    },
     [putRoadMap.pending]: (state, action) => {
       state.status = 'loading'
+    },
+    [putRoadMap.fulfilled]: (state, action) => {
+      state.status = 'success'
+      let data = state.data.find((i) => i.id === action.payload.id)
+      data.status = { ...data.status, ...action.payload.status }
+      state.editedId = action.payload.id
     },
     [deleteRoadMap.pending]: (state) => {
       state.status = 'loading'
@@ -263,6 +276,7 @@ export const {
   resetForm,
   setClosured,
   setCanvas,
+  setEditedId,
   resetCrossListMapData,
 } = roadmapSlice.actions
 
