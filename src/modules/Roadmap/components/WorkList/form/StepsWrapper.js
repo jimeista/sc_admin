@@ -16,7 +16,7 @@ import {
 } from './index'
 import { CustomSteps as Steps } from '../../../common'
 
-export const CustomSteps = ({ form, postFormData }) => {
+export const StepsWrapper = ({ form, postFormData }) => {
   const {
     current,
     organisations,

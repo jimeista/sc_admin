@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button, Modal, Form } from 'antd'
 
-import { CustomSteps as Steps } from './form/Steps'
+import { StepsWrapper as Steps } from './form/StepsWrapper'
 
 import {
   setCurrent,

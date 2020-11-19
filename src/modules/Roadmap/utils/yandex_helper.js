@@ -1,5 +1,5 @@
 import React from 'react'
-import { Polygon, Polyline } from 'react-yandex-maps'
+import { Placemark, Polygon, Polyline } from 'react-yandex-maps'
 import { Button } from 'antd'
 import { FaDrawPolygon } from 'react-icons/fa'
 import { FcLineChart } from 'react-icons/fc'
@@ -7,6 +7,8 @@ import { FcLineChart } from 'react-icons/fc'
 export const renderGeoObjects = (mapData) => {
   return mapData.map((geo, index) => {
     switch (geo.type) {
+      case 'placemark':
+        return <Placemark key={index} geometry={geo.coordinates} />
       case 'polyline':
         return (
           <Polyline

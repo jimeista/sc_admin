@@ -15,6 +15,20 @@ export const AddCrossWorks = () => {
     let arr =
       categories.status === 'success' ? categories.data.map((r) => r.name) : []
 
+    const onChangeWorkId = (id) =>
+      dispatch(
+        setCrossListMapData({
+          type: 'polygon',
+          coordinates: data.find((i) => i.id === id).geometries.coordinates,
+        })
+      )
+
+    const onChangeCategory = (value) =>
+      setOptions((state) => ({
+        ...state,
+        [key]: data.filter((i) => i.category === value).map((i) => i.id),
+      }))
+
     return (
       <Form.Item style={{ marginRight: 20 }}>
         <Form.Item
@@ -25,14 +39,7 @@ export const AddCrossWorks = () => {
             placeholder={'Категория работ'}
             style={{ width: 240 }}
             allowClear
-            onChange={(value) =>
-              setOptions((state) => ({
-                ...state,
-                [key]: data
-                  .filter((i) => i.category === value)
-                  .map((i) => i.id),
-              }))
-            }
+            onChange={onChangeCategory}
           >
             {arr.map((i, index) => (
               <Option value={i} key={i}>
@@ -51,17 +58,7 @@ export const AddCrossWorks = () => {
               placeholder={`Работа ${key}`}
               style={{ width: 240 }}
               allowClear
-              onChange={(id) =>
-                dispatch(
-                  setCrossListMapData({
-                    [key]: {
-                      type: 'polygon',
-                      coordinates: data.find((i) => i.id === id).geometries
-                        .coordinates,
-                    },
-                  })
-                )
-              }
+              onChange={onChangeWorkId}
             >
               {options[key].map((i, index) => (
                 <Option value={i} key={i}>

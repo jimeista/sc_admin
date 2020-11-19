@@ -4,9 +4,11 @@ import { Modal, Form } from 'antd'
 import moment from 'moment'
 
 // import { WorkConfirm } from './form/WorkConfirm'
-import { CustomSteps as Steps } from './form/Steps'
+import { StepsWrapper as Steps } from './form/StepsWrapper'
 import {
   setMapData,
+  resetMapData,
+  setCurrent,
   // postRoadMap,
   // resetForm,
 } from '../../features/roadmap/roadmapSlice'
@@ -22,18 +24,23 @@ export const WorkDetailsModal = (props) => {
   useEffect(() => {
     let coordinates = record.geometries.coordinates
     dispatch(setMapData([{ coordinates, type: 'polygon' }]))
+    dispatch(setCurrent(0))
 
     return () => {
-      dispatch(setMapData([]))
+      dispatch(resetMapData())
       form.setFieldsValue({})
     }
-  }, [])
+  }, [form, record])
 
   console.log(record)
+  let ob = {}
+  Object.keys(record).forEach((key) => {
+    ob = { ...ob, [key]: record[key] === null ? undefined : record[key] }
+  })
   form.setFieldsValue({
-    ...record,
-    'start-date': moment(record['start-date'], format),
-    'end-date': moment(record['end-date'], format),
+    ...ob,
+    'start-date': moment(ob['start-date'], format),
+    'end-date': moment(ob['end-date'], format),
   })
 
   return (

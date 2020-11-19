@@ -15,14 +15,42 @@ export const CrossListModal = () => {
   const [form] = Form.useForm()
   const dispatch = useDispatch()
 
+  const onCancel = () => {
+    dispatch(resetCrossListMapData())
+    form.resetFields()
+    setVisible(false)
+  }
+
+  const onSave = async () => {
+    let data = await form.validateFields()
+    const ob = Object.values(data)
+    const ids = ob.filter((i) => typeof i !== 'string')
+    data = { 'roadwork-ids': ids, 'intersection-area': data.area }
+    dispatch(postIntersections(data))
+    dispatch(resetCrossListMapData())
+    form.resetFields()
+    setVisible(false)
+  }
+
+  const onAddIntersection = () => {
+    dispatch(setCurrent(1))
+    setVisible(true)
+  }
+
+  const config = [
+    <Button key='back' onClick={() => setVisible(false)}>
+      Отменить
+    </Button>,
+    <Button key='submit' type='primary' onClick={onSave}>
+      Сохранить
+    </Button>,
+  ]
+
   return (
     <>
       <Button
         type='primary'
-        onClick={() => {
-          dispatch(setCurrent(1))
-          setVisible(true)
-        }}
+        onClick={onAddIntersection}
         style={{ marginBottom: 10 }}
       >
         Добавить пересечение
@@ -30,33 +58,9 @@ export const CrossListModal = () => {
       <Modal
         title='Форма ввода данных по пересечению работ'
         visible={visible}
-        onCancel={() => {
-          dispatch(resetCrossListMapData())
-          form.resetFields()
-          setVisible(false)
-        }}
+        onCancel={onCancel}
         width={'80%'}
-        footer={[
-          <Button key='back' onClick={() => setVisible(false)}>
-            Отменить
-          </Button>,
-          <Button
-            key='submit'
-            type='primary'
-            onClick={async () => {
-              let data = await form.validateFields()
-              const ob = Object.values(data)
-              const ids = ob.filter((i) => typeof i !== 'string')
-              data = { 'roadwork-ids': ids, 'intersection-area': data.area }
-              dispatch(postIntersections(data))
-              dispatch(resetCrossListMapData())
-              form.resetFields()
-              setVisible(false)
-            }}
-          >
-            Сохранить
-          </Button>,
-        ]}
+        footer={config}
       >
         <Form form={form}>
           <AddCrossWorks />

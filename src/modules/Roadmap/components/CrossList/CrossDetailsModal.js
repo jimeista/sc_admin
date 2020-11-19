@@ -1,23 +1,52 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { Modal, Button } from 'antd'
 
+import {
+  setCrossListMapData,
+  resetCrossListMapData,
+  setCurrent,
+} from '../../features/roadmap/roadmapSlice'
+
+import { CustomYandexMap as YandexMap } from '../../common'
 import { WorkConfirm as FormDetails } from '../WorkList/form/WorkConfirm'
 
 export const CrossDetailsModal = (props) => {
   const { visible, setVisible, record, data } = props
+  const [array, setArray] = useState([])
 
-  const ids = Object.keys(record)
-    .filter((key) => key.substring(0, 1) === 'Р' && record[key])
-    .map((i) => record[i])
+  const dispatch = useDispatch()
 
-  let arr = []
-  ids.forEach((id) => {
-    data.forEach((i) => {
-      if (i.id === id) {
-        arr = [...arr, i]
-      }
+  useEffect(() => {
+    //get ids from table record
+    const ids = Object.keys(record)
+      .filter((key) => key.substring(0, 6) === 'Работа' && record[key])
+      .map((i) => record[i])
+
+    //find crosslist work information by ids
+    let arr = []
+    ids.forEach((id) => {
+      data.forEach((i) => {
+        if (i.id === id) {
+          arr = [...arr, i]
+        }
+      })
     })
-  })
+
+    setArray(arr)
+    dispatch(setCurrent(1))
+    dispatch(
+      setCrossListMapData({
+        type: 'placemark',
+        coordinates: record.coordinates,
+      })
+    )
+
+    return () => {
+      dispatch(setCurrent(0))
+      dispatch(resetCrossListMapData())
+    }
+  }, [])
 
   return (
     <Modal
@@ -41,12 +70,15 @@ export const CrossDetailsModal = (props) => {
           margin: 'auto',
         }}
       >
-        {arr.map((i, index) => (
+        {array.map((i, index) => (
           <div>
             <h2>Работа {index + 1}</h2>
             <FormDetails ob={i} />
           </div>
         ))}
+      </div>
+      <div style={{ width: '100%', paddingLeft: 10 }}>
+        <YandexMap />
       </div>
     </Modal>
   )

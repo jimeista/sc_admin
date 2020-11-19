@@ -123,11 +123,11 @@ export const roadmapSlice = createSlice({
     formData: {},
     current: 0,
     mapData: [],
+    crossListMapData: [],
     editedId: null,
     deletedId: null,
     editedIntersectionId: null,
     deletedIntersectionId: null,
-    crossListMapData: {},
     intersections: {
       status: 'idle',
       error: null,
@@ -145,10 +145,13 @@ export const roadmapSlice = createSlice({
       state.mapData = [...state.mapData, ...action.payload]
     },
     setCrossListMapData: (state, action) => {
-      state.crossListMapData = { ...state.crossListMapData, ...action.payload }
+      state.crossListMapData = [...state.crossListMapData, action.payload]
     },
-    resetCrossListMapData: (state, action) => {
-      state.crossListMapData = {}
+    resetMapData: (state) => {
+      state.mapData = []
+    },
+    resetCrossListMapData: (state) => {
+      state.crossListMapData = []
     },
     resetForm: (state) => {
       state.mapData = []
@@ -289,6 +292,7 @@ export const {
   setEditedId,
   setDeletedId,
   resetCrossListMapData,
+  resetMapData,
 } = roadmapSlice.actions
 
 export const selectRoadMap = (state) => state.roadmap

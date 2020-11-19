@@ -37,6 +37,7 @@ export const setCrossListDataSourceHelper = (data, intersections) => {
         '№': index + 1,
         key: index + 1,
         address: 'some street',
+        coordinates: i.intersection.coordinates,
       }
 
       i['roadwork-ids'].forEach((id, key) => {

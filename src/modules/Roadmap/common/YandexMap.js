@@ -22,8 +22,6 @@ export const CustomYandexMap = () => {
   )
   const dispatch = useDispatch()
 
-  console.log(mapData)
-
   const [active, setActive] = useState('')
   const [polygons, setPolygons] = useState([])
   const previousState = usePrevious({ active, polygons })
@@ -35,7 +33,7 @@ export const CustomYandexMap = () => {
         setPolygons([])
       }
     }
-  }, [active, polygons, previousState, dispatch])
+  }, [active, polygons, previousState])
 
   let geoObject = useMemo(() => {
     const draw = async (ref, type) => {
@@ -60,12 +58,9 @@ export const CustomYandexMap = () => {
   }, [active])
 
   let geoObjects = useMemo(() => {
-    if (Object.keys(crossListMapData).length > 0) {
-      let arr = Object.values(crossListMapData)
-      return renderGeoObjects(arr)
+    if (crossListMapData.length > 0) {
+      return renderGeoObjects(crossListMapData)
     }
-    console.log('rendering geoObjects', mapData)
-
     return renderGeoObjects(mapData)
   }, [mapData, crossListMapData])
 
