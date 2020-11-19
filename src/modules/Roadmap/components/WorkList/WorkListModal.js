@@ -5,7 +5,6 @@ import { Button, Modal, Form } from 'antd'
 import { CustomSteps as Steps } from './form/Steps'
 
 import {
-  formValidate,
   setCurrent,
   postRoadMap,
   resetForm,
@@ -20,7 +19,6 @@ export const WorkListModal = () => {
     regions,
     categories,
     formData,
-    current,
     status,
     mapData,
   } = useSelector((state) => state.roadmap)
@@ -93,15 +91,7 @@ export const WorkListModal = () => {
               justifyContent: 'space-between',
             }}
           >
-            <Steps
-              current={current}
-              setCurrent={setCurrent}
-              formValidate={formValidate}
-              dispatch={dispatch}
-              form={form}
-              status={status}
-              postFormData={postFormData}
-            />
+            <Steps form={form} postFormData={postFormData} />
           </div>
         </Modal>
       )}

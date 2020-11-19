@@ -133,6 +133,8 @@ export const setWorkListTableColumnsHelper = (
     rule: true,
     type: 'number',
     align: 'center',
+    sorter: (a, b) => b.percentage - a.percentage,
+    sortDirections: ['ascend'],
   },
 ]
 

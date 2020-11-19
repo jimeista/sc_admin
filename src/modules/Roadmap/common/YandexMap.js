@@ -22,6 +22,8 @@ export const CustomYandexMap = () => {
   )
   const dispatch = useDispatch()
 
+  console.log(mapData)
+
   const [active, setActive] = useState('')
   const [polygons, setPolygons] = useState([])
   const previousState = usePrevious({ active, polygons })
@@ -62,6 +64,7 @@ export const CustomYandexMap = () => {
       let arr = Object.values(crossListMapData)
       return renderGeoObjects(arr)
     }
+    console.log('rendering geoObjects', mapData)
 
     return renderGeoObjects(mapData)
   }, [mapData, crossListMapData])

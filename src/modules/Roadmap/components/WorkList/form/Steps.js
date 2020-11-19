@@ -1,7 +1,12 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { setCanvas, setClosured } from '../../../features/roadmap/roadmapSlice'
+import {
+  setCanvas,
+  setClosured,
+  setCurrent,
+  formValidate,
+} from '../../../features/roadmap/roadmapSlice'
 
 import {
   WorkDescription,
@@ -11,16 +16,9 @@ import {
 } from './index'
 import { CustomSteps as Steps } from '../../../common'
 
-export const CustomSteps = ({
-  current,
-  setCurrent,
-  formValidate,
-  dispatch,
-  form,
-  status,
-  postFormData,
-}) => {
+export const CustomSteps = ({ form, postFormData }) => {
   const {
+    current,
     organisations,
     regions,
     categories,
@@ -28,6 +26,8 @@ export const CustomSteps = ({
     isCanvas,
     isClosured,
   } = useSelector((state) => state.roadmap)
+
+  const dispatch = useDispatch()
 
   const steps = setSteps(
     organisations,
@@ -46,7 +46,6 @@ export const CustomSteps = ({
       formValidate={formValidate}
       dispatch={dispatch}
       form={form}
-      status={status}
       postFormData={postFormData}
     />
   )

@@ -12,12 +12,18 @@ import {
   deleteRoadMap,
   putRoadMap,
   setEditedId,
+  setDeletedId,
 } from '../../features/roadmap/roadmapSlice'
 
 export const WorkListTable = () => {
-  const { organisations, categories, status, data, editedId } = useSelector(
-    (state) => state.roadmap
-  )
+  const {
+    organisations,
+    categories,
+    status,
+    data,
+    editedId,
+    deletedId,
+  } = useSelector((state) => state.roadmap)
   const dispatch = useDispatch()
   const [visible, setVisible] = useState(false)
   const [record, setRecord] = useState({})
@@ -36,16 +42,22 @@ export const WorkListTable = () => {
   }, [organisations, categories, setVisible, setRecord])
 
   useEffect(() => {
-    if (editedId && filtered) {
-      let item = dataSource.find((i) => i.id === editedId)
-      console.log('editing filtered data')
-      setFiltered((state) => state.map((i) => (i.id === editedId ? item : i)))
-      dispatch(setEditedId({ just_id: true }))
+    if (filtered) {
+      if (editedId) {
+        let item = dataSource.find((i) => i.id === editedId)
+        // console.log('editing filtered data')
+        setFiltered((state) => state.map((i) => (i.id === editedId ? item : i)))
+        dispatch(setEditedId({ just_id: true }))
+      }
+      if (deletedId) {
+        setFiltered((state) => state.filter((i) => i.id !== deletedId))
+        dispatch(setDeletedId({ just_id: true }))
+      }
     }
-  }, [dataSource, editedId, filtered])
+  }, [dataSource, deletedId, editedId, filtered])
 
   useMemo(() => {
-    console.log('editing dataSource')
+    // console.log('editing dataSource')
     setDataSource(setWorkListDataSourceHelper(data))
   }, [data])
 

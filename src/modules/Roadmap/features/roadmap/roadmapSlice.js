@@ -124,7 +124,9 @@ export const roadmapSlice = createSlice({
     current: 0,
     mapData: [],
     editedId: null,
+    deletedId: null,
     editedIntersectionId: null,
+    deletedIntersectionId: null,
     crossListMapData: {},
     intersections: {
       status: 'idle',
@@ -163,6 +165,13 @@ export const roadmapSlice = createSlice({
         state.editedId = null
       } else {
         state.editedIntersectionId = null
+      }
+    },
+    setDeletedId: (state, action) => {
+      if (action.payload.just_id) {
+        state.deletedId = null
+      } else {
+        state.deletedIntersectionId = null
       }
     },
   },
@@ -263,6 +272,7 @@ export const roadmapSlice = createSlice({
     [deleteRoadMap.fulfilled]: (state, action) => {
       state.status = 'success'
       state.data = state.data.filter((i) => i.id !== action.payload.id)
+      state.deletedId = action.payload.id
     },
   },
 })
@@ -277,6 +287,7 @@ export const {
   setClosured,
   setCanvas,
   setEditedId,
+  setDeletedId,
   resetCrossListMapData,
 } = roadmapSlice.actions
 

@@ -39,13 +39,23 @@ export const WorkDescription = (props) => {
         <Input placeholder='Адрес/Улица' />
       </Form.Item>
       {renderTextArea('area', 'Описание участка', true)}
-      <Form.Item name={'is-closured'} valuePropName='checked' noStyle>
+      <Form.Item
+        name={'is-closured'}
+        // valuePropName='checked'
+        noStyle
+        getValueFromEvent={normCheckbox}
+      >
         <Checkbox onChange={() => dispatch(setClosured(!isClosured))}>
           Перекрытие улиц{' '}
         </Checkbox>
       </Form.Item>
       {renderTextArea('closure-descr', 'Описание перекрытия', isClosured)}
-      <Form.Item name={'is-canvas-opened'} valuePropName='checked' noStyle>
+      <Form.Item
+        name={'is-canvas-opened'}
+        // valuePropName='checked'
+        noStyle
+        // getValueFromEvent={normCheckbox}
+      >
         <Checkbox onChange={() => dispatch(setCanvas(!isCanvas))}>
           Вскрытие дорожного полотна{' '}
         </Checkbox>
@@ -66,4 +76,8 @@ export const WorkDescription = (props) => {
       {renderUpload()}
     </>
   )
+}
+
+const normCheckbox = (e) => {
+  console.log(e)
 }

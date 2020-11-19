@@ -46,12 +46,12 @@ export const renderSelects = (prop) => {
 
   return (
     <div
-      style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-        margin: '15px 0',
-      }}
+    // style={{
+    //   display: 'flex',
+    //   flexWrap: 'wrap',
+    //   justifyContent: 'space-between',
+    //   margin: '15px 0',
+    // }}
     >
       {arr.map((i, index) => (
         <Form.Item
@@ -60,7 +60,7 @@ export const renderSelects = (prop) => {
           key={`${i.name}${index}`}
           hasFeedback
         >
-          <Select placeholder={i.placeholder} style={{ width: 200 }} allowClear>
+          <Select placeholder={i.placeholder} style={{ width: 300 }} allowClear>
             {i.options.map((op) => (
               <Option value={op} key={op}>
                 {op}
@@ -107,6 +107,7 @@ export const renderDatePicker = (picker, handleChange, name, text) => {
           getValueFromEvent={(e, string) => moment(string, 'YYYY-MM-DD')}
         >
           <DatePicker
+            allowClear={false}
             placeholder='Выбрать дату'
             format={picker ? 'YYYY' : 'YYYY-MM-DD'}
             picker={picker}

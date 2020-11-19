@@ -12,7 +12,6 @@ export const CustomSteps = ({
   setCurrent,
   formValidate,
   form,
-  status,
   postFormData,
 }) => {
   useEffect(() => {
@@ -31,7 +30,7 @@ export const CustomSteps = ({
   const validate = async () => {
     try {
       const data = await form.validateFields()
-      // console.log(data)
+      console.log(data)
       Object.keys(data).map((key) => {
         if (typeof data[key] === 'object') {
           data[key] = data[key]['_i']
@@ -77,7 +76,7 @@ export const CustomSteps = ({
           <Button
             key='submit'
             type='primary'
-            confirmLoading={status}
+            // confirmLoading={status}
             onClick={() => postFormData()}
           >
             Отправить
