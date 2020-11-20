@@ -9,7 +9,7 @@ import {
   postRoadMap,
   resetForm,
 } from '../../features/roadmap/roadmapSlice'
-import { postNewRoadWork } from '../../utils/helper'
+import { validateRoadWorkForm, setCoordinates } from '../../utils/helper'
 
 export const WorkListModal = () => {
   const [visible, setVisible] = useState()
@@ -26,23 +26,16 @@ export const WorkListModal = () => {
 
   const postFormData = useCallback(async () => {
     try {
-      let ob = postNewRoadWork(formData, categories, organisations, regions)
+      let ob = validateRoadWorkForm(
+        formData,
+        categories,
+        organisations,
+        regions
+      )
 
-      const coordinates = {
-        geometries: mapData.map((i) => {
-          let arr = []
-          if (i.type === 'polyline') {
-            arr = i.coordinates.map((ii) => ({ y: ii[1], x: ii[0] }))
-          } else if (i.type === 'polygon') {
-            arr = i.coordinates[0].map((k) => ({ y: k[1], x: k[0] }))
-          } else {
-            arr = [{ y: i.coordinates[1], x: i.coordinates[0] }]
-          }
-          return arr
-        }),
-      }
+      const coordinates = setCoordinates(mapData)
 
-      ob = { data: ob, geometries: { coordinates } }
+      ob = { data: ob, geometries: coordinates, mapData }
 
       console.log(ob)
 
@@ -91,7 +84,7 @@ export const WorkListModal = () => {
               justifyContent: 'space-between',
             }}
           >
-            <Steps form={form} postFormData={postFormData} />
+            <Steps form={form} callback={postFormData} />
           </div>
         </Modal>
       )}

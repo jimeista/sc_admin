@@ -113,7 +113,12 @@ export const renderDatePicker = (picker, handleChange, name, text) => {
             picker={picker}
           />
         </Form.Item>
-        <Form.Item style={{ marginLeft: 10 }}>
+        <Form.Item
+          name={`${name}-checked`}
+          style={{ marginLeft: 10 }}
+          valuePropName='checked'
+          getValueFromEvent={(e) => e.target.checked}
+        >
           <Checkbox onChange={handleChange}>Год</Checkbox>
         </Form.Item>
       </Input.Group>

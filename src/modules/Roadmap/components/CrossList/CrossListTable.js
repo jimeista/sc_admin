@@ -2,7 +2,11 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Form, Input } from 'antd'
 
-import { deleteRoadMap, setEditedId } from '../../features/roadmap/roadmapSlice'
+import {
+  deleteRoadMap,
+  resetIntersectionsData,
+  setEditedId,
+} from '../../features/roadmap/roadmapSlice'
 
 import { CrossDetailsModal } from './CrossDetailsModal'
 import { CustomTable as Table } from '../../../../common/Table'

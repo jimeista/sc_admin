@@ -41,9 +41,9 @@ export const WorkDescription = (props) => {
       {renderTextArea('area', 'Описание участка', true)}
       <Form.Item
         name={'is-closured'}
-        // valuePropName='checked'
+        valuePropName='checked'
         noStyle
-        getValueFromEvent={normCheckbox}
+        getValueFromEvent={(e) => e.target.checked}
       >
         <Checkbox onChange={() => dispatch(setClosured(!isClosured))}>
           Перекрытие улиц{' '}
@@ -52,9 +52,9 @@ export const WorkDescription = (props) => {
       {renderTextArea('closure-descr', 'Описание перекрытия', isClosured)}
       <Form.Item
         name={'is-canvas-opened'}
-        // valuePropName='checked'
+        valuePropName='checked'
         noStyle
-        // getValueFromEvent={normCheckbox}
+        getValueFromEvent={(e) => e.target.checked}
       >
         <Checkbox onChange={() => dispatch(setCanvas(!isCanvas))}>
           Вскрытие дорожного полотна{' '}
@@ -76,8 +76,4 @@ export const WorkDescription = (props) => {
       {renderUpload()}
     </>
   )
-}
-
-const normCheckbox = (e) => {
-  console.log(e)
 }

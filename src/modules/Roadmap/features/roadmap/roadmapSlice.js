@@ -51,16 +51,18 @@ export const postRoadMap = createAsyncThunk(
   'roadmap/postRoadMap',
   async (ob) => {
     const res = await axios.post(BASE_ROADMAP_URL, ob.data)
-
-    await axios.post(
-      `/sc-roadworks/api/roadworks/${res.data}/geometries`,
-      ob.geometries.coordinates
-    )
+    console.log(res)
+    await axios.post(`/sc-roadworks/api/roadworks/${res.data}/geometries`, {
+      geometries: ob.geometries,
+    })
 
     return {
       data: JSON.parse(res.config.data),
       id: res.data,
-      geometries: ob.geometries,
+      geometries: {
+        type: 'polygon',
+        coordinates: ob.mapData.map((i) => i.coordinates),
+      },
     }
   }
 )
@@ -79,13 +81,18 @@ export const postIntersections = createAsyncThunk(
 
 export const putRoadMap = createAsyncThunk(
   'roadmap/putRoadMap',
-  async (updatedPost) => {
-    await axios.put(`${BASE_ROADMAP_URL}/${updatedPost.id}`, {
-      'status-form': updatedPost.status,
-    })
+  async (post) => {
+    let ob = post.reedit
+      ? { ...post.data.data, 'status-form': post.data.data.status }
+      : {
+          'status-form': post.data,
+        }
 
-    // console.log(res)
-    return updatedPost
+    await axios.put(`${BASE_ROADMAP_URL}/${post.id}`, ob)
+
+    console.log(ob)
+
+    return post
   }
 )
 
@@ -152,6 +159,14 @@ export const roadmapSlice = createSlice({
     },
     resetCrossListMapData: (state) => {
       state.crossListMapData = []
+    },
+    resetData: (state) => {
+      state.data = []
+      state.status = 'idle'
+    },
+    resetIntersectionsData: (state) => {
+      state.intersections.data = []
+      state.intersections.status = 'idle'
     },
     resetForm: (state) => {
       state.mapData = []
@@ -258,6 +273,7 @@ export const roadmapSlice = createSlice({
       state.intersections.status = 'loading'
     },
     [postIntersections.succes]: (state, action) => {
+      state.intersections.status = 'success'
       state.intersections.data = [action.payload, ...state.intersections.data]
     },
     [putRoadMap.pending]: (state, action) => {
@@ -266,8 +282,18 @@ export const roadmapSlice = createSlice({
     [putRoadMap.fulfilled]: (state, action) => {
       state.status = 'success'
       let data = state.data.find((i) => i.id === action.payload.id)
-      data.status = { ...data.status, ...action.payload.status }
       state.editedId = action.payload.id
+      if (action.payload.reedit) {
+        console.log('editing full data', data)
+        data = { ...data, ...action.payload.data }
+        data.geometries = {
+          ...data.geometries,
+          coordinates: action.payload.data.geometries.coordinates,
+        }
+        console.log('after edit', data)
+      } else {
+        data.status = { ...data.status, ...action.payload.data.data }
+      }
     },
     [deleteRoadMap.pending]: (state) => {
       state.status = 'loading'
@@ -293,6 +319,8 @@ export const {
   setDeletedId,
   resetCrossListMapData,
   resetMapData,
+  resetData,
+  resetIntersectionsData,
 } = roadmapSlice.actions
 
 export const selectRoadMap = (state) => state.roadmap

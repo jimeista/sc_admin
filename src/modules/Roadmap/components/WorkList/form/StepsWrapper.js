@@ -16,7 +16,7 @@ import {
 } from './index'
 import { CustomSteps as Steps } from '../../../common'
 
-export const StepsWrapper = ({ form, postFormData }) => {
+export const StepsWrapper = ({ form, callback }) => {
   const {
     current,
     organisations,
@@ -46,7 +46,7 @@ export const StepsWrapper = ({ form, postFormData }) => {
       formValidate={formValidate}
       dispatch={dispatch}
       form={form}
-      postFormData={postFormData}
+      callback={callback}
     />
   )
 }

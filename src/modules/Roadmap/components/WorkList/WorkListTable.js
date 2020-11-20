@@ -13,6 +13,7 @@ import {
   putRoadMap,
   setEditedId,
   setDeletedId,
+  resetData,
 } from '../../features/roadmap/roadmapSlice'
 
 export const WorkListTable = () => {
@@ -64,7 +65,8 @@ export const WorkListTable = () => {
   const onEdit = (record) => {
     dispatch(
       putRoadMap({
-        status: {
+        reedit: false,
+        data: {
           percentage: record.percentage,
         },
         id: record.id,

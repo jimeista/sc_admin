@@ -27,10 +27,19 @@ export const WorkStatus = () => {
       <Form.Item name='commentary'>
         <TextArea style={{ height: 90 }} placeholder='Комментарий' />
       </Form.Item>
-      <Form.Item name='is-hidden' valuePropName='checked'>
+      <Form.Item
+        name='is-hidden'
+        valuePropName='checked'
+        getValueFromEvent={(e) => e.target.checked}
+      >
         <Checkbox> Скрыть работу с карты</Checkbox>
       </Form.Item>
-      <Form.Item name='is-canceled' valuePropName='checked' noStyle>
+      <Form.Item
+        name='is-canceled'
+        valuePropName='checked'
+        getValueFromEvent={(e) => e.target.checked}
+        noStyle
+      >
         <Checkbox onChange={hanldeChange}>
           Закуп работ отменен / приостановлен
         </Checkbox>

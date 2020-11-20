@@ -71,7 +71,12 @@ export const findLotName = (id, data) =>
   //should return lot-name not id
   data.find((i) => i.id === id).id
 
-export const postNewRoadWork = (data, categories, organisations, regions) => {
+export const validateRoadWorkForm = (
+  data,
+  categories,
+  organisations,
+  regions
+) => {
   let ob = {}
   Object.keys(data).forEach((key) => {
     if (data[key]) {
@@ -101,18 +106,27 @@ export const postNewRoadWork = (data, categories, organisations, regions) => {
     if (key === 'percentage') {
       const obb = {
         percentage: data[key],
-        'is-hidden':
-          data['is-hidden'] === undefined ? false : data['is-hidden'],
-        'is-canceled':
-          data['is-canceled'] === undefined ? false : data['is-canceled'],
+        'is-hidden': data['is-hidden'],
+        'is-canceled': data['is-canceled'],
         commentray: data.commentary === undefined ? null : data.commentary,
       }
       ob = { ...ob, status: obb }
     }
-    if (key === 'is-canvas-opened' || key === 'is-closured') {
-      ob = { ...ob, [key]: false }
-    }
   })
 
   return ob
+}
+
+export const setCoordinates = (data) => {
+  return data.map((i) => {
+    let arr = []
+    if (i.type === 'polyline') {
+      arr = i.coordinates.map((ii) => ({ y: ii[1], x: ii[0] }))
+    } else if (i.type === 'polygon') {
+      arr = i.coordinates[0].map((k) => ({ y: k[1], x: k[0] }))
+    } else {
+      arr = [{ y: i.coordinates[1], x: i.coordinates[0] }]
+    }
+    return arr
+  })
 }

@@ -12,7 +12,7 @@ export const CustomSteps = ({
   setCurrent,
   formValidate,
   form,
-  postFormData,
+  callback,
 }) => {
   useEffect(() => {
     form.resetFields()
@@ -77,7 +77,7 @@ export const CustomSteps = ({
             key='submit'
             type='primary'
             // confirmLoading={status}
-            onClick={() => postFormData()}
+            onClick={() => callback()}
           >
             Отправить
           </Button>
