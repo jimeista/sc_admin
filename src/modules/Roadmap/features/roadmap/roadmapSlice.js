@@ -122,8 +122,6 @@ export const roadmapSlice = createSlice({
       data: [],
       error: null,
     },
-    isClosured: false,
-    isCanvas: false,
     data: [],
     status: 'idle',
     error: null,
@@ -171,12 +169,6 @@ export const roadmapSlice = createSlice({
     resetForm: (state) => {
       state.mapData = []
       state.formData = {}
-    },
-    setClosured: (state, action) => {
-      state.isClosured = action.payload
-    },
-    setCanvas: (state, action) => {
-      state.isCanvas = action.payload
     },
     setEditedId: (state, action) => {
       if (action.payload.just_id) {
@@ -313,8 +305,6 @@ export const {
   setCrossListMapData,
   setIntersection,
   resetForm,
-  setClosured,
-  setCanvas,
   setEditedId,
   setDeletedId,
   resetCrossListMapData,

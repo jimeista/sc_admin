@@ -30,12 +30,12 @@ export const CustomSteps = ({
   const validate = async () => {
     try {
       const data = await form.validateFields()
-      console.log(data)
-      Object.keys(data).map((key) => {
-        if (typeof data[key] === 'object') {
-          data[key] = data[key]['_i']
-        }
-      })
+
+      if (data['end-date'] || data['start-date']) {
+        data['end-date'] = data['end-date']['_i']
+        data['start-date'] = data['start-date']['_i']
+      }
+
       dispatch(formValidate(data))
 
       next()

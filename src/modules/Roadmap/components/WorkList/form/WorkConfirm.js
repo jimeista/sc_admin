@@ -8,7 +8,11 @@ import {
 
 export const WorkConfirm = ({ ob }) => {
   const arr = useMemo(() => {
-    return prepareToShowDetailsObToArr(ob)
+    let new_arr = prepareToShowDetailsObToArr(ob)
+    new_arr = new_arr.filter(
+      (i) => typeof i.value !== 'object' && typeof i.value !== 'boolean'
+    )
+    return new_arr
   }, [ob])
 
   const renderForm = arr.map((i) => (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { Input, Checkbox, Form } from 'antd'
 
@@ -10,20 +10,24 @@ import {
 } from '../../../utils/worklist_form'
 
 export const WorkDescription = (props) => {
-  const {
-    organisations,
-    regions,
-    categories,
-    dispatch,
-    isClosured,
-    isCanvas,
-    setCanvas,
-    setClosured,
-  } = props
-
+  const { organisations, regions, categories, form } = props
+  const [iscanvas, setCanvas] = useState(false)
+  const [isclosured, setClosured] = useState(false)
   //checkbox on datepicker
   const [pickerStart, setPickerStart] = useState()
   const [pickerEnd, setPickerEnd] = useState()
+
+  useEffect(() => {
+    form.getFieldValue('is-canvas-opened') &&
+      setCanvas(form.getFieldValue('is-canvas-opened'))
+    form.getFieldValue('is-closured') &&
+      setClosured(form.getFieldValue('is-closured'))
+
+    return () => {
+      setCanvas(false)
+      setClosured(false)
+    }
+  }, [form])
 
   //checkbox on datepicker
   const handleChangeYearStart = (e) =>
@@ -41,26 +45,21 @@ export const WorkDescription = (props) => {
       {renderTextArea('area', 'Описание участка', true)}
       <Form.Item
         name={'is-closured'}
-        valuePropName='checked'
         noStyle
+        valuePropName={'checked'}
         getValueFromEvent={(e) => e.target.checked}
       >
-        <Checkbox onChange={() => dispatch(setClosured(!isClosured))}>
+        <Checkbox onChange={() => setClosured((state) => !state)}>
           Перекрытие улиц{' '}
         </Checkbox>
       </Form.Item>
-      {renderTextArea('closure-descr', 'Описание перекрытия', isClosured)}
-      <Form.Item
-        name={'is-canvas-opened'}
-        valuePropName='checked'
-        noStyle
-        getValueFromEvent={(e) => e.target.checked}
-      >
-        <Checkbox onChange={() => dispatch(setCanvas(!isCanvas))}>
+      {renderTextArea('closure-descr', 'Описание перекрытия', isclosured)}
+      <Form.Item name={'is-canvas-opened'} noStyle valuePropName={'checked'}>
+        <Checkbox onChange={() => setCanvas((state) => !state)}>
           Вскрытие дорожного полотна{' '}
         </Checkbox>
       </Form.Item>
-      {renderTextArea('canvas-descr', 'Описание вскрытия', isCanvas)}
+      {renderTextArea('canvas-descr', 'Описание вскрытия', iscanvas)}
       {renderDatePicker(
         pickerStart,
         handleChangeYearStart,

@@ -9,7 +9,11 @@ import {
   postRoadMap,
   resetForm,
 } from '../../features/roadmap/roadmapSlice'
-import { validateRoadWorkForm, setCoordinates } from '../../utils/helper'
+import {
+  validateRoadWorkForm,
+  setCoordinates,
+  prepareToShowDetailsObToArr,
+} from '../../utils/helper'
 
 export const WorkListModal = () => {
   const [visible, setVisible] = useState()
@@ -26,13 +30,10 @@ export const WorkListModal = () => {
 
   const postFormData = useCallback(async () => {
     try {
-      let ob = validateRoadWorkForm(
-        formData,
-        categories,
-        organisations,
-        regions
-      )
+      let arr = prepareToShowDetailsObToArr(formData)
+      let ob = validateRoadWorkForm(arr, categories, organisations, regions)
 
+      console.log(arr, formData, ob)
       const coordinates = setCoordinates(mapData)
 
       ob = { data: ob, geometries: coordinates, mapData }

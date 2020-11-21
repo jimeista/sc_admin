@@ -76,23 +76,19 @@ export const renderSelects = (prop) => {
 export const renderTextArea = (name, placeholder, isOpen) => {
   return (
     <Form.Item>
-      <Collapse isOpened={isOpen}>
-        <Form.Item
-          name={name}
-          rules={[
-            {
-              required: isOpen && name !== 'area' && true,
-              message: 'Заполните поле',
-            },
-          ]}
-        >
-          <TextArea
-            style={{ height: 70 }}
-            placeholder={placeholder}
-            allowClear
-          />
-        </Form.Item>
-      </Collapse>
+      <Form.Item
+        name={name}
+        valuePropName={'value'}
+        hidden={name !== 'area' && !isOpen}
+        rules={
+          name !== 'area' && isOpen
+            ? [{ required: true, message: 'Заполните поле' }]
+            : []
+        }
+        getValueFromEvent={(e) => e.target.value}
+      >
+        <TextArea style={{ height: 70 }} placeholder={placeholder} allowClear />
+      </Form.Item>
     </Form.Item>
   )
 }
@@ -107,16 +103,15 @@ export const renderDatePicker = (picker, handleChange, name, text) => {
           getValueFromEvent={(e, string) => moment(string, 'YYYY-MM-DD')}
         >
           <DatePicker
-            allowClear={false}
             placeholder='Выбрать дату'
             format={picker ? 'YYYY' : 'YYYY-MM-DD'}
             picker={picker}
           />
         </Form.Item>
         <Form.Item
-          name={`${name}-checked`}
+          name={`is-${name}`}
           style={{ marginLeft: 10 }}
-          valuePropName='checked'
+          valuePropName={'checked'}
           getValueFromEvent={(e) => e.target.checked}
         >
           <Checkbox onChange={handleChange}>Год</Checkbox>
@@ -130,7 +125,7 @@ export const renderUpload = () => (
   <Form.Item
     name='file-paths'
     valuePropName='fileList'
-    getValueFromEvent={normFile}
+    // getValueFromEvent={normFile}
   >
     <Upload {...upload_props}>
       <Button icon={<UploadOutlined />}>Добавить рисунок / презентацию</Button>

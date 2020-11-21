@@ -10,10 +10,16 @@ export const nameEnToRuWorkListHelper = (name) => {
       return 'Категоря работ'
     case 'end-date':
       return 'Дата окончания'
+    case 'is-end-date':
+      return 'Дата окончания отмечено'
     case 'start-date':
       return 'Дата начала'
+    case 'is-start-date':
+      return 'Дата начало отмечено'
     case 'closure-descr':
       return 'Описание перекрытия'
+    case 'is-closured':
+      return 'Описание перекрытия отмечено'
     case 'organisation':
       return 'Ответсвенный орган'
     case 'file-paths':
@@ -32,6 +38,8 @@ export const nameEnToRuWorkListHelper = (name) => {
       return 'Гарантийный период'
     case 'canvas-descr':
       return 'Описание вскрытия'
+    case 'is-canvas-opened':
+      return 'Описание вскрытия отмечено'
     case 'company-name':
       return 'Наименование компании'
     case 'canceled-comment':
@@ -56,11 +64,16 @@ export const prepareToShowDetailsObToArr = (ob) => {
     if (
       typeof ob[key] !== 'undefined' &&
       typeof ob[key] !== 'object' &&
-      typeof ob[key] !== 'boolean' &&
+      key !== 'is-start-date' &&
+      key !== 'is-end-date' &&
       key !== 'key' &&
       key !== 'id'
     ) {
       arr.push({ name: key, value: ob[key] })
+    } else if (ob[key] === undefined && key.split('-')[0] === 'is') {
+      arr.push({ name: key, value: false })
+    } else if (ob[key] === undefined) {
+      arr.push({ name: key, value: null })
     }
   })
 
@@ -78,41 +91,64 @@ export const validateRoadWorkForm = (
   regions
 ) => {
   let ob = {}
-  Object.keys(data).forEach((key) => {
-    if (data[key]) {
-      if (
-        key !== 'is-hidden' ||
-        key !== 'is-canceled' ||
-        key !== 'commentary'
-      ) {
-        if (key === 'end-date' || key === 'start-date') {
-          data[key].length > 4
-            ? (ob = { ...ob, [key]: data[key] })
-            : (ob = { ...ob, [key]: `${data[key]}-01-01` })
-        } else if (key === 'category') {
-          const id = categories.data.find((o) => o.name === data[key]).id
-          ob = { ...ob, [key]: id }
-        } else if (key === 'organisation') {
-          const id = organisations.data.find((o) => o.name === data[key]).id
-          ob = { ...ob, [key]: id }
-        } else if (key === 'region') {
-          const id = regions.data.find((o) => o.name === data[key]).id
-          ob = { ...ob, [key]: id }
-        } else {
-          ob = { ...ob, [key]: data[key] }
-        }
+  let is_hidden = false
+  let is_canceled = false
+  let commentary = null
+  let percentage
+
+  data.forEach((item) => {
+    if (
+      item.name !== 'is-hidden' ||
+      item.name !== 'is-canceled' ||
+      item.name !== 'commentary' ||
+      item.name !== 'percentage' ||
+      item.name !== 'is-end-date' ||
+      item.name !== 'is-start-date'
+    ) {
+      //save status values
+      if (item.name === 'percentage') {
+        percentage = item.value
       }
-    }
-    if (key === 'percentage') {
-      const obb = {
-        percentage: data[key],
-        'is-hidden': data['is-hidden'],
-        'is-canceled': data['is-canceled'],
-        commentray: data.commentary === undefined ? null : data.commentary,
+      if (item.name === 'is-canceled') {
+        is_canceled = item.value
       }
-      ob = { ...ob, status: obb }
+      if (item.name === 'is-hidden') {
+        is_hidden = item.value
+      }
+      if (item.name === 'commentary') {
+        commentary = item.value
+      }
+
+      if (item.name === 'end-date' || item.name === 'start-date') {
+        item.value.length > 4
+          ? (ob = { ...ob, [item.name]: item.value })
+          : (ob = { ...ob, [item.name]: `${item.value}-01-01` })
+      }
+      //find id for item.names
+      else if (item.name === 'category') {
+        const id = categories.data.find((o) => o.name === item.value).id
+        ob = { ...ob, [item.name]: id }
+      } else if (item.name === 'organisation') {
+        const id = organisations.data.find((o) => o.name === item.value).id
+        ob = { ...ob, [item.name]: id }
+      } else if (item.name === 'region') {
+        const id = regions.data.find((o) => o.name === item.value).id
+        ob = { ...ob, [item.name]: id }
+      } else {
+        ob = { ...ob, [item.name]: item.value }
+      }
     }
   })
+
+  ob = {
+    ...ob,
+    status: {
+      percentage: percentage,
+      'is-hidden': is_hidden,
+      'is-canceled': is_canceled,
+      commentary: commentary,
+    },
+  }
 
   return ob
 }
