@@ -51,9 +51,17 @@ export const postRoadMap = createAsyncThunk(
   'roadmap/postRoadMap',
   async (ob) => {
     const res = await axios.post(BASE_ROADMAP_URL, ob.data)
-    console.log(res)
+    // console.log(res)
     await axios.post(`/sc-roadworks/api/roadworks/${res.data}/geometries`, {
       geometries: ob.geometries,
+    })
+
+    const coordinates = ob.mapData.map((i) => {
+      if (i.type === 'polyline') {
+        return i.coordinates
+      } else {
+        return i.coordinates[0]
+      }
     })
 
     return {
@@ -61,7 +69,7 @@ export const postRoadMap = createAsyncThunk(
       id: res.data,
       geometries: {
         type: 'polygon',
-        coordinates: ob.mapData.map((i) => i.coordinates),
+        coordinates,
       },
     }
   }

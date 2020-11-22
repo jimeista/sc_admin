@@ -9,7 +9,7 @@ import {
   Form,
   Select,
 } from 'antd'
-import { Collapse } from 'react-collapse'
+// import { Collapse } from 'react-collapse'
 
 import { UploadOutlined } from '@ant-design/icons'
 import moment from 'moment'
@@ -94,19 +94,28 @@ export const renderTextArea = (name, placeholder, isOpen) => {
 }
 
 export const renderDatePicker = (picker, handleChange, name, text) => {
+  const picker_ = picker ? (
+    <DatePicker
+      placeholder='Выбрать год'
+      allowClear={false}
+      picker={'year'}
+      format={'YYYY'}
+    />
+  ) : (
+    <DatePicker placeholder='Выбрать дату' allowClear={false} />
+  )
+
   return (
     <Form.Item label={text}>
       <Input.Group compact>
         <Form.Item
           name={name}
           rules={[{ required: true, message: 'Заполните поле' }]}
-          getValueFromEvent={(e, string) => moment(string, 'YYYY-MM-DD')}
+          getValueFromEvent={(e, string) => {
+            return moment(string, 'YYYY-MM-DD')
+          }}
         >
-          <DatePicker
-            placeholder='Выбрать дату'
-            format={picker ? 'YYYY' : 'YYYY-MM-DD'}
-            picker={picker}
-          />
+          {picker_}
         </Form.Item>
         <Form.Item
           name={`is-${name}`}

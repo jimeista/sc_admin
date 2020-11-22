@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { Input, Checkbox, Form } from 'antd'
+import { Input, Checkbox, Form, DatePicker } from 'antd'
 
 import {
   renderDatePicker,
@@ -13,15 +13,21 @@ export const WorkDescription = (props) => {
   const { organisations, regions, categories, form } = props
   const [iscanvas, setCanvas] = useState(false)
   const [isclosured, setClosured] = useState(false)
+
+  // const [type, setType] = useState('date')
   //checkbox on datepicker
-  const [pickerStart, setPickerStart] = useState()
-  const [pickerEnd, setPickerEnd] = useState()
+  const [pickerStart, setPickerStart] = useState(false)
+  const [pickerEnd, setPickerEnd] = useState(false)
 
   useEffect(() => {
     form.getFieldValue('is-canvas-opened') &&
       setCanvas(form.getFieldValue('is-canvas-opened'))
     form.getFieldValue('is-closured') &&
       setClosured(form.getFieldValue('is-closured'))
+    form.getFieldValue('is-start-date') &&
+      setPickerStart(form.getFieldValue('is-start-date') ? true : false)
+    form.getFieldValue('is-end-date') &&
+      setPickerEnd(form.getFieldValue('is-end-date' ? true : false))
 
     return () => {
       setCanvas(false)
@@ -31,13 +37,15 @@ export const WorkDescription = (props) => {
 
   //checkbox on datepicker
   const handleChangeYearStart = (e) =>
-    e.target.checked ? setPickerStart('year') : setPickerStart()
+    setPickerStart(e.target.checked ? true : false)
 
   const handleChangeYearEnd = (e) =>
-    e.target.checked ? setPickerEnd('year') : setPickerEnd()
+    setPickerEnd(e.target.checked ? true : false)
 
   return (
     <>
+      {/* <Checkbox onChange={(e) => setType(e.target.checked ? 'year' : 'date')} />
+      {<PickerWithType type={type} />} */}
       {renderSelects({ regions, organisations, categories })}
       <Form.Item name='address'>
         <Input placeholder='Адрес/Улица' />
@@ -75,4 +83,8 @@ export const WorkDescription = (props) => {
       {renderUpload()}
     </>
   )
+}
+function PickerWithType({ type }) {
+  if (type === 'date') return <DatePicker />
+  return <DatePicker picker={type} />
 }

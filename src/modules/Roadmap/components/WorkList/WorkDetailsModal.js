@@ -33,7 +33,7 @@ export const WorkDetailsModal = (props) => {
 
   useEffect(() => {
     let coordinates = record.geometries.coordinates
-    console.log(coordinates, record)
+    // console.log(coordinates, record)
     dispatch(setMapData([{ coordinates, type: 'polygon' }]))
     return () => {
       dispatch(resetMapData())

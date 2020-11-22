@@ -33,12 +33,13 @@ export const WorkListModal = () => {
       let arr = prepareToShowDetailsObToArr(formData)
       let ob = validateRoadWorkForm(arr, categories, organisations, regions)
 
-      console.log(arr, formData, ob)
+      // console.log(arr, formData, ob)
+      // console.log(mapData)
       const coordinates = setCoordinates(mapData)
 
       ob = { data: ob, geometries: coordinates, mapData }
 
-      console.log(ob)
+      // console.log(ob)
 
       dispatch(postRoadMap(ob))
       dispatch(setCurrent(0))
