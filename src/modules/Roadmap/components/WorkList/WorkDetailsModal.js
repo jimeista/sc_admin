@@ -5,12 +5,10 @@ import moment from 'moment'
 
 import { StepsWrapper as Steps } from './form/StepsWrapper'
 import {
-  // setMapData,
+  resetFormData,
   resetMapData,
   setCurrent,
   putRoadMap,
-  resetForm,
-  // formValidate,
 } from '../../features/roadmap/roadmapSlice'
 import {
   validateRoadWorkForm,
@@ -18,7 +16,7 @@ import {
   prepareToShowDetailsObToArr,
 } from '../../utils/helper'
 
-// const format = 'YYYY/MM/DD'
+const format = 'YYYY/MM/DD'
 
 export const WorkDetailsModal = (props) => {
   const { visible, setVisible, record } = props
@@ -37,13 +35,14 @@ export const WorkDetailsModal = (props) => {
 
   form.setFieldsValue({
     ...formData,
-    'start-date': moment(formData['start-date'], 'YYYY/MM/DD'),
-    'end-date': moment(formData['end-date'], 'YYYY/MM/DD'),
+    'start-date': moment(formData['start-date'], format),
+    'end-date': moment(formData['end-date'], format),
   })
 
   useEffect(() => {
     return () => {
       dispatch(resetMapData())
+      dispatch(resetFormData({}))
       form.setFieldsValue({})
     }
   }, [form, record])
@@ -58,7 +57,6 @@ export const WorkDetailsModal = (props) => {
       ob = { data: ob, geometries: coordinates }
 
       dispatch(setCurrent(0))
-      dispatch(resetForm())
       dispatch(putRoadMap({ reedit: true, data: ob, id: record.id, mapData }))
       form.resetFields()
 

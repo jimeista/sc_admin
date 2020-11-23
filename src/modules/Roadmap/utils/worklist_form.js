@@ -80,11 +80,6 @@ export const renderTextArea = (name, placeholder, isOpen) => {
         name={name}
         valuePropName={'value'}
         hidden={name !== 'area' && !isOpen}
-        rules={
-          name !== 'area' && isOpen
-            ? [{ required: true, message: 'Заполните поле' }]
-            : []
-        }
         getValueFromEvent={(e) => e.target.value}
       >
         <TextArea style={{ height: 70 }} placeholder={placeholder} allowClear />

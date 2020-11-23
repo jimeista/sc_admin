@@ -33,6 +33,13 @@ export const CrossDetailsModal = (props) => {
       })
     })
 
+    //draw work coordinates
+    // const list = arr.map(i => ({type: 'polygon', coordinates: i.geometries.coordinates}))
+    // list = [...list, {
+    //   type: 'placemark',
+    //   coordinates: record.coordinates,
+    // }]
+
     setArray(arr)
     dispatch(setCurrent(1))
     dispatch(
@@ -64,14 +71,18 @@ export const CrossDetailsModal = (props) => {
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          // justifyContent: 'space-between',
           flexWrap: 'wrap',
           width: '90%',
           margin: 'auto',
         }}
       >
         {array.map((i, index) => (
-          <div>
+          <div
+            style={{
+              width: `${array.length > 2 ? '33%' : '50%'}`,
+            }}
+          >
             <h2>Работа {index + 1}</h2>
             <FormDetails ob={i} />
           </div>

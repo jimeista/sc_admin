@@ -7,7 +7,7 @@ import { StepsWrapper as Steps } from './form/StepsWrapper'
 import {
   setCurrent,
   postRoadMap,
-  resetForm,
+  resetMapData,
 } from '../../features/roadmap/roadmapSlice'
 import {
   validateRoadWorkForm,
@@ -33,17 +33,14 @@ export const WorkListModal = () => {
       let arr = prepareToShowDetailsObToArr(formData)
       let ob = validateRoadWorkForm(arr, categories, organisations, regions)
 
-      // console.log(arr, formData, ob)
-      // console.log(mapData)
       const coordinates = setCoordinates(mapData)
 
       ob = { data: ob, geometries: coordinates, mapData }
-
       // console.log(ob)
 
       dispatch(postRoadMap(ob))
       dispatch(setCurrent(0))
-      dispatch(resetForm())
+      dispatch(resetMapData())
 
       status === 'success' && setVisible(false)
     } catch (err) {
@@ -74,7 +71,7 @@ export const WorkListModal = () => {
           onCancel={() => {
             dispatch(setCurrent(0))
             setVisible(false)
-            dispatch(resetForm())
+            dispatch(resetMapData())
             form.resetFields()
           }}
           width={'80%'}

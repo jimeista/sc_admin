@@ -16,7 +16,7 @@ export const nameEnToRuWorkListHelper = (name) => {
       return 'Дата начала'
     case 'is-start-date':
       return 'Дата начало отмечено'
-    case 'closure-descr':
+    case 'closure-description':
       return 'Описание перекрытия'
     case 'is-closured':
       return 'Описание перекрытия отмечено'
@@ -36,7 +36,7 @@ export const nameEnToRuWorkListHelper = (name) => {
       return 'Контакты'
     case 'warranty-period':
       return 'Гарантийный период'
-    case 'canvas-descr':
+    case 'canvas-description':
       return 'Описание вскрытия'
     case 'is-canvas-opened':
       return 'Описание вскрытия отмечено'

@@ -62,7 +62,7 @@ export const WorkListTable = () => {
   }, [dataSource, deletedId, editedId, filtered])
 
   useMemo(() => {
-    if (Object.keys(record).length > 0) {
+    if (Object.keys(record).length > 0 && visible) {
       let ob = {
         ...record,
         'start-date': moment(record['start-date'], 'YYYY/MM/DD'),
@@ -74,7 +74,7 @@ export const WorkListTable = () => {
       coordinates.length > 0 &&
         dispatch(setMapData([{ coordinates, type: 'polygon' }]))
     }
-  }, [record])
+  }, [record, visible, dispatch])
 
   useMemo(() => {
     // console.log('editing dataSource')

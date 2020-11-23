@@ -61,13 +61,13 @@ export const WorkDescription = (props) => {
           Перекрытие улиц{' '}
         </Checkbox>
       </Form.Item>
-      {renderTextArea('closure-descr', 'Описание перекрытия', isclosured)}
+      {renderTextArea('closure-description', 'Описание перекрытия', isclosured)}
       <Form.Item name={'is-canvas-opened'} noStyle valuePropName={'checked'}>
         <Checkbox onChange={() => setCanvas((state) => !state)}>
           Вскрытие дорожного полотна{' '}
         </Checkbox>
       </Form.Item>
-      {renderTextArea('canvas-descr', 'Описание вскрытия', iscanvas)}
+      {renderTextArea('canvas-description', 'Описание вскрытия', iscanvas)}
       {renderDatePicker(
         pickerStart,
         handleChangeYearStart,
