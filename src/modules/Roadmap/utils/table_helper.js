@@ -82,11 +82,6 @@ export const setWorkListTableColumnsHelper = (
     key: 'id',
     width: '2%',
     align: 'center',
-  },
-  {
-    title: 'Улица',
-    dataIndex: 'address',
-    key: 'address',
     render: (text, record) => (
       <a
         onClick={() => {
@@ -97,6 +92,12 @@ export const setWorkListTableColumnsHelper = (
         {text}
       </a>
     ),
+  },
+  {
+    title: 'Улица',
+    dataIndex: 'address',
+    key: 'address',
+    render: (text, record) => <>{text}</>,
   },
   {
     title: 'Участок',
@@ -182,12 +183,6 @@ export const setCrossListTableColumnsHelper = (
       key: '№',
       width: '2%',
       align: 'center',
-    },
-    {
-      title: 'Улица',
-      dataIndex: 'address',
-      key: 'address',
-      width: '20%',
       render: (text, record) => {
         return (
           <a
@@ -200,6 +195,12 @@ export const setCrossListTableColumnsHelper = (
           </a>
         )
       },
+    },
+    {
+      title: 'Улица',
+      dataIndex: 'address',
+      key: 'address',
+      width: '20%',
     },
     {
       title: 'Категория работ',
