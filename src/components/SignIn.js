@@ -20,7 +20,7 @@ export const SignIn = (props) => {
           <Redirect
             exact
             // to={props.history.location.state.pathname}
-            to={'/Роли'}
+            to={'/Карта ремонтных работ'}
             from='/авторизация'
           />
         )}

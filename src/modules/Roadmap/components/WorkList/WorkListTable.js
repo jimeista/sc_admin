@@ -2,6 +2,8 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Form, Input } from 'antd'
 
+import moment from 'moment'
+
 import { WorkDetailsModal } from './WorkDetailsModal'
 import { CustomTable as Table } from '../../../../common/Table'
 import {
@@ -13,7 +15,9 @@ import {
   putRoadMap,
   setEditedId,
   setDeletedId,
-  resetData,
+  formValidate,
+  setMapData,
+  resetMapData,
 } from '../../features/roadmap/roadmapSlice'
 
 export const WorkListTable = () => {
@@ -56,6 +60,21 @@ export const WorkListTable = () => {
       }
     }
   }, [dataSource, deletedId, editedId, filtered])
+
+  useMemo(() => {
+    if (Object.keys(record).length > 0) {
+      let ob = {
+        ...record,
+        'start-date': moment(record['start-date'], 'YYYY/MM/DD'),
+        'end-date': moment(record['end-date'], 'YYYY/MM/DD'),
+      }
+      // console.log(ob)
+      dispatch(formValidate(ob))
+      let coordinates = record.geometries.coordinates
+      coordinates.length > 0 &&
+        dispatch(setMapData([{ coordinates, type: 'polygon' }]))
+    }
+  }, [record])
 
   useMemo(() => {
     // console.log('editing dataSource')

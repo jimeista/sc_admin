@@ -3,18 +3,22 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Modal, Form } from 'antd'
 import moment from 'moment'
 
-// import { WorkConfirm } from './form/WorkConfirm'
 import { StepsWrapper as Steps } from './form/StepsWrapper'
 import {
-  setMapData,
+  // setMapData,
   resetMapData,
   setCurrent,
   putRoadMap,
   resetForm,
+  // formValidate,
 } from '../../features/roadmap/roadmapSlice'
-import { validateRoadWorkForm, setCoordinates } from '../../utils/helper'
+import {
+  validateRoadWorkForm,
+  setCoordinates,
+  prepareToShowDetailsObToArr,
+} from '../../utils/helper'
 
-const format = 'YYYY/MM/DD'
+// const format = 'YYYY/MM/DD'
 
 export const WorkDetailsModal = (props) => {
   const { visible, setVisible, record } = props
@@ -31,44 +35,31 @@ export const WorkDetailsModal = (props) => {
 
   const dispatch = useDispatch()
 
+  form.setFieldsValue({
+    ...formData,
+    'start-date': moment(formData['start-date'], 'YYYY/MM/DD'),
+    'end-date': moment(formData['end-date'], 'YYYY/MM/DD'),
+  })
+
   useEffect(() => {
-    let coordinates = record.geometries.coordinates
-    // console.log(coordinates, record)
-    dispatch(setMapData([{ coordinates, type: 'polygon' }]))
     return () => {
       dispatch(resetMapData())
       form.setFieldsValue({})
     }
   }, [form, record])
 
-  let ob = {}
-  Object.keys(record).forEach((key) => {
-    ob = { ...ob, [key]: record[key] === undefined ? undefined : record[key] }
-  })
-  form.setFieldsValue({
-    ...ob,
-    'start-date': moment(ob['start-date'], format),
-    'end-date': moment(ob['end-date'], format),
-  })
-
   const putFormData = useCallback(async () => {
     try {
-      let ob = validateRoadWorkForm(
-        formData,
-        categories,
-        organisations,
-        regions
-      )
-
+      let arr = prepareToShowDetailsObToArr(formData)
+      let ob = validateRoadWorkForm(arr, categories, organisations, regions)
       const coordinates = setCoordinates(mapData)
 
-      ob = { data: ob, geometries: coordinates, mapData }
-
-      console.log(ob)
+      console.log(coordinates)
+      ob = { data: ob, geometries: coordinates }
 
       dispatch(setCurrent(0))
       dispatch(resetForm())
-      dispatch(putRoadMap({ reedit: true, data: ob, id: record.id }))
+      dispatch(putRoadMap({ reedit: true, data: ob, id: record.id, mapData }))
       form.resetFields()
 
       status === 'success' && setVisible(false)
@@ -96,8 +87,6 @@ export const WorkDetailsModal = (props) => {
       onOk={() => setVisible(false)}
       footer={[]}
     >
-      {/* <WorkConfirm ob={record} /> */}
-
       <div
         style={{
           display: 'flex',

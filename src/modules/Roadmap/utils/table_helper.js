@@ -18,7 +18,13 @@ export const setWorkListDataSourceHelper = (arr) => {
     let keys = { key: i.id }
     Object.keys(i).forEach((key) => {
       if (key === 'status') {
-        keys = { ...keys, percentage: i[key].percentage }
+        keys = {
+          ...keys,
+          percentage: i[key].percentage,
+          'is-hidden': i[key]['is-hidden'],
+          'is-canceled': i[key]['is-canceled'],
+          commentary: i[key]['commentary'],
+        }
       } else {
         keys = { ...keys, [key]: i[key] }
       }

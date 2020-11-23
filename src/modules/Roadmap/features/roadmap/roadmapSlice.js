@@ -90,17 +90,42 @@ export const postIntersections = createAsyncThunk(
 export const putRoadMap = createAsyncThunk(
   'roadmap/putRoadMap',
   async (post) => {
-    let ob = post.reedit
-      ? { ...post.data.data, 'status-form': post.data.data.status }
-      : {
-          'status-form': post.data,
+    if (post.reedit) {
+      await axios.put(`${BASE_ROADMAP_URL}/${post.id}`, {
+        ...post.data.data,
+        'status-form': post.data.data.status,
+      })
+
+      //delete geometries and post new coordinates
+      await axios.delete(`/sc-roadworks/api/roadworks/${post.id}/geometries`)
+      await axios.post(`/sc-roadworks/api/roadworks/${post.id}/geometries`, {
+        geometries: post.data.geometries,
+      })
+
+      const coordinates = post.mapData.map((i) => {
+        if (i.type === 'polyline') {
+          return i.coordinates
+        } else {
+          return i.coordinates[0]
         }
+      })
 
-    await axios.put(`${BASE_ROADMAP_URL}/${post.id}`, ob)
+      return {
+        reedit: post.reedit,
+        data: post.data.data,
+        id: post.id,
+        geometries: {
+          type: 'polygon',
+          coordinates,
+        },
+      }
+    } else {
+      await axios.put(`${BASE_ROADMAP_URL}/${post.id}`, {
+        'status-form': post.data,
+      })
 
-    console.log(ob)
-
-    return post
+      return post
+    }
   }
 )
 
@@ -281,18 +306,35 @@ export const roadmapSlice = createSlice({
     },
     [putRoadMap.fulfilled]: (state, action) => {
       state.status = 'success'
-      let data = state.data.find((i) => i.id === action.payload.id)
+      // let data = state.data.find((i) => i.id === action.payload.id)
+      let index = state.data.findIndex((i) => i.id === action.payload.id)
       state.editedId = action.payload.id
+
+      //ids to names
       if (action.payload.reedit) {
-        console.log('editing full data', data)
-        data = { ...data, ...action.payload.data }
-        data.geometries = {
-          ...data.geometries,
-          coordinates: action.payload.data.geometries.coordinates,
+        console.log(action.payload, action.payload.data)
+        const category = state.categories.data.find(
+          (i) => i.id === action.payload.data.category
+        ).name
+        const region = state.regions.data.find(
+          (i) => i.id === action.payload.data.region
+        ).name
+        const organisation = state.organisations.data.find(
+          (i) => i.id === action.payload.data.organisation
+        ).name
+        state.data[index] = {
+          ...action.payload.data,
+          category,
+          region,
+          organisation,
+          id: action.payload.id,
         }
-        console.log('after edit', data)
+        state.data[index].geometries = action.payload.geometries
       } else {
-        data.status = { ...data.status, ...action.payload.data.data }
+        state.data[index].status = {
+          ...state.data[index].status,
+          ...action.payload.data,
+        }
       }
     },
     [deleteRoadMap.pending]: (state) => {
