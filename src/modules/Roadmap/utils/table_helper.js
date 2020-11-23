@@ -124,6 +124,8 @@ export const setWorkListTableColumnsHelper = (
     key: 'start-date',
     width: '10%',
     align: 'center',
+    filters: date_filters,
+    onFilter: (value, record) => record['start-date'].indexOf(value) === 0,
   },
   {
     title: 'Дата окончания',
@@ -131,6 +133,8 @@ export const setWorkListTableColumnsHelper = (
     key: 'end-date',
     width: '10%',
     align: 'center',
+    filters: date_filters,
+    onFilter: (value, record) => record['end-date'].indexOf(value) === 0,
   },
   {
     title: 'Статус (%)',
@@ -214,3 +218,11 @@ export const setCrossListTableColumnsHelper = (
 
   return [...cols, ...arr]
 }
+
+//hardcoded date filters on year
+const date_filters = ['2018', '2019', '2020', '2021', '2022']
+  .map((value) => ({
+    value,
+    text: value,
+  }))
+  .reverse()
