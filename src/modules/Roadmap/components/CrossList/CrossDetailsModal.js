@@ -34,20 +34,21 @@ export const CrossDetailsModal = (props) => {
     })
 
     //draw work coordinates
-    // const list = arr.map(i => ({type: 'polygon', coordinates: i.geometries.coordinates}))
-    // list = [...list, {
-    //   type: 'placemark',
-    //   coordinates: record.coordinates,
-    // }]
+    let list = arr.map((i) => ({
+      type: 'polygon',
+      coordinates: i.geometries.coordinates,
+    }))
+    list = [
+      ...list,
+      {
+        type: 'placemark',
+        coordinates: record.coordinates,
+      },
+    ]
 
     setArray(arr)
     dispatch(setCurrent(1))
-    dispatch(
-      setCrossListMapData({
-        type: 'placemark',
-        coordinates: record.coordinates,
-      })
-    )
+    dispatch(setCrossListMapData(list))
 
     return () => {
       dispatch(setCurrent(0))

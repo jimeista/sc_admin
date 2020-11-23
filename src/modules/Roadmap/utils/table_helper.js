@@ -226,3 +226,33 @@ const date_filters = ['2018', '2019', '2020', '2021', '2022']
     text: value,
   }))
   .reverse()
+
+// //hardcoded date filters on year v2.0
+// const year = [2018, 2019, 2020, 2021, 2022]
+// const month = [
+//   'Январь',
+//   'Февраль',
+//   'Март',
+//   'Апрель',
+//   'Май',
+//   'Июнь',
+//   'Июль',
+//   'Август',
+//   'Сентябрь',
+//   'Октябрь',
+//   'Ноябрь',
+//   'Декабрь',
+// ]
+
+// const date_filters = [
+//   {
+//     value: 'year',
+//     text: 'year',
+//     children: year.map((value) => ({ value, text: value })),
+//   },
+//   {
+//     value: 'month',
+//     text: 'month',
+//     children: month.map((value) => ({ value, text: value })),
+//   },
+// ]

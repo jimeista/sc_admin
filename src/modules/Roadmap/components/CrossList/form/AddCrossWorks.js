@@ -17,10 +17,12 @@ export const AddCrossWorks = () => {
 
     const onChangeWorkId = (id) =>
       dispatch(
-        setCrossListMapData({
-          type: 'polygon',
-          coordinates: data.find((i) => i.id === id).geometries.coordinates,
-        })
+        setCrossListMapData([
+          {
+            type: 'polygon',
+            coordinates: data.find((i) => i.id === id).geometries.coordinates,
+          },
+        ])
       )
 
     const onChangeCategory = (value) =>

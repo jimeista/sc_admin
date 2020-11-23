@@ -183,7 +183,7 @@ export const roadmapSlice = createSlice({
       state.mapData = [...state.mapData, ...action.payload]
     },
     setCrossListMapData: (state, action) => {
-      state.crossListMapData = [...state.crossListMapData, action.payload]
+      state.crossListMapData = [...state.crossListMapData, ...action.payload]
     },
     resetMapData: (state) => {
       state.mapData = []
