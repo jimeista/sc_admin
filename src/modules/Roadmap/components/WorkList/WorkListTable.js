@@ -99,11 +99,13 @@ export const WorkListTable = () => {
 
   const onSearch = (e) => {
     setFiltered(
-      dataSource.filter(
-        (i) =>
-          i.address &&
-          i.address.toLowerCase().includes(e.target.value.toLowerCase())
-      )
+      dataSource.filter((i) => {
+        if (i.address) {
+          return i.address.toLowerCase().includes(e.target.value.toLowerCase())
+        }
+
+        return i.id.toString().includes(e.target.value.toLowerCase())
+      })
     )
   }
 
