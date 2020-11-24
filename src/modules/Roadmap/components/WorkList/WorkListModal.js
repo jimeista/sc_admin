@@ -16,8 +16,9 @@ import {
 } from '../../utils/helper'
 
 export const WorkListModal = () => {
-  const [visible, setVisible] = useState()
+  const [visible, setVisible] = useState(false)
   const dispatch = useDispatch()
+
   const {
     organisations,
     regions,

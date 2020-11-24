@@ -202,19 +202,11 @@ export const roadmapSlice = createSlice({
       state.intersections.data = []
       state.intersections.status = 'idle'
     },
-    setEditedId: (state, action) => {
-      if (action.payload.just_id) {
-        state.editedId = null
-      } else {
-        state.editedIntersectionId = null
-      }
+    setEditedId: (state) => {
+      state.editedId = null
     },
-    setDeletedId: (state, action) => {
-      if (action.payload.just_id) {
-        state.deletedId = null
-      } else {
-        state.deletedIntersectionId = null
-      }
+    setDeletedId: (state) => {
+      state.deletedId = null
     },
   },
   extraReducers: {

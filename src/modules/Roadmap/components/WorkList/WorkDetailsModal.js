@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Modal, Form } from 'antd'
-import moment from 'moment'
 
 import { StepsWrapper as Steps } from './form/StepsWrapper'
 import {
@@ -9,14 +8,13 @@ import {
   resetMapData,
   setCurrent,
   putRoadMap,
+  setMapData,
 } from '../../features/roadmap/roadmapSlice'
 import {
   validateRoadWorkForm,
   setCoordinates,
   prepareToShowDetailsObToArr,
 } from '../../utils/helper'
-
-const format = 'YYYY/MM/DD'
 
 export const WorkDetailsModal = (props) => {
   const { visible, setVisible, record } = props
@@ -33,13 +31,21 @@ export const WorkDetailsModal = (props) => {
 
   const dispatch = useDispatch()
 
-  form.setFieldsValue({
-    ...formData,
-    'start-date': moment(formData['start-date'], format),
-    'end-date': moment(formData['end-date'], format),
-  })
-
   useEffect(() => {
+    let coordinates = record.geometries.coordinates
+
+    if (coordinates.length > 0) {
+      let arr = coordinates.map((i) => {
+        if (i[0][0] == i[i.length - 1][0]) {
+          return { type: 'polygon', coordinates: [i] }
+        }
+
+        return { type: 'polyline', coordinates: i }
+      })
+
+      dispatch(setMapData(arr))
+    }
+
     return () => {
       dispatch(resetMapData())
       dispatch(resetFormData({}))
@@ -48,6 +54,9 @@ export const WorkDetailsModal = (props) => {
   }, [])
 
   // console.log('loaded')
+  const onCloseModal = () => {
+    setVisible(false)
+  }
 
   const putFormData = useCallback(async () => {
     try {
@@ -83,8 +92,8 @@ export const WorkDetailsModal = (props) => {
       title='Детали улицы'
       visible={visible}
       width={'50%'}
-      onCancel={() => setVisible(false)}
-      onOk={() => setVisible(false)}
+      onCancel={onCloseModal}
+      onOk={onCloseModal}
       footer={[]}
     >
       <div
@@ -93,7 +102,7 @@ export const WorkDetailsModal = (props) => {
           justifyContent: 'space-between',
         }}
       >
-        <Steps form={form} callback={putFormData} />
+        <Steps form={form} callback={putFormData} record={record} />
       </div>
     </Modal>
   )

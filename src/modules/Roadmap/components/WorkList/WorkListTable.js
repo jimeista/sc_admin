@@ -2,8 +2,6 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Form, Input } from 'antd'
 
-import moment from 'moment'
-
 import { WorkDetailsModal } from './WorkDetailsModal'
 import { CustomTable as Table } from '../../../../common/Table'
 import {
@@ -15,9 +13,6 @@ import {
   putRoadMap,
   setEditedId,
   setDeletedId,
-  formValidate,
-  setMapData,
-  resetMapData,
 } from '../../features/roadmap/roadmapSlice'
 
 export const WorkListTable = () => {
@@ -30,6 +25,7 @@ export const WorkListTable = () => {
     deletedId,
   } = useSelector((state) => state.roadmap)
   const dispatch = useDispatch()
+
   const [visible, setVisible] = useState(false)
   const [record, setRecord] = useState({})
   const [dataSource, setDataSource] = useState([])
@@ -38,6 +34,9 @@ export const WorkListTable = () => {
   const [form] = Form.useForm()
 
   const columns = useMemo(() => {
+    //TASK: set table columns labeling and operations
+    //LOGIC:pass filters' options and track popup visible state user click on id
+    //set row records on click
     return setWorkListTableColumnsHelper(
       organisations,
       categories,
@@ -47,51 +46,31 @@ export const WorkListTable = () => {
   }, [organisations, categories, setVisible, setRecord])
 
   useEffect(() => {
+    //TASK:show changes made on filtered table's row after put || delete requests
+    //LOGIC:check if user still remains on filtered data
+    //if so, update filtered state data and set id null on redux store for further checkups
     if (filtered) {
       if (editedId) {
         let item = dataSource.find((i) => i.id === editedId)
-        // console.log('editing filtered data')
         setFiltered((state) => state.map((i) => (i.id === editedId ? item : i)))
-        dispatch(setEditedId({ just_id: true }))
+        dispatch(setEditedId())
       }
       if (deletedId) {
         setFiltered((state) => state.filter((i) => i.id !== deletedId))
-        dispatch(setDeletedId({ just_id: true }))
+        dispatch(setDeletedId())
       }
     }
   }, [dataSource, deletedId, editedId, filtered])
 
   useMemo(() => {
-    if (Object.keys(record).length > 0 && visible) {
-      let ob = {
-        ...record,
-        'start-date': moment(record['start-date'], 'YYYY/MM/DD'),
-        'end-date': moment(record['end-date'], 'YYYY/MM/DD'),
-      }
-      // console.log(ob)
-      dispatch(formValidate(ob))
-      let coordinates = record.geometries.coordinates
-
-      if (coordinates.length > 0) {
-        let arr = coordinates.map((i) => {
-          if (i[0][0] == i[i.length - 1][0]) {
-            return { type: 'polygon', coordinates: [i] }
-          }
-
-          return { type: 'polyline', coordinates: i }
-        })
-
-        dispatch(setMapData(arr))
-      }
-    }
-  }, [record, visible])
-
-  useMemo(() => {
-    // console.log('editing dataSource')
+    // TASK: set table data
+    //LOGIC: pass data to adjust data to ant table's dataSource format
     setDataSource(setWorkListDataSourceHelper(data))
   }, [data])
 
   const onEdit = (record) => {
+    //TASK: edit record
+    //LOGIC: request edit on redux side
     dispatch(
       putRoadMap({
         reedit: false,
@@ -104,6 +83,8 @@ export const WorkListTable = () => {
   }
 
   const onDelete = (record) => {
+    //TASK: delete record
+    //LOGIC: request delete on redux side
     dispatch(deleteRoadMap(record.id))
   }
 

@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+
+import moment from 'moment'
 
 import {
   setCurrent,
@@ -14,7 +16,9 @@ import {
 } from './index'
 import { CustomSteps as Steps } from '../../../common'
 
-export const StepsWrapper = ({ form, callback }) => {
+const format = 'YYYY/MM/DD'
+
+export const StepsWrapper = ({ form, callback, record }) => {
   const { current, organisations, regions, categories, formData } = useSelector(
     (state) => state.roadmap
   )
@@ -29,6 +33,15 @@ export const StepsWrapper = ({ form, callback }) => {
     form,
     dispatch
   )
+
+  useEffect(() => {
+    form.setFieldsValue({
+      ...record,
+      'start-date': moment(record['start-date'], format),
+      'end-date': moment(record['end-date'], format),
+    })
+  }, [])
+
   return (
     <Steps
       steps={steps}
