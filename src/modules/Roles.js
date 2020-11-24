@@ -15,12 +15,15 @@ import {
 import { setRoleColumns, setRoleDataSource } from '../utils/table'
 import { CustomTable as Table } from '../common/Table'
 
+//main roles module
 const Roles = () => {
   const dispatch = useDispatch()
   const { modules, roles, role_modules } = useSelector((state) => state.admin)
+
   const [data, setData] = useState([])
 
   useEffect(() => {
+    //TASK:request all available roles and modules for form options
     dispatch(getRoles())
     dispatch(getModules())
 
@@ -31,17 +34,21 @@ const Roles = () => {
   }, [dispatch])
 
   useEffect(() => {
+    //TASK: request all available role's modules
     roles.status === 'success' && dispatch(getRoleModules(roles.data))
 
     return () => dispatch(resetRoleModules())
   }, [roles, dispatch])
 
   useEffect(() => {
+    //TASK: if role's modules are ready show them on table
+    //LOGIC: set table datasource state
     role_modules.status === 'success' &&
       setData(setRoleDataSource(role_modules.data))
   }, [role_modules])
 
   let options = useMemo(() => {
+    //TASK: if modules are rdy, prepare options to display on select form item
     return modules.data.map((i) => ({ value: i.name, id: i.id }))
   }, [modules])
 
@@ -50,7 +57,7 @@ const Roles = () => {
       {<RoleControllers options={options} dispatch={dispatch} />}
       {
         <Table
-          columns={setRoleColumns(options)}
+          columns={setRoleColumns(options)} //options as props to show available options on row edit
           data={data}
           setData={setData}
           loading={role_modules.status === 'success' ? false : true}
@@ -65,25 +72,10 @@ export default withRouter(Roles)
 const RoleControllers = ({ options, dispatch }) => {
   const [form] = Form.useForm()
 
-  const handleAdd = async () => {
+  //TASK: add new role's modules on put request (redux side)
+  const onAdd = async () => {
     try {
-      //putApi
-      // const row = await form.validateFields()
-      // setDataSource((data) => [
-      //   ...data,
-      //   {
-      //     key: `${row.role}-${data.length + 1}`,
-      //     Роль: row.role,
-      //     Модуль: row.modules,
-      //   },
-      // ])
-
       let row = await form.validateFields()
-      // row = {
-      //   ...row,
-      //   'permitted-modules': getModuleIds(row['permitted-modules'], options),
-      // }
-
       dispatch(postRoleModules({ row, arr: options }))
 
       form.resetFields()
@@ -100,7 +92,7 @@ const RoleControllers = ({ options, dispatch }) => {
     <Form
       form={form}
       className=' Roles_create'
-      onFinish={handleAdd}
+      onFinish={onAdd}
       onFinishFailed={onFinishFailed}
     >
       <Form.Item

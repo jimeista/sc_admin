@@ -35,11 +35,12 @@ export const StepsWrapper = ({ form, callback, record }) => {
   )
 
   useEffect(() => {
-    form.setFieldsValue({
-      ...record,
-      'start-date': moment(record['start-date'], format),
-      'end-date': moment(record['end-date'], format),
-    })
+    record &&
+      form.setFieldsValue({
+        ...record,
+        'start-date': moment(record['start-date'], format),
+        'end-date': moment(record['end-date'], format),
+      })
   }, [])
 
   return (

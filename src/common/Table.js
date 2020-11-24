@@ -103,14 +103,13 @@ export const CustomTable = (props) => {
   }
 
   const onDelete = async (record) => {
-    // try {
-    //   let newData = [...props.data]
-    //   props.setData(newData.filter((item) => item.key !== record.key))
-    //   props.handleDelete(record)
-    // } catch (errInfo) {
-    //   console.log('Validate Failed:', errInfo)
-    // }
-    props.handleDelete(record)
+    try {
+      let newData = [...props.data]
+      props.setData(newData.filter((item) => item.key !== record.key))
+      props.handleDelete(record)
+    } catch (errInfo) {
+      console.log('Validate Failed:', errInfo)
+    }
   }
 
   const mergedColumns = arr.map((col) => {
