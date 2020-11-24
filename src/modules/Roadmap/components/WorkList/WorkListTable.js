@@ -71,10 +71,20 @@ export const WorkListTable = () => {
       // console.log(ob)
       dispatch(formValidate(ob))
       let coordinates = record.geometries.coordinates
-      coordinates.length > 0 &&
-        dispatch(setMapData([{ coordinates, type: 'polygon' }]))
+
+      if (coordinates.length > 0) {
+        let arr = coordinates.map((i) => {
+          if (i[0][0] == i[i.length - 1][0]) {
+            return { type: 'polygon', coordinates: [i] }
+          }
+
+          return { type: 'polyline', coordinates: i }
+        })
+
+        dispatch(setMapData(arr))
+      }
     }
-  }, [record, visible, dispatch])
+  }, [record, visible])
 
   useMemo(() => {
     // console.log('editing dataSource')
@@ -100,8 +110,11 @@ export const WorkListTable = () => {
   const onSearch = (e) => {
     setFiltered(
       dataSource.filter((i) => {
-        if (i.address) {
-          return i.address.toLowerCase().includes(e.target.value.toLowerCase())
+        if (
+          i.address &&
+          i.address.toLowerCase().includes(e.target.value.toLowerCase())
+        ) {
+          return true
         }
 
         return i.id.toString().includes(e.target.value.toLowerCase())

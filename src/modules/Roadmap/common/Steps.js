@@ -73,12 +73,7 @@ export const CustomSteps = ({
           </Button>
         )}
         {current === 3 && (
-          <Button
-            key='submit'
-            type='primary'
-            // confirmLoading={status}
-            onClick={() => callback()}
-          >
+          <Button key='submit' type='primary' onClick={() => callback()}>
             Отправить
           </Button>
         )}

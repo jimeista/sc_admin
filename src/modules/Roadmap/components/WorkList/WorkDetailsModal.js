@@ -45,7 +45,9 @@ export const WorkDetailsModal = (props) => {
       dispatch(resetFormData({}))
       form.setFieldsValue({})
     }
-  }, [form, record])
+  }, [])
+
+  // console.log('loaded')
 
   const putFormData = useCallback(async () => {
     try {
@@ -53,7 +55,7 @@ export const WorkDetailsModal = (props) => {
       let ob = validateRoadWorkForm(arr, categories, organisations, regions)
       const coordinates = setCoordinates(mapData)
 
-      console.log(coordinates)
+      // console.log(coordinates)
       ob = { data: ob, geometries: coordinates }
 
       dispatch(setCurrent(0))
