@@ -78,10 +78,7 @@ export const postRoadMap = createAsyncThunk(
 export const postIntersections = createAsyncThunk(
   'roadmap/postIntersections',
   async (initialPost) => {
-    const res = await axios.post(
-      '/sc-roadworks/api/custom-intersections',
-      initialPost
-    )
+    const res = await axios.post('/sc-roadworks/api/intersections', initialPost)
     console.log(res)
     return JSON.parse(res.config.data)
   }

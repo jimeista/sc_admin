@@ -6,7 +6,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 // import { InfoPanel, Leaders } from './modules/CIP'
 import { SignIn } from './components/SignIn'
 import Users from './modules/Users'
-import Roles from './modules/Roles'
+import Roles from './modules/Roles/Roles'
 import Roadmap from './modules/Roadmap'
 import { Dictionary, Indicator, IndicatorInfo } from './modules/CMD'
 

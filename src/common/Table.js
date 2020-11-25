@@ -81,22 +81,12 @@ export const CustomTable = (props) => {
       const row = await form.validateFields()
       const newData = [...props.data]
       const index = newData.findIndex((item) => key === item.key)
+
       const item = newData[index]
+      // newData.splice(index, 1, { ...item, ...row })
+      // props.setData(newData)
       props.handleEdit({ ...item, ...row })
       setEditingKey('')
-
-      // if (index > -1) {
-      //   const item = newData[index]
-      //   newData.splice(index, 1, { ...item, ...row })
-      //   // props.setData(newData)
-      //   props.handleEdit({ ...item, ...row })
-      //   setEditingKey('')
-      // } else {
-      //   newData.push(row)
-      //   props.setData(newData)
-      //   props.handleEdit(row)
-      //   setEditingKey('')
-      // }
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo)
     }
@@ -104,8 +94,8 @@ export const CustomTable = (props) => {
 
   const onDelete = async (record) => {
     try {
-      let newData = [...props.data]
-      props.setData(newData.filter((item) => item.key !== record.key))
+      // let newData = [...props.data]
+      // props.setData(newData.filter((item) => item.key !== record.key))
       props.handleDelete(record)
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo)

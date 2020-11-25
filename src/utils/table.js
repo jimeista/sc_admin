@@ -16,26 +16,28 @@ export const setRoleColumns = (options) => {
       type: 'multi-select',
       editable: true,
       data: options,
-      render: (modules) => (
-        <span>
-          {modules.map((module) => {
-            let color = module.length > 5 ? 'geekblue' : 'blue'
-            return (
-              <Tag color={color} key={module} style={{ margin: '5px 5px' }}>
-                {module.toUpperCase()}
-              </Tag>
-            )
-          })}
-        </span>
-      ),
+      render: (modules) => {
+        return (
+          <span>
+            {modules.map((module) => {
+              let color = module.length > 5 ? 'geekblue' : 'blue'
+              return (
+                <Tag color={color} key={module} style={{ margin: '5px 5px' }}>
+                  {module.toUpperCase()}
+                </Tag>
+              )
+            })}
+          </span>
+        )
+      },
     },
   ]
 }
 
 export const setRoleDataSource = (data) => {
-  return data.map((i, index) => {
+  return data.map((i) => {
     return {
-      key: index,
+      key: i.id,
       repr: i.repr,
       'permitted-modules': i['permitted-modules'],
     }

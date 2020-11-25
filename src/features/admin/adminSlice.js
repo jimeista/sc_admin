@@ -44,8 +44,9 @@ export const getRoleModules = createAsyncThunk(
         .get(url)
         .then((res) => {
           return {
+            id: role.id,
             repr: role.repr,
-            'permitted-modules': res.data.map((i) => i['module-name']),
+            'permitted-modules': res.data.map((i) => i['permitted-module']),
           }
         })
         .catch((err) => console.log(err))
@@ -60,24 +61,42 @@ export const getRoleModules = createAsyncThunk(
 export const postRoleModules = createAsyncThunk(
   'admin/postRoleModules',
   async (data) => {
-    let ids = []
-    let ob = {}
-    let modules = []
+    let id = await axios
+      .post('/sc-api-gateway/acl/roles', data.post_new_role_module)
+      .then((res) => res.data)
 
-    data.arr.forEach((i) => {
-      if (data.row['permitted-modules'].includes(i.value)) {
-        ids = [...ids, i.id]
-        modules = [...modules, i.value]
-      }
-    })
+    return { ...data.new_role_module, id }
+  }
+)
 
-    ob = { ...data.row, 'permitted-modules': ids }
+export const putRoleModule = createAsyncThunk(
+  'admin/putRoleModule',
+  async (data) => {
+    // if(data.removed.length > 0){
+    //   for(const id of data.removed){
+    //     await axios.delete(`/sc-api-gateway/acl/authorities/${id}`)
+    //   }
+    // }
 
-    await axios.post('/sc-api-gateway/acl/roles', ob).then((res) => res.data)
+    // if(data.added.length > 0){
+    //   for(const id of data.added){
+    //     await axios.put(`/sc-api-gateway/acl/authorities/${id}`)
+    //   }
+    // }
 
-    console.log(ob, { ...data.row, 'permitted-modules': modules })
+    return {
+      id: data.id,
+      repr: data.repr,
+      'permitted-modules': data['permitted-modules'],
+    }
+  }
+)
 
-    return { ...data.row, 'permitted-modules': modules }
+export const deleteRoleModule = createAsyncThunk(
+  'admin/deleteRoleModule',
+  async (id) => {
+    axios.delete(`/sc-api-gateway/acl/roles/${id}`)
+    return id
   }
 )
 
@@ -180,11 +199,42 @@ const adminSlice = createSlice({
       state.role_modules.status = 'loading'
     },
     [postRoleModules.fulfilled]: (state, action) => {
-      console.log(action.payload)
       state.role_modules.status = 'success'
       state.role_modules.data = [action.payload, ...state.role_modules.data]
     },
     [postRoleModules.failed]: (state, action) => {
+      state.role_modules.status = 'failed'
+      state.role_modules.error = action.payload
+    },
+
+    //update role module
+    [putRoleModule.pending]: (state, action) => {
+      state.role_modules.status = 'loading'
+    },
+    [putRoleModule.fulfilled]: (state, action) => {
+      let record = action.payload
+      state.role_modules.status = 'success'
+      state.role_modules.data = state.role_modules.data.map((i) =>
+        i.id === record.id ? record : i
+      )
+    },
+    [putRoleModule.failed]: (state, action) => {
+      state.role_modules.status = 'failed'
+      state.role_modules.error = action.payload
+    },
+
+    //delete role module
+    [deleteRoleModule.pending]: (state, action) => {
+      state.role_modules.status = 'loading'
+    },
+    [deleteRoleModule.fulfilled]: (state, action) => {
+      state.role_modules.status = 'success'
+      let index = state.role_modules.data.findIndex(
+        (i) => i.id === action.payload
+      )
+      state.role_modules.data.splice(index, 1)
+    },
+    [deleteRoleModule.failed]: (state, action) => {
       state.role_modules.status = 'failed'
       state.role_modules.error = action.payload
     },

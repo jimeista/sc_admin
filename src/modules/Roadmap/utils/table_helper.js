@@ -42,7 +42,7 @@ export const setCrossListDataSourceHelper = (data, intersections) => {
       let ob = {
         '№': index + 1,
         key: index + 1,
-        address: 'some street',
+        address: i['intersection-area'],
         coordinates: i.intersection.coordinates,
       }
 
