@@ -3,10 +3,7 @@ import { Routes } from './Routes'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { getRoles, getModules } from './features/roles/rolesSlice'
-import {
-  getCurrentUser,
-  getOrganisationList,
-} from './features/admin/adminSlice'
+import { getOrganisationList } from './features/admin/adminSlice'
 
 //styles
 import 'antd/dist/antd.css'
@@ -17,7 +14,6 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getCurrentUser())
     dispatch(getOrganisationList())
   }, [])
 

@@ -20,9 +20,9 @@ export const EditableCell = ({
       case 'select':
         return (
           <Select placeholder={placeholder} allowClear>
-            {data.map((role) => (
-              <Option key={`${role}- ${placeholder}`} value={role}>
-                {role}
+            {data.map((value) => (
+              <Option key={`${value}- ${placeholder}`} value={value}>
+                {value}
               </Option>
             ))}
           </Select>
