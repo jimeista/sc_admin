@@ -3,9 +3,22 @@ import axios from 'axios'
 
 export const getRoles = createAsyncThunk('admin/getRoles', async (auth) => {
   const url = '/sc-api-gateway/acl/roles'
+  let isAdmin = false
+
+  //check if SUPER-ADMIN is loged to show super-admin role
+  auth.roles.forEach((name) => {
+    if (name === 'SUPER-ADMIN') {
+      isAdmin = true
+    }
+  })
+
+  //validate SUPER-ADMIN privileges
   const res = await axios
     .get(url)
     .then((res) => {
+      if (!isAdmin) {
+        return res.data.filter((i) => i.repr !== 'Супер-Администратор')
+      }
       return res.data
     })
     .catch((err) => console.log(err))

@@ -14,6 +14,19 @@ export const getCurrentUser = createAsyncThunk(
   }
 )
 
+export const getOrganisationList = createAsyncThunk(
+  'admin/getOrganisationList',
+  async (data) => {
+    const url = '/sc-api-gateway/acl/organisations'
+    const res = await axios
+      .get(url)
+      .then((res) => res.data)
+      .catch((err) => console.log(err))
+
+    return res
+  }
+)
+
 const adminSlice = createSlice({
   name: 'admin',
   initialState: {
@@ -24,6 +37,11 @@ const adminSlice = createSlice({
       data: {},
       status: 'idle',
       error: '',
+    },
+    organisationList: {
+      data: [],
+      status: 'idle',
+      error: null,
     },
   },
   reducers: {},
@@ -37,8 +55,21 @@ const adminSlice = createSlice({
       state.auth.data = action.payload
     },
     [getCurrentUser.failed]: (state, action) => {
-      state.modules.status = 'failed'
-      state.modules.error = action.payload
+      state.auth.status = 'failed'
+      state.auth.error = action.payload
+    },
+
+    //fetch organisation list
+    [getOrganisationList.pending]: (state, action) => {
+      state.organisationList.status = 'loading'
+    },
+    [getOrganisationList.fulfilled]: (state, action) => {
+      state.organisationList.status = 'success'
+      state.organisationList.data = action.payload
+    },
+    [getOrganisationList.failed]: (state, action) => {
+      state.organisationList.status = 'failed'
+      state.organisationList.error = action.payload
     },
   },
 })

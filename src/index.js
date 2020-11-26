@@ -7,6 +7,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import adminReducer from './features/admin/adminSlice'
 import roadmapReducer from './features/roadmap/roadmapSlice'
 import rolesReducer from './features/roles/rolesSlice'
+import usersReducer from './features/users/usersSlice'
 
 import './index.css'
 import App from './App'
@@ -16,6 +17,7 @@ const store = configureStore({
     roadmap: roadmapReducer,
     admin: adminReducer,
     roles: rolesReducer,
+    users: usersReducer,
   },
 })
 

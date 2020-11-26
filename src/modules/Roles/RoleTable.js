@@ -6,7 +6,7 @@ import {
   deleteRoleModule,
   putRoleModule,
 } from '../../features/roles/rolesSlice'
-import { setRoleColumns, setRoleDataSource } from '../../utils/table'
+import { setRoleColumns, setRoleDataSource } from '../../utils/roles_table'
 
 //UI: render table
 const RoleTable = ({ role_modules, options, modules }) => {

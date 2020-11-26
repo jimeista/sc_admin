@@ -1,3 +1,4 @@
+//translate server variables' naming to show on client
 export const nameEnToRuWorkListHelper = (name) => {
   switch (name) {
     case 'area':
@@ -57,6 +58,7 @@ export const nameEnToRuWorkListHelper = (name) => {
   }
 }
 
+//validate antd form before post|put requests
 export const prepareToShowDetailsObToArr = (ob) => {
   const arr = []
 
@@ -80,10 +82,7 @@ export const prepareToShowDetailsObToArr = (ob) => {
   return arr
 }
 
-export const findLotName = (id, data) =>
-  //should return lot-name not id
-  data.find((i) => i.id === id).id
-
+//configure client to server data format
 export const validateRoadWorkForm = (
   data,
   categories,
@@ -153,6 +152,7 @@ export const validateRoadWorkForm = (
   return ob
 }
 
+//
 export const setCoordinates = (data) => {
   return data.map((i) => {
     let arr = []
