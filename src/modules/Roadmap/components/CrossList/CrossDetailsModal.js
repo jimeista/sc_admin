@@ -6,7 +6,7 @@ import {
   setCrossListMapData,
   resetCrossListMapData,
   setCurrent,
-} from '../../features/roadmap/roadmapSlice'
+} from '../../../../features/roadmap/roadmapSlice'
 
 import { CustomYandexMap as YandexMap } from '../../common'
 import { WorkConfirm as FormDetails } from '../WorkList/form/WorkConfirm'

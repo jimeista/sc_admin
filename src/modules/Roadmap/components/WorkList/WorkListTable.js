@@ -13,7 +13,7 @@ import {
   putRoadMap,
   setEditedId,
   setDeletedId,
-} from '../../features/roadmap/roadmapSlice'
+} from '../../../../features/roadmap/roadmapSlice'
 
 export const WorkListTable = () => {
   const {

@@ -8,7 +8,7 @@ import {
   resetModules,
   resetRoleModules,
   resetRoles,
-} from '../../features/admin/adminSlice'
+} from '../../features/roles/rolesSlice'
 
 import RoleControllers from './RoleControllers'
 import RoleTable from './RoleTable'
@@ -16,13 +16,14 @@ import RoleTable from './RoleTable'
 //main ROLES module
 const Roles = () => {
   const dispatch = useDispatch()
-  const { roles, modules, role_modules } = useSelector((state) => state.admin)
+  const { roles, modules, role_modules } = useSelector((state) => state.roles)
+  const { auth } = useSelector((state) => state.admin)
 
   const [options, setOptions] = useState([])
 
   useEffect(() => {
     //TASK:request all available roles and modules for form options
-    dispatch(getRoles())
+    dispatch(getRoles(auth.data))
     dispatch(getModules())
 
     return () => {

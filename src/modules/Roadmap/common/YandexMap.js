@@ -3,7 +3,10 @@ import { YMaps, Map } from 'react-yandex-maps'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'antd'
 
-import { resetMapData, setMapData } from '../features/roadmap/roadmapSlice'
+import {
+  resetMapData,
+  setMapData,
+} from '../../../features/roadmap/roadmapSlice'
 import {
   renderButtons,
   renderGeoObjects,

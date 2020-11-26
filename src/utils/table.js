@@ -39,7 +39,10 @@ export const setRoleDataSource = (data) => {
     return {
       key: i.id,
       repr: i.repr,
-      'permitted-modules': i['permitted-modules'],
+      'permitted-modules': i['permitted-modules'].map(
+        (i) => i['permitted-module']
+      ),
+      modules: i['permitted-modules'],
     }
   })
 }

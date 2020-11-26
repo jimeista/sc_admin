@@ -6,7 +6,7 @@ import {
   deleteRoadMap,
   resetIntersectionsData,
   setEditedId,
-} from '../../features/roadmap/roadmapSlice'
+} from '../../../../features/roadmap/roadmapSlice'
 
 import { CrossDetailsModal } from './CrossDetailsModal'
 import { CustomTable as Table } from '../../../../common/Table'

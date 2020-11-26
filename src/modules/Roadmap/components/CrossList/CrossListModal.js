@@ -6,7 +6,7 @@ import {
   postIntersections,
   setCurrent,
   resetCrossListMapData,
-} from '../../features/roadmap/roadmapSlice'
+} from '../../../../features/roadmap/roadmapSlice'
 import { AddCrossWorks } from './form/AddCrossWorks'
 import { CustomYandexMap as YandexMap } from '../../common'
 

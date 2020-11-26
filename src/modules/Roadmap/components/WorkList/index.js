@@ -6,7 +6,7 @@ import {
   fetchCategories,
   fecthRegions,
   fetchRoadMap,
-} from '../../features/roadmap/roadmapSlice'
+} from '../../../../features/roadmap/roadmapSlice'
 
 import { WorkListModal as Modal } from './WorkListModal'
 import { WorkListTable as Table } from './WorkListTable'

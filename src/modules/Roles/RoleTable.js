@@ -5,7 +5,7 @@ import { CustomTable as Table } from '../../common/Table'
 import {
   deleteRoleModule,
   putRoleModule,
-} from '../../features/admin/adminSlice'
+} from '../../features/roles/rolesSlice'
 import { setRoleColumns, setRoleDataSource } from '../../utils/table'
 
 //UI: render table
@@ -23,30 +23,26 @@ const RoleTable = ({ role_modules, options, modules }) => {
   }, [role_modules])
 
   const onEdit = (record) => {
-    //find edited role
-    let role = role_modules.data.find((i) => i.id === record.key)
-    //check if module is added
-    let added = [] //store newly added modules
-    added = record['permitted-modules'].filter(
-      (name) => !role['permitted-modules'].includes(name)
-    )
-    //check if module is removed
-    let removed = [] //store removed modules
-    removed = role['permitted-modules'].filter(
-      (name) => !record['permitted-modules'].includes(name)
-    )
-
-    //change names to ids
+    //store newly added modules
+    let added = []
+    let arr = record.modules.map((i) => i['permitted-module']) //initial modules
+    added = record['permitted-modules'].filter((name) => !arr.includes(name))
     added = modules.data.filter((i) => added.includes(i.name)).map((i) => i.id)
-    removed = modules.data
-      .filter((i) => removed.includes(i.name))
-      .map((i) => i.id)
+
+    // //check if module is removed
+    let removed = [] //store removed modules
+    removed = record.modules
+      .filter(
+        (item) =>
+          !record['permitted-modules'].includes(item['permitted-module'])
+      )
+      .map((i) => i['authority-id'])
 
     dispatch(
       putRoleModule({
         id: record.key,
-        added,
         removed,
+        added,
         repr: record.repr,
         'permitted-modules': record['permitted-modules'],
       })

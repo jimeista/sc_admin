@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { Form, Button, Select, Tag, Input } from 'antd'
 import { useDispatch } from 'react-redux'
 
-import { postRoleModules } from '../../features/admin/adminSlice'
+import { postRoleModules } from '../../features/roles/rolesSlice'
 
 //UI: render form controllers
 const RoleControllers = ({ options }) => {
@@ -30,7 +30,9 @@ const RoleControllers = ({ options }) => {
       })
 
       let post_new_role_module = { ...row, 'permitted-modules': ids } // post object
-      dispatch(postRoleModules({ post_new_role_module, new_role_module: row }))
+      dispatch(
+        postRoleModules({ post_new_role_module, record_new_role_module: row })
+      )
 
       form.resetFields()
     } catch (err) {
