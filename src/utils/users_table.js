@@ -6,6 +6,8 @@ export const setColumnsHelper = (organisations, roles) => {
     {
       title: '№',
       dataIndex: '№',
+      align: 'center',
+      width: '2%',
     },
     {
       title: 'ФИО',

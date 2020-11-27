@@ -42,21 +42,28 @@ export const CustomTable = (props) => {
           </span>
         ) : (
           <Space>
-            <a
-              disabled={editingKey !== ''}
-              onClick={() => edit(record, form, setEditingKey)}
-            >
-              <EditOutlined
-                className='icon_edit_btn_style'
-                title='Редактировать'
-              />
-            </a>
-            <Popconfirm
-              title='Вы уверены что хотите удалить даныне?'
-              onConfirm={() => onDelete(record)}
-            >
-              <DeleteOutlined className='icon_edit_btn_style' title='Удалить' />
-            </Popconfirm>
+            {props.isEditable && (
+              <a
+                disabled={editingKey !== ''}
+                onClick={() => edit(record, form, setEditingKey)}
+              >
+                <EditOutlined
+                  className='icon_edit_btn_style'
+                  title='Редактировать'
+                />
+              </a>
+            )}
+            {props.isDeletable && (
+              <Popconfirm
+                title='Вы уверены что хотите удалить даныне?'
+                onConfirm={() => onDelete(record)}
+              >
+                <DeleteOutlined
+                  className='icon_edit_btn_style'
+                  title='Удалить'
+                />
+              </Popconfirm>
+            )}
           </Space>
         )
       },

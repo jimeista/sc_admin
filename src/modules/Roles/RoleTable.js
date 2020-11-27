@@ -61,6 +61,8 @@ const RoleTable = ({ role_modules, options, modules }) => {
       loading={role_modules.status !== 'success'}
       handleDelete={onDelete}
       handleEdit={onEdit}
+      isEditable={true}
+      isDeletable={true}
     />
   )
 }

@@ -204,6 +204,10 @@ const adminSlice = createSlice({
     [postRoleModules.fulfilled]: (state, action) => {
       state.role_modules.status = 'success'
       state.role_modules.data = [action.payload, ...state.role_modules.data]
+      state.roles.data = [
+        { repr: action.payload.repr, id: action.payload.id },
+        ...state.roles.data,
+      ]
     },
     [postRoleModules.failed]: (state, action) => {
       state.role_modules.status = 'failed'
@@ -219,6 +223,9 @@ const adminSlice = createSlice({
       state.role_modules.status = 'success'
       state.role_modules.data = state.role_modules.data.map((i) =>
         i.id === record.id ? record : i
+      )
+      state.roles.data = state.roles.data.map((i) =>
+        i.id === record.id ? { id: record.id, repr: record.repr } : i
       )
     },
     [putRoleModule.failed]: (state, action) => {
@@ -236,6 +243,8 @@ const adminSlice = createSlice({
         (i) => i.id === action.payload
       )
       state.role_modules.data.splice(index, 1)
+      let indx = state.roles.data.findIndex((i) => i.id === action.payload)
+      state.roles.data.splice(indx, 1)
     },
     [deleteRoleModule.failed]: (state, action) => {
       state.role_modules.status = 'failed'

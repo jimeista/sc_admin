@@ -121,6 +121,8 @@ export const WorkListTable = () => {
           handleEdit={onEdit}
           handleDelete={onDelete}
           loading={status === 'loading' ? true : false}
+          isEditable={true}
+          isDeletable={true}
         />
       </Form.Item>
       {visible && (

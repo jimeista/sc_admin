@@ -61,11 +61,22 @@ export const CrossListTable = () => {
 
   const onSearch = (e) => {
     setFiltered(
-      dataSource.filter(
-        (i) =>
+      dataSource.filter((i) => {
+        if (
           i.address &&
           i.address.toLowerCase().includes(e.target.value.toLowerCase())
-      )
+        ) {
+          return true
+        }
+
+        let isIncluded = false
+        i.ids.forEach((id) => {
+          if (id.toString().includes(e.target.value.toLowerCase())) {
+            isIncluded = true
+          }
+        })
+        return isIncluded
+      })
     )
   }
 
@@ -87,6 +98,7 @@ export const CrossListTable = () => {
           handleEdit={onEdit}
           handleDelete={onDelete}
           loading={intersections.status !== 'success' ? true : false}
+          isDeletable={true}
         />
       </Form.Item>
       {visible && (

@@ -41,6 +41,8 @@ const UserTable = ({ data, status, roles, organisations }) => {
       loading={status !== 'success'}
       handleEdit={onEdit}
       handleDelete={onDelete}
+      isEditable={true}
+      isDeletable={true}
     />
   )
 }

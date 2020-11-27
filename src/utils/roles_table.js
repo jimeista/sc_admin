@@ -4,6 +4,12 @@ import { Tag } from 'antd'
 export const setRoleColumns = (options) => {
   return [
     {
+      title: '№',
+      dataIndex: '№',
+      align: 'center',
+      width: '2%',
+    },
+    {
       title: 'Роль',
       dataIndex: 'repr',
       width: '30%',
@@ -35,9 +41,10 @@ export const setRoleColumns = (options) => {
 }
 
 export const setRoleDataSource = (data) => {
-  return data.map((i) => {
+  return data.map((i, index) => {
     return {
       key: i.id,
+      '№': ++index,
       repr: i.repr,
       'permitted-modules': i['permitted-modules'].map(
         (i) => i['permitted-module']

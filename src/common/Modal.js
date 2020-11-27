@@ -36,6 +36,7 @@ export default class CustomModal extends React.Component {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           className='Leaders_style_modal'
+          footer={null}
         >
           {children}
         </Modal>
