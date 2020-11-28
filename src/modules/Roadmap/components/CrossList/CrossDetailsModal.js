@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux'
 import { Modal, Button } from 'antd'
 
 import {
-  setCrossListMapData,
-  resetCrossListMapData,
+  setIntersectionsMapData,
+  resetIntersectionsMapData,
   setCurrent,
 } from '../../../../features/roadmap/roadmapSlice'
 
@@ -18,20 +18,7 @@ export const CrossDetailsModal = (props) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    //get ids from table record
-    const ids = Object.keys(record)
-      .filter((key) => key.substring(0, 6) === 'Работа' && record[key])
-      .map((i) => record[i])
-
-    //find crosslist work information by ids
-    let arr = []
-    ids.forEach((id) => {
-      data.forEach((i) => {
-        if (i.id === id) {
-          arr = [...arr, i]
-        }
-      })
-    })
+    let arr = data.filter((i) => record.ids.includes(i.id))
 
     //draw work coordinates
     let list = arr.map((i) => ({
@@ -41,18 +28,17 @@ export const CrossDetailsModal = (props) => {
     list = [
       ...list,
       {
-        type: 'placemark',
-        coordinates: record.coordinates,
+        ...record.intersection,
       },
     ]
 
     setArray(arr)
     dispatch(setCurrent(1))
-    dispatch(setCrossListMapData(list))
+    dispatch(setIntersectionsMapData(list))
 
     return () => {
       dispatch(setCurrent(0))
-      dispatch(resetCrossListMapData())
+      dispatch(resetIntersectionsMapData())
     }
   }, [])
 

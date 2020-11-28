@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import { Select, Form, Button, Input } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { setCrossListMapData } from '../../../../../features/roadmap/roadmapSlice'
+import { setIntersectionsMapData } from '../../../../../features/roadmap/roadmapSlice'
 
 const { Option } = Select
 
 export const AddCrossWorks = () => {
   const { categories, data } = useSelector((state) => state.roadmap)
+  const dispatch = useDispatch()
+
   const [count, setCount] = useState([1, 2])
   const [options, setOptions] = useState()
-  const dispatch = useDispatch()
 
   const renderSelectsGroup = (key) => {
     let arr =
@@ -17,7 +18,7 @@ export const AddCrossWorks = () => {
 
     const onChangeWorkId = (id) =>
       dispatch(
-        setCrossListMapData([
+        setIntersectionsMapData([
           {
             type: 'polygon',
             coordinates: data.find((i) => i.id === id).geometries.coordinates,

@@ -6,7 +6,7 @@ import { StepsWrapper as Steps } from './form/StepsWrapper'
 
 import {
   setCurrent,
-  postRoadMap,
+  postRoadmap,
   resetMapData,
 } from '../../../../features/roadmap/roadmapSlice'
 import {
@@ -39,7 +39,7 @@ export const WorkListModal = () => {
       ob = { data: ob, geometries: coordinates, mapData }
       // console.log(ob)
 
-      dispatch(postRoadMap(ob))
+      dispatch(postRoadmap(ob))
       dispatch(setCurrent(0))
       dispatch(resetMapData())
 

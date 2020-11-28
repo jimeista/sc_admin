@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 import {
-  fecthOrganizations,
-  fetchCategories,
-  fecthRegions,
-  fetchRoadMap,
+  getRoadmapOrganisations,
+  getRoadmapCategories,
+  getRoadmapRegions,
+  getRoadmap,
 } from '../../../../features/roadmap/roadmapSlice'
 
 import { WorkListModal as Modal } from './WorkListModal'
@@ -15,10 +15,10 @@ export const WorkList = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fecthOrganizations())
-    dispatch(fecthRegions())
-    dispatch(fetchCategories())
-    dispatch(fetchRoadMap())
+    dispatch(getRoadmapOrganisations())
+    dispatch(getRoadmapRegions())
+    dispatch(getRoadmapCategories())
+    dispatch(getRoadmap())
   }, [])
 
   return (

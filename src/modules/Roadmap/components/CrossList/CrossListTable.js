@@ -2,11 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Form, Input } from 'antd'
 
-import {
-  deleteRoadMap,
-  resetIntersectionsData,
-  setEditedId,
-} from '../../../../features/roadmap/roadmapSlice'
+import { setEditedId } from '../../../../features/roadmap/roadmapSlice'
 
 import { CrossDetailsModal } from './CrossDetailsModal'
 import { CustomTable as Table } from '../../../../common/Table'
@@ -31,7 +27,6 @@ export const CrossListTable = () => {
   useEffect(() => {
     if (editedId && filtered) {
       let item = dataSource.find((i) => i.id === editedId)
-      console.log('editing filtered data')
       setFiltered((state) => state.map((i) => (i.id === editedId ? item : i)))
       dispatch(setEditedId({ just_id: false }))
     }
@@ -50,13 +45,11 @@ export const CrossListTable = () => {
     setDataSource(setCrossListDataSourceHelper(data, intersections))
   }, [data, intersections])
 
-  const onEdit = (record) => {
-    console.log(record, 'run bitch')
-  }
+  const onEdit = (record) => {}
 
   const onDelete = (record) => {
-    // console.log(record)
-    dispatch(deleteRoadMap(record.id))
+    console.log(record)
+    // dispatch(deleteRoadMap(record.id))
   }
 
   const onSearch = (e) => {

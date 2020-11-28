@@ -35,6 +35,12 @@ export const renderGeoObjects = (mapData) => {
             }}
           />
         )
+      case 'Point':
+        return <Placemark key={index} geometry={geo.coordinates} />
+      case 'MultiPoint':
+        return geo.coordinates.map((geometry, key) => (
+          <Placemark key={`${key}-${geo.type}`} geometry={geometry} />
+        ))
       default:
         return null
     }

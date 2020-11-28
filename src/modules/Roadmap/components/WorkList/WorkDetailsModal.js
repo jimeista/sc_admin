@@ -7,7 +7,7 @@ import {
   resetFormData,
   resetMapData,
   setCurrent,
-  putRoadMap,
+  putRoadmap,
   setMapData,
 } from '../../../../features/roadmap/roadmapSlice'
 import {
@@ -68,7 +68,7 @@ export const WorkDetailsModal = (props) => {
       ob = { data: ob, geometries: coordinates }
 
       dispatch(setCurrent(0))
-      dispatch(putRoadMap({ reedit: true, data: ob, id: record.id, mapData }))
+      dispatch(putRoadmap({ reedit: true, data: ob, id: record.id, mapData }))
       form.resetFields()
 
       status === 'success' && setVisible(false)

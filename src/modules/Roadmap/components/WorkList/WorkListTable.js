@@ -9,8 +9,8 @@ import {
   setWorkListDataSourceHelper,
 } from '../../utils/table_helper'
 import {
-  deleteRoadMap,
-  putRoadMap,
+  deleteRoadmap,
+  putRoadmap,
   setEditedId,
   setDeletedId,
 } from '../../../../features/roadmap/roadmapSlice'
@@ -72,7 +72,7 @@ export const WorkListTable = () => {
     //TASK: edit record
     //LOGIC: request edit on redux side
     dispatch(
-      putRoadMap({
+      putRoadmap({
         reedit: false,
         data: {
           percentage: record.percentage,
@@ -85,7 +85,7 @@ export const WorkListTable = () => {
   const onDelete = (record) => {
     //TASK: delete record
     //LOGIC: request delete on redux side
-    dispatch(deleteRoadMap(record.id))
+    dispatch(deleteRoadmap(record.id))
   }
 
   const onSearch = (e) => {

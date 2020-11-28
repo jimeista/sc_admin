@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import {
   postIntersections,
   setCurrent,
-  resetCrossListMapData,
+  resetIntersectionsMapData,
 } from '../../../../features/roadmap/roadmapSlice'
 import { AddCrossWorks } from './form/AddCrossWorks'
 import { CustomYandexMap as YandexMap } from '../../common'
@@ -13,10 +13,11 @@ import { CustomYandexMap as YandexMap } from '../../common'
 export const CrossListModal = () => {
   const [visible, setVisible] = useState()
   const [form] = Form.useForm()
+
   const dispatch = useDispatch()
 
   const onCancel = () => {
-    dispatch(resetCrossListMapData())
+    dispatch(resetIntersectionsMapData())
     form.resetFields()
     setVisible(false)
   }
@@ -27,7 +28,7 @@ export const CrossListModal = () => {
     const ids = ob.filter((i) => typeof i !== 'string')
     data = { 'roadwork-ids': ids, 'intersection-area': data.area }
     dispatch(postIntersections(data))
-    dispatch(resetCrossListMapData())
+    dispatch(resetIntersectionsMapData())
     form.resetFields()
     setVisible(false)
   }

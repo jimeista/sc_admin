@@ -40,10 +40,11 @@ export const setCrossListDataSourceHelper = (data, intersections) => {
   if (intersections.status === 'success') {
     dataSource = intersections.data.map((i, index) => {
       let ob = {
-        '№': index + 1,
-        key: index + 1,
+        '№': ++index,
+        key: ++index,
+        id: i.id,
         address: i['intersection-area'],
-        coordinates: i.intersection.coordinates,
+        intersection: i.intersection,
         ids: i['roadwork-ids'],
       }
 

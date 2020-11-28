@@ -20,7 +20,7 @@ const mapState = {
 }
 
 export const CustomYandexMap = () => {
-  const { current, mapData, crossListMapData } = useSelector(
+  const { current, mapData, intersectionsMapData } = useSelector(
     (state) => state.roadmap
   )
   const dispatch = useDispatch()
@@ -61,16 +61,17 @@ export const CustomYandexMap = () => {
   }, [active])
 
   let geoObjects = useMemo(() => {
-    if (crossListMapData.length > 0) {
-      return renderGeoObjects(crossListMapData)
+    if (intersectionsMapData.length > 0) {
+      return renderGeoObjects(intersectionsMapData)
     }
     return renderGeoObjects(mapData)
-  }, [mapData, crossListMapData])
+  }, [mapData, intersectionsMapData])
 
   const handleClearMap = () => {
     dispatch(resetMapData())
   }
 
+  console.log(geoObjects)
   return (
     <>
       {current === 0 && (
