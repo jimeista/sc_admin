@@ -8,6 +8,7 @@ import adminReducer from './features/admin/adminSlice'
 import roadmapReducer from './features/roadmap/roadmapSlice'
 import rolesReducer from './features/roles/rolesSlice'
 import usersReducer from './features/users/usersSlice'
+import headsReducer from './features/heads/headsSlice'
 
 import './index.css'
 import App from './App'
@@ -18,6 +19,7 @@ const store = configureStore({
     admin: adminReducer,
     roles: rolesReducer,
     users: usersReducer,
+    heads: headsReducer,
   },
 })
 

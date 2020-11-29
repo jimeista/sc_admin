@@ -2,114 +2,71 @@ import React from 'react'
 import { Tag } from 'antd'
 
 export const setColumnsHelper = (options) => {
+  console.log(options)
   return [
     {
       title: '№',
-      dataIndex: '№',
+      dataIndex: '#',
       width: '2%',
       align: 'center',
     },
 
     {
       title: 'Должность',
-      dataIndex: 'Должность',
+      dataIndex: 'position',
       width: '25%',
     },
     {
       title: 'ФИО',
-      dataIndex: 'ФИО',
+      dataIndex: 'name',
       width: '30%',
       editable: true,
     },
     {
       title: 'Курируемые организации',
-      dataIndex: 'Курируемые организации',
+      dataIndex: 'supervised-organisations',
       width: '35%',
       type: 'multi-select',
       editable: true,
       data: options,
-      render: (tags) => (
-        <span>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green'
-            if (tag === 'loser') {
-              color = 'volcano'
-            }
-            return (
-              <Tag color={color} key={tag} style={{ margin: '5px 5px' }}>
-                {tag.toUpperCase()}
-              </Tag>
-            )
-          })}
-        </span>
-      ),
+      render: (tags) => {
+        return (
+          <span>
+            {tags.map((tag, index) => {
+              let color = tags.length > 3 ? 'geekblue' : 'green'
+              return (
+                <Tag
+                  color={color}
+                  key={`${tag.split('-')[0]}-${index}`}
+                  style={{ margin: '5px 5px' }}
+                >
+                  {/* {`${tag['abbreviation'].toUpperCase()} -
+                    ${tag['full-name'].toUpperCase()}`} */}
+                  {tag.toUpperCase()}
+                </Tag>
+              )
+            })}
+          </span>
+        )
+      },
     },
     // {
     //   title: 'Фото',
-    //   dataIndex: 'Фото',
+    //   dataIndex: 'image-path',
     //   width: '10%',
     //   editable: true,
     // },
   ]
 }
 
-export const setDataSourceHelper = () => {
-  return [
-    {
-      key: '0',
-      '№': 1,
-      ФИО: 'Сагинтаев Бакытжан Абдирович',
-      Должность: 'Аким города',
-      'Курируемые организации': ['УЭиИР'],
-      Фото: 'фото1',
-    },
-    {
-      key: '1',
-      '№': 2,
-      ФИО: 'Кожагапанов Ерлан Тохтарханович',
-      Должность: 'Первый заместитель акима',
-      'Курируемые организации': ['УГПиУ', 'УЖП', 'УОК'],
-      Фото: 'фото2',
-    },
-    {
-      key: '2',
-      '№': 3,
-      ФИО: 'Бабакумаров Ержан Жолбакович',
-      Должность: 'Заместитель акима',
-      'Курируемые организации': ['УОЗ', 'УТ'],
-      Фото: 'фото3',
-    },
-    {
-      key: '3',
-      '№': 4,
-      ФИО: 'Бабакумаров Ержан Жолбакович',
-      Должность: 'Заместитель акима',
-      'Курируемые организации': ['УГА'],
-      Фото: 'фото4',
-    },
-    {
-      key: '4',
-      '№': 5,
-      ФИО: 'Бабакумаров Ержан Жолбакович',
-      Должность: 'Заместитель акима',
-      'Курируемые организации': ['УОР'],
-      Фото: 'фото5',
-    },
-    {
-      key: '5',
-      '№': 6,
-      ФИО: 'Бабакумаров Ержан Жолбакович',
-      Должность: 'Заместитель акима',
-      'Курируемые организации': ['УЗЭ', 'УГМ'],
-      Фото: 'фото6',
-    },
-    {
-      key: '6',
-      '№': 7,
-      ФИО: 'Бабакумаров Ержан Жолбакович',
-      Должность: 'Руководитель апарата акима',
-      'Курируемые организации': ['УПиИ'],
-      Фото: 'фото7',
-    },
-  ]
-}
+export const setDataSourceHelper = (data) =>
+  data.map((i, index) => ({
+    key: ++index,
+    '#': ++index,
+    name: i.name,
+    position: i.position,
+    'image-path': i['image-path'],
+    'supervised-organisations': i['supervised-organisations'].map(
+      (o) => `${o.abbreviation}-${o['full-name']}`
+    ),
+  }))

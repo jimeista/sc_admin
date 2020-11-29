@@ -3,12 +3,12 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { CustomTable as Table } from '../../common/Table'
 import { setColumnsHelper, setDataSourceHelper } from '../../utils/heads_table'
 
-const HeadsTable = ({ organisations }) => {
+const HeadsTable = ({ organisations, data, status }) => {
   const [dataSource, setDataSource] = useState([])
 
   useEffect(() => {
-    setDataSource(setDataSourceHelper())
-  }, [])
+    status === 'success' && setDataSource(setDataSourceHelper(data))
+  }, [status, data])
 
   const columns = useMemo(() => {
     let options =
@@ -21,15 +21,20 @@ const HeadsTable = ({ organisations }) => {
     return setColumnsHelper(options)
   }, [organisations])
 
+  const onEdit = (record) => {
+    console.log(record)
+  }
+
   return (
     <div>
       <Table
         columns={columns}
         data={dataSource}
         setData={setDataSource}
-        loading={organisations.status !== 'success'}
+        loading={status !== 'success'}
+        handleEdit={onEdit}
         isEditable={true}
-        isDeletable={true}
+        // isDeletable={true}
       />
     </div>
   )

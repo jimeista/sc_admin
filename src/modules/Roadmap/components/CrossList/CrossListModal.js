@@ -64,7 +64,7 @@ export const CrossListModal = () => {
         footer={config}
       >
         <Form form={form}>
-          <AddCrossWorks />
+          <AddCrossWorks form={form} />
           <div style={{ width: '100%', paddingLeft: 10 }}>
             <YandexMap />
           </div>

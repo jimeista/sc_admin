@@ -13,8 +13,6 @@ const RoleTable = ({ role_modules, options, modules }) => {
   const dispatch = useDispatch()
   const [data, setData] = useState([])
 
-  // console.log('data', data, 'role_modules', role_modules, 'options', options)
-
   useEffect(() => {
     //TASK: if role's modules are ready,show them on table
     //LOGIC: set table datasource state

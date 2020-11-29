@@ -1,79 +1,10 @@
 import React, { useState } from 'react'
-import { Select, Form, Button, Input } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
-import { setIntersectionsMapData } from '../../../../../features/roadmap/roadmapSlice'
+import { Form, Button, Input } from 'antd'
 
-const { Option } = Select
+import SelectGroup from './SelectGroup'
 
-export const AddCrossWorks = () => {
-  const { categories, data } = useSelector((state) => state.roadmap)
-  const dispatch = useDispatch()
-
+export const AddCrossWorks = ({ form }) => {
   const [count, setCount] = useState([1, 2])
-  const [options, setOptions] = useState()
-
-  const renderSelectsGroup = (key) => {
-    let arr =
-      categories.status === 'success' ? categories.data.map((r) => r.name) : []
-
-    const onChangeWorkId = (id) =>
-      dispatch(
-        setIntersectionsMapData([
-          {
-            type: 'polygon',
-            coordinates: data.find((i) => i.id === id).geometries.coordinates,
-          },
-        ])
-      )
-
-    const onChangeCategory = (value) =>
-      setOptions((state) => ({
-        ...state,
-        [key]: data.filter((i) => i.category === value).map((i) => i.id),
-      }))
-
-    return (
-      <Form.Item style={{ marginRight: 20 }}>
-        <Form.Item
-          name={`category-${key}`}
-          rules={[{ required: true, message: 'Заполните поле' }]}
-        >
-          <Select
-            placeholder={'Категория работ'}
-            style={{ width: 240 }}
-            allowClear
-            onChange={onChangeCategory}
-          >
-            {arr.map((i, index) => (
-              <Option value={i} key={i}>
-                {i}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
-        {options && options[key] && (
-          <Form.Item
-            name={`roadwork-${key}`}
-            rules={[{ required: true, message: 'Заполните поле' }]}
-            key={`roadwork-${key}`}
-          >
-            <Select
-              placeholder={`Работа ${key}`}
-              style={{ width: 240 }}
-              allowClear
-              onChange={onChangeWorkId}
-            >
-              {options[key].map((i, index) => (
-                <Option value={i} key={i}>
-                  {i}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-        )}
-      </Form.Item>
-    )
-  }
 
   return (
     <div style={{ marginBottom: 20 }}>
@@ -83,7 +14,9 @@ export const AddCrossWorks = () => {
           flexWrap: 'wrap',
         }}
       >
-        {count.map((i) => renderSelectsGroup(i))}
+        {count.map((key) => (
+          <SelectGroup order={key} form={form} />
+        ))}
       </div>
       <div style={{ display: 'flex', alignItems: 'center', marginTop: 15 }}>
         <div style={{ marginRight: 25 }}>
