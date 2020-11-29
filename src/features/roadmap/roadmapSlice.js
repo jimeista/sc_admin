@@ -178,10 +178,7 @@ export const roadmapSlice = createSlice({
       state.mapData = [...state.mapData, ...action.payload]
     },
     setIntersectionsMapData: (state, action) => {
-      state.intersectionsMapData = [
-        ...state.intersectionsMapData,
-        ...action.payload,
-      ]
+      state.intersectionsMapData = action.payload
     },
     resetMapData: (state) => {
       state.mapData = []

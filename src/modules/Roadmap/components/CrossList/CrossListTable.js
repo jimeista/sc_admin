@@ -20,6 +20,7 @@ export const CrossListTable = () => {
     intersections,
     data,
     deletedIntersectionId,
+    intersectionsMapData,
   } = useSelector((state) => state.roadmap)
   const dispatch = useDispatch()
 
@@ -104,6 +105,7 @@ export const CrossListTable = () => {
             setVisible={setVisible}
             record={record}
             data={data}
+            intersectionsMapData={intersectionsMapData}
           />
         </Form.Item>
       )}

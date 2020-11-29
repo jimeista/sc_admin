@@ -12,7 +12,7 @@ import { CustomYandexMap as YandexMap } from '../../common'
 import { WorkConfirm as FormDetails } from '../WorkList/form/WorkConfirm'
 
 export const CrossDetailsModal = (props) => {
-  const { visible, setVisible, record, data } = props
+  const { visible, setVisible, record, data, intersectionsMapData } = props
   const [array, setArray] = useState([])
 
   const dispatch = useDispatch()
@@ -34,7 +34,7 @@ export const CrossDetailsModal = (props) => {
 
     setArray(arr)
     dispatch(setCurrent(1))
-    dispatch(setIntersectionsMapData(list))
+    dispatch(setIntersectionsMapData([...intersectionsMapData, list]))
 
     return () => {
       dispatch(setCurrent(0))

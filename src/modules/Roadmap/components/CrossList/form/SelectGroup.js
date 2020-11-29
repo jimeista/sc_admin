@@ -2,17 +2,16 @@ import React, { useState } from 'react'
 import { Select, Form } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 
-import {
-  setIntersectionsMapData,
-  resetIntersectionsMapData,
-} from '../../../../../features/roadmap/roadmapSlice'
+import { setIntersectionsMapData } from '../../../../../features/roadmap/roadmapSlice'
 
 const { Option } = Select
 
 const SelectGroup = ({ order, form }) => {
   const [options, setOptions] = useState([])
 
-  const { categories, data } = useSelector((state) => state.roadmap)
+  const { categories, data, intersectionsMapData } = useSelector(
+    (state) => state.roadmap
+  )
   const dispatch = useDispatch()
 
   let arr =
@@ -21,6 +20,7 @@ const SelectGroup = ({ order, form }) => {
   const onChangeWorkId = (id) => {
     dispatch(
       setIntersectionsMapData([
+        ...intersectionsMapData,
         {
           type: 'polygon',
           coordinates: data.find((i) => i.id === id).geometries.coordinates,
@@ -31,7 +31,6 @@ const SelectGroup = ({ order, form }) => {
 
   const onChangeCategory = (value) => {
     setOptions(data.filter((i) => i.category === value).map((i) => i.id))
-    dispatch(resetIntersectionsMapData())
     form.setFieldsValue({ [`roadwork-${order}`]: '' })
   }
 
