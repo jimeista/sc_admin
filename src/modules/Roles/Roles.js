@@ -15,8 +15,10 @@ const Roles = () => {
 
   useEffect(() => {
     //TASK: request all available role's modules
-    roles.status === 'success' && dispatch(getRoleModules(roles.data))
-  }, [])
+    roles.status === 'success' &&
+      role_modules.data.length === 0 &&
+      dispatch(getRoleModules(roles.data))
+  }, [roles, role_modules])
 
   useEffect(() => {
     //TASK: if modules are rdy, set options state

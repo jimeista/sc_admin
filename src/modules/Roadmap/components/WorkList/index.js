@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import {
   getRoadmapOrganisations,
@@ -13,13 +13,16 @@ import { WorkListTable as Table } from './WorkListTable'
 
 export const WorkList = () => {
   const dispatch = useDispatch()
+  const { organisations, categories, regions, data } = useSelector(
+    (state) => state.roadmap
+  )
 
   useEffect(() => {
-    dispatch(getRoadmapOrganisations())
-    dispatch(getRoadmapRegions())
-    dispatch(getRoadmapCategories())
-    dispatch(getRoadmap())
-  }, [])
+    organisations.data.length === 0 && dispatch(getRoadmapOrganisations())
+    regions.data.length === 0 && dispatch(getRoadmapRegions())
+    categories.data.length === 0 && dispatch(getRoadmapCategories())
+    data.length === 0 && dispatch(getRoadmap())
+  }, [organisations, regions, categories, data])
 
   return (
     <>

@@ -11,6 +11,8 @@ import './App.css'
 
 function App() {
   const { auth } = useSelector((state) => state.admin)
+  const { roles, modules } = useSelector((state) => state.roles)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -20,10 +22,10 @@ function App() {
   useEffect(() => {
     //TASK:request all available roles and modules for form options
     if (auth.status === 'success') {
-      dispatch(getRoles(auth.data))
-      dispatch(getModules())
+      roles.data.length === 0 && dispatch(getRoles(auth.data))
+      modules.data.length === 0 && dispatch(getModules())
     }
-  }, [auth])
+  }, [auth, roles, modules])
 
   return <Routes />
 }

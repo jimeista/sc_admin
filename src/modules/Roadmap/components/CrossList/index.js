@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import { getIntersections } from '../../../../features/roadmap/roadmapSlice'
 
@@ -8,10 +8,11 @@ import { CrossListTable as Table } from './CrossListTable'
 
 export const CrossList = () => {
   const dispatch = useDispatch()
+  const { intersections } = useSelector((state) => state.roadmap)
 
   useEffect(() => {
-    dispatch(getIntersections())
-  }, [])
+    intersections.data.length === 0 && dispatch(getIntersections())
+  }, [intersections])
 
   return (
     <>

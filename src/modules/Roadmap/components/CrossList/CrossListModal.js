@@ -24,11 +24,11 @@ export const CrossListModal = () => {
 
   const onSave = async () => {
     let data = await form.validateFields()
-    const ob = Object.values(data)
-    const ids = ob.filter((i) => typeof i !== 'string')
+    const ids = Object.keys(data)
+      .filter((key) => key.split('-')[0] === 'roadwork')
+      .map((i) => data[i])
     data = { 'roadwork-ids': ids, 'intersection-area': data.area }
     dispatch(postIntersections(data))
-    dispatch(resetIntersectionsMapData())
     form.resetFields()
     setVisible(false)
   }
@@ -39,7 +39,7 @@ export const CrossListModal = () => {
   }
 
   const config = [
-    <Button key='back' onClick={() => setVisible(false)}>
+    <Button key='back' onClick={onCancel}>
       Отменить
     </Button>,
     <Button key='submit' type='primary' onClick={onSave}>
@@ -59,7 +59,7 @@ export const CrossListModal = () => {
       <Modal
         title='Форма ввода данных по пересечению работ'
         visible={visible}
-        onCancel={onCancel}
+        onCancel={() => setVisible(false)}
         width={'80%'}
         footer={config}
       >

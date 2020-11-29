@@ -71,7 +71,6 @@ export const CustomYandexMap = () => {
     dispatch(resetMapData())
   }
 
-  console.log(geoObjects)
   return (
     <>
       {current === 0 && (

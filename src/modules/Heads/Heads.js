@@ -12,8 +12,8 @@ const Heads = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getHeads())
-  }, [])
+    data.length === 0 && dispatch(getHeads())
+  }, [data])
 
   return (
     <div>

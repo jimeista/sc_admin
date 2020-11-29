@@ -64,8 +64,11 @@ export const postIntersections = createAsyncThunk(
   'roadmap/postIntersections',
   async (initialPost) => {
     const res = await axios.post(BASE_INTERSECTIONS_URL, initialPost)
-    console.log(res)
-    return JSON.parse(res.config.data)
+    return {
+      id: res.data,
+      ...initialPost,
+      intersection: { coordinates: [], type: 'Point' },
+    }
   }
 )
 
@@ -113,9 +116,9 @@ export const putRoadmap = createAsyncThunk(
 
 export const deleteRoadmap = createAsyncThunk(
   'roadmap/deleteRoadmap',
-  async (dataId) => {
-    await axios.delete(`${BASE_ROADMAP_URL}/${dataId}`)
-    return { id: dataId }
+  async (id) => {
+    await axios.delete(`${BASE_ROADMAP_URL}/${id}`)
+    return id
   }
 )
 
@@ -123,7 +126,7 @@ export const deleteIntersection = createAsyncThunk(
   'roadmap/deleteIntersection',
   async (id) => {
     await axios.delete(`${BASE_INTERSECTIONS_URL}/${id}`)
-    return { id }
+    return id
   }
 )
 
@@ -202,6 +205,9 @@ export const roadmapSlice = createSlice({
     },
     setDeletedId: (state) => {
       state.deletedId = null
+    },
+    setDeletedIntersectionId: (state) => {
+      state.deletedIntersectionId = null
     },
   },
   extraReducers: {
@@ -323,8 +329,9 @@ export const roadmapSlice = createSlice({
     },
     [deleteRoadmap.fulfilled]: (state, action) => {
       state.status = 'success'
-      state.data = state.data.filter((i) => i.id !== action.payload.id)
-      state.deletedId = action.payload.id
+      let index = state.data.findIndex((i) => i.id === action.payload)
+      state.data.splice(index, 1)
+      state.deletedId = action.payload
     },
 
     //get intersections
@@ -332,7 +339,7 @@ export const roadmapSlice = createSlice({
       state.intersections.status = 'success'
       state.intersections.data = action.payload
     },
-    [getIntersections.pending]: (state, action) => {
+    [getIntersections.pending]: (state) => {
       state.intersections.status = 'loading'
     },
     [getIntersections.rejected]: (state, action) => {
@@ -341,10 +348,10 @@ export const roadmapSlice = createSlice({
     },
 
     //post new intersection
-    [postIntersections.pending]: (state, action) => {
+    [postIntersections.pending]: (state) => {
       state.intersections.status = 'loading'
     },
-    [postIntersections.succes]: (state, action) => {
+    [postIntersections.fulfilled]: (state, action) => {
       state.intersections.status = 'success'
       state.intersections.data = [action.payload, ...state.intersections.data]
     },
@@ -355,10 +362,12 @@ export const roadmapSlice = createSlice({
     },
     [deleteIntersection.fulfilled]: (state, action) => {
       state.intersections.status = 'success'
-      state.intersections.data = state.intersections.data.filter(
-        (i) => i.id !== action.payload.id
+      let index = state.intersections.data.findIndex(
+        (i) => i.id === action.payload
       )
-      state.deletedIntersectionId = action.payload.id
+      state.intersections.data.splice(index, 1)
+      state.deletedIntersectionId = action.payload
+      console.log(action.payload, index)
     },
   },
 })
@@ -372,6 +381,7 @@ export const {
   resetFormData,
   setEditedId,
   setDeletedId,
+  setDeletedIntersectionId,
   resetIntersectionsMapData,
   resetMapData,
   resetData,

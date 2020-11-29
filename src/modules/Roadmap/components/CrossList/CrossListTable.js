@@ -2,7 +2,10 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Form, Input } from 'antd'
 
-import { setEditedId } from '../../../../features/roadmap/roadmapSlice'
+import {
+  setDeletedIntersectionId,
+  deleteIntersection,
+} from '../../../../features/roadmap/roadmapSlice'
 
 import { CrossDetailsModal } from './CrossDetailsModal'
 import { CustomTable as Table } from '../../../../common/Table'
@@ -12,9 +15,12 @@ import {
 } from '../../utils/table_helper'
 
 export const CrossListTable = () => {
-  const { categories, intersections, data, editedId } = useSelector(
-    (state) => state.roadmap
-  )
+  const {
+    categories,
+    intersections,
+    data,
+    deletedIntersectionId,
+  } = useSelector((state) => state.roadmap)
   const dispatch = useDispatch()
 
   const [visible, setVisible] = useState(false)
@@ -25,12 +31,17 @@ export const CrossListTable = () => {
   const [form] = Form.useForm()
 
   useEffect(() => {
-    if (editedId && filtered) {
-      let item = dataSource.find((i) => i.id === editedId)
-      setFiltered((state) => state.map((i) => (i.id === editedId ? item : i)))
-      dispatch(setEditedId({ just_id: false }))
+    if (filtered && deletedIntersectionId) {
+      setFiltered((state) =>
+        state.filter((i) => i.id !== deletedIntersectionId)
+      )
+      dispatch(setDeletedIntersectionId())
     }
-  }, [dataSource, editedId, filtered])
+  }, [dataSource, deletedIntersectionId, filtered])
+
+  useMemo(() => {
+    setDataSource(setCrossListDataSourceHelper(data, intersections))
+  }, [data, intersections])
 
   const columns = useMemo(() => {
     return setCrossListTableColumnsHelper(
@@ -41,15 +52,8 @@ export const CrossListTable = () => {
     )
   }, [setVisible, setRecord, intersections, categories])
 
-  useMemo(() => {
-    setDataSource(setCrossListDataSourceHelper(data, intersections))
-  }, [data, intersections])
-
-  const onEdit = (record) => {}
-
   const onDelete = (record) => {
-    console.log(record)
-    // dispatch(deleteRoadMap(record.id))
+    dispatch(deleteIntersection(record.id))
   }
 
   const onSearch = (e) => {
@@ -88,7 +92,6 @@ export const CrossListTable = () => {
           columns={columns}
           data={filtered ? filtered : dataSource}
           setData={setDataSource}
-          handleEdit={onEdit}
           handleDelete={onDelete}
           loading={intersections.status !== 'success' ? true : false}
           isDeletable={true}

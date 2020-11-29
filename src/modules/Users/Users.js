@@ -14,8 +14,8 @@ const Users = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getUsers())
-  }, [])
+    data.length === 0 && dispatch(getUsers())
+  }, [data])
 
   const role_options = useMemo(() => {
     if (roles.status === 'success') {
