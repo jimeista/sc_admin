@@ -158,8 +158,8 @@ const adminSlice = createSlice({
     },
   },
   extraReducers: {
-    //fetch roles
-    [getRoles.pending]: (state, action) => {
+    //get roles
+    [getRoles.pending]: (state) => {
       state.roles.status = 'loading'
     },
     [getRoles.fulfilled]: (state, action) => {
@@ -171,8 +171,8 @@ const adminSlice = createSlice({
       state.roles.error = action.payload
     },
 
-    //fetch all available modules
-    [getModules.pending]: (state, action) => {
+    //get all available modules
+    [getModules.pending]: (state) => {
       state.modules.status = 'loading'
     },
     [getModules.fulfilled]: (state, action) => {
@@ -185,7 +185,7 @@ const adminSlice = createSlice({
     },
 
     //get all roles' modules
-    [getRoleModules.pending]: (state, action) => {
+    [getRoleModules.pending]: (state) => {
       state.role_modules.status = 'loading'
     },
     [getRoleModules.fulfilled]: (state, action) => {
@@ -198,7 +198,7 @@ const adminSlice = createSlice({
     },
 
     //post new role
-    [postRoleModules.pending]: (state, action) => {
+    [postRoleModules.pending]: (state) => {
       state.role_modules.status = 'loading'
     },
     [postRoleModules.fulfilled]: (state, action) => {
@@ -215,7 +215,7 @@ const adminSlice = createSlice({
     },
 
     //update role module
-    [putRoleModule.pending]: (state, action) => {
+    [putRoleModule.pending]: (state) => {
       state.role_modules.status = 'loading'
     },
     [putRoleModule.fulfilled]: (state, action) => {
@@ -224,9 +224,9 @@ const adminSlice = createSlice({
       state.role_modules.data = state.role_modules.data.map((i) =>
         i.id === record.id ? record : i
       )
-      state.roles.data = state.roles.data.map((i) =>
-        i.id === record.id ? { id: record.id, repr: record.repr } : i
-      )
+      state.roles.data = state.roles.data.map((i) => {
+        return i.id === record.id ? { id: record.id, repr: record.repr } : i
+      })
     },
     [putRoleModule.failed]: (state, action) => {
       state.role_modules.status = 'failed'
@@ -234,7 +234,7 @@ const adminSlice = createSlice({
     },
 
     //delete role module
-    [deleteRoleModule.pending]: (state, action) => {
+    [deleteRoleModule.pending]: (state) => {
       state.role_modules.status = 'loading'
     },
     [deleteRoleModule.fulfilled]: (state, action) => {

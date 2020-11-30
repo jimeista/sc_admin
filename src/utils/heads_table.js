@@ -2,7 +2,6 @@ import React from 'react'
 import { Tag } from 'antd'
 
 export const setColumnsHelper = (options) => {
-  console.log(options)
   return [
     {
       title: '№',
@@ -61,8 +60,9 @@ export const setColumnsHelper = (options) => {
 
 export const setDataSourceHelper = (data) =>
   data.map((i, index) => ({
-    key: ++index,
+    key: i['supervisor-id'],
     '#': ++index,
+    'supervisor-id': i['supervisor-id'],
     name: i.name,
     position: i.position,
     'image-path': i['image-path'],

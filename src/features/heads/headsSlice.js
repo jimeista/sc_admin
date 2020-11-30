@@ -11,6 +11,11 @@ export const getHeads = createAsyncThunk('admin/getHeads', async (data) => {
   return res
 })
 
+export const putHeads = createAsyncThunk('admin/putHeads', async (data) => {
+  await axios.put(`/sc-api-gateway/acl/supervisors/${data.id}`, data.server)
+  return { id: data.id, record: data.client }
+})
+
 const headsSlice = createSlice({
   name: 'heads',
   initialState: {
@@ -20,8 +25,8 @@ const headsSlice = createSlice({
   },
   reducers: {},
   extraReducers: {
-    //fetch current user info
-    [getHeads.pending]: (state, action) => {
+    //get current user info
+    [getHeads.pending]: (state) => {
       state.status = 'loading'
     },
     [getHeads.fulfilled]: (state, action) => {
@@ -29,6 +34,25 @@ const headsSlice = createSlice({
       state.data = action.payload
     },
     [getHeads.failed]: (state, action) => {
+      state.status = 'failed'
+      state.error = action.payload
+    },
+
+    //put current user info
+    [putHeads.pending]: (state) => {
+      state.status = 'loading'
+    },
+    [putHeads.fulfilled]: (state, action) => {
+      state.status = 'success'
+      state.data = state.data.map((i) => {
+        if (i['supervisor-id'] === action.payload.id) {
+          return { ...i, ...action.payload.record }
+        }
+
+        return i
+      })
+    },
+    [putHeads.failed]: (state, action) => {
       state.status = 'failed'
       state.error = action.payload
     },

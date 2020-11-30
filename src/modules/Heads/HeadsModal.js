@@ -20,6 +20,10 @@ const HeadsModal = ({ organisations }) => {
     }
   }, [organisations])
 
+  const onEdit = (record) => {
+    console.log(record)
+  }
+
   return (
     <Modal
       btntext='Редактировать курируемые организации'
@@ -31,6 +35,8 @@ const HeadsModal = ({ organisations }) => {
         data={dataSource}
         setData={setDataSource}
         loading={organisations.status !== 'success'}
+        hanldeEdit={onEdit}
+        isEditable={true}
       />
     </Modal>
   )
