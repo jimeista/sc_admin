@@ -34,7 +34,7 @@ export const CrossDetailsModal = (props) => {
 
     setArray(arr)
     dispatch(setCurrent(1))
-    dispatch(setIntersectionsMapData([...intersectionsMapData, list]))
+    dispatch(setIntersectionsMapData([...intersectionsMapData, ...list]))
 
     return () => {
       dispatch(setCurrent(0))

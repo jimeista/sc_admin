@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tag } from 'antd'
+import { Tag, Avatar } from 'antd'
 
 export const setColumnsHelper = (options) => {
   return [
@@ -49,12 +49,16 @@ export const setColumnsHelper = (options) => {
         )
       },
     },
-    // {
-    //   title: 'Фото',
-    //   dataIndex: 'image-path',
-    //   width: '10%',
-    //   editable: true,
-    // },
+    {
+      title: 'Фото',
+      dataIndex: 'image-path',
+      width: '10%',
+      align: 'center',
+      // editable: true,
+      render: (path) => {
+        return <Avatar size='large' src={path} />
+      },
+    },
   ]
 }
 
