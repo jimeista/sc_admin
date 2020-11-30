@@ -64,7 +64,6 @@ const HeadsTable = ({ organisations, data, status }) => {
         loading={status !== 'success'}
         handleEdit={onEdit}
         isEditable={true}
-        // isDeletable={true}
       />
     </div>
   )

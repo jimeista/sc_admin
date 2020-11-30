@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 
 import Modal from '../../common/Modal'
 import { CustomTable as Table } from '../../common/Table'
+import { putOrganisationList } from '../../features/admin/adminSlice'
 
 const HeadsModal = ({ organisations }) => {
   const [dataSource, setDataSource] = useState([])
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (organisations.status === 'success') {
       let arr = organisations.data.map((i, index) => ({
         key: i.id,
         '#': ++index,
-        label: `${i.abbreviation}-${i['full-name']}`,
+        'full-name': `${i.abbreviation}-${i['full-name']}`,
         abbreviation: i.abbreviation,
         id: i.id,
       }))
@@ -21,7 +25,13 @@ const HeadsModal = ({ organisations }) => {
   }, [organisations])
 
   const onEdit = (record) => {
-    console.log(record)
+    dispatch(
+      putOrganisationList({
+        abbreviation: record.abbreviation,
+        'full-name': record['full-name'],
+        id: record.id,
+      })
+    )
   }
 
   return (
@@ -35,7 +45,7 @@ const HeadsModal = ({ organisations }) => {
         data={dataSource}
         setData={setDataSource}
         loading={organisations.status !== 'success'}
-        hanldeEdit={onEdit}
+        handleEdit={onEdit}
         isEditable={true}
       />
     </Modal>
@@ -59,7 +69,7 @@ const columns = [
   },
   {
     title: 'Курируемые организации',
-    dataIndex: 'label',
+    dataIndex: 'full-name',
     width: '50%',
     editable: true,
   },

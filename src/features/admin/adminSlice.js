@@ -27,13 +27,13 @@ export const getOrganisationList = createAsyncThunk(
   }
 )
 
-// export const putOrganisationList = createAsyncThunk(
-//   'admin/putOrganisationList',
-//   async (data) => {
-//     await axios.put(`/sc-api-gateway/acl/supervisors/${data.id}`, data.server)
-//     return data.client
-//   }
-// )
+export const putOrganisationList = createAsyncThunk(
+  'admin/putOrganisationList',
+  async (data) => {
+    await axios.put(`/sc-api-gateway/acl/organisations/${data.id}`, data)
+    return data
+  }
+)
 
 const adminSlice = createSlice({
   name: 'admin',
@@ -81,19 +81,19 @@ const adminSlice = createSlice({
     },
 
     // //put organisation list
-    // [putOrganisationList.pending]: (state, action) => {
-    //   state.organisationList.status = 'loading'
-    // },
-    // [putOrganisationList.fulfilled]: (state, action) => {
-    //   state.organisationList.status = 'success'
-    //   state.organisationList.data = state.organisationList.data.map((i) =>
-    //     i.id === action.payload.id ? { ...action.payload } : i
-    //   )
-    // },
-    // [putOrganisationList.failed]: (state, action) => {
-    //   state.organisationList.status = 'failed'
-    //   state.organisationList.error = action.payload
-    // },
+    [putOrganisationList.pending]: (state, action) => {
+      state.organisationList.status = 'loading'
+    },
+    [putOrganisationList.fulfilled]: (state, action) => {
+      state.organisationList.status = 'success'
+      state.organisationList.data = state.organisationList.data.map((i) =>
+        i.id === action.payload.id ? { ...action.payload } : i
+      )
+    },
+    [putOrganisationList.failed]: (state, action) => {
+      state.organisationList.status = 'failed'
+      state.organisationList.error = action.payload
+    },
   },
 })
 
