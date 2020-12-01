@@ -36,7 +36,7 @@ export const SignInForm = () => {
 
     const config = { headers: { Authorization: auth } }
 
-    dispatch(getAuth({ config, user: { username: record.username, config } }))
+    dispatch(getAuth({ config, user: config }))
   }
 
   return (

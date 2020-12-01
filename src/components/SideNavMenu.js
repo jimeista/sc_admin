@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-// import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { Menu, Button } from 'antd'
 import {
@@ -23,6 +23,8 @@ export const SideNavMenu = ({ width }) => {
     btnheight: 50,
   })
 
+  const { authorities } = useSelector((state) => state.admin)
+
   useEffect(() => {
     width < 600 &&
       setState((state) => ({
@@ -37,15 +39,16 @@ export const SideNavMenu = ({ width }) => {
   }
 
   const menu = useMemo(() => {
-    const modules = [
-      'Роли',
-      'Руководители',
-      'Аналитические индикаторы',
-      'Справочники',
-      'Пользователи',
-    ]
-    let menu_ = setSideNavMenu(modules)
-    // console.log(menu_)
+    let permitted_modules = {}
+    authorities.data.forEach((i) => {
+      i.data.forEach((m) => {
+        permitted_modules = {
+          ...permitted_modules,
+          [m['permitted-module']]: m['permitted-module'],
+        }
+      })
+    })
+    let menu_ = setSideNavMenu(Object.values(permitted_modules))
     return menu_.map((i, index) => (
       <SubMenu
         key={i.submenu}
@@ -64,7 +67,7 @@ export const SideNavMenu = ({ width }) => {
         ))}
       </SubMenu>
     ))
-  }, [])
+  }, [authorities])
 
   return (
     <div

@@ -3,7 +3,11 @@ import Routes from './Routes'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { getRoles, getModules } from './features/roles/rolesSlice'
-import { getOrganisationList } from './features/admin/adminSlice'
+import {
+  setAuth,
+  getOrganisationList,
+  getAuthorities,
+} from './features/admin/adminSlice'
 
 //styles
 import 'antd/dist/antd.css'
@@ -14,6 +18,26 @@ function App() {
   const { roles, modules } = useSelector((state) => state.roles)
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem('user'))
+    if (user && auth.status === 'idle') {
+      dispatch(setAuth({ auth: user.auth, config: user.config }))
+    }
+  }, [])
+
+  useEffect(() => {
+    if (roles.status === 'success' && auth.status === 'success') {
+      let arr = auth.data.roles.map((r) =>
+        r === 'SUPER-ADMIN' ? 'Супер-Администратор' : r
+      )
+      roles.data.forEach((role) => {
+        if (arr.includes(role.repr)) {
+          dispatch(getAuthorities({ config, id: role.id, repr: role.repr }))
+        }
+      })
+    }
+  }, [auth, roles, config])
 
   useEffect(() => {
     if (auth.status === 'success') {

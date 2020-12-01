@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 import { Button } from 'antd'
 import { QuestionOutlined } from '@ant-design/icons'
@@ -8,9 +9,11 @@ import { logout } from '../features/admin/adminSlice'
 
 export const MainContentWrapper = ({ children }) => {
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const onLogout = () => {
     localStorage.removeItem('user')
+    history.push('/авторизация')
     dispatch(logout())
   }
 

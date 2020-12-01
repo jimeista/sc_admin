@@ -15,6 +15,16 @@ export const getAuth = createAsyncThunk('admin/getAuth', async (data) => {
   return { data: res, config: data.config }
 })
 
+export const getAuthorities = createAsyncThunk(
+  'admin/getAuthorities',
+  async (data) => {
+    const url = `/sc-api-gateway/acl/roles/${data.id}/authorities`
+    let res = await axios.get(url, data.config).then((res) => res.data)
+
+    return { role: data.repr, data: res, id: data.id }
+  }
+)
+
 export const getOrganisationList = createAsyncThunk(
   'admin/getOrganisationList',
   async (config) => {
@@ -44,6 +54,11 @@ const adminSlice = createSlice({
       status: 'idle',
       error: '',
     },
+    authorities: {
+      data: [],
+      status: 'idle',
+      error: null,
+    },
     organisationList: {
       data: [],
       status: 'idle',
@@ -54,6 +69,11 @@ const adminSlice = createSlice({
     logout: (state) => {
       state.auth.status = 'idle'
       state.auth.data = {}
+    },
+    setAuth: (state, action) => {
+      state.auth.status = 'success'
+      state.auth.data = action.payload.auth
+      state.config = action.payload.config
     },
   },
   extraReducers: {
@@ -69,6 +89,19 @@ const adminSlice = createSlice({
     [getAuth.failed]: (state, action) => {
       state.auth.status = 'failed'
       state.auth.error = action.payload
+    },
+
+    //get authorities
+    [getAuthorities.pending]: (state) => {
+      state.authorities.status = 'loading'
+    },
+    [getAuthorities.fulfilled]: (state, action) => {
+      state.authorities.status = 'success'
+      state.authorities.data = [action.payload, ...state.authorities.data]
+    },
+    [getAuthorities.failed]: (state, action) => {
+      state.authorities.status = 'failed'
+      state.authorities.error = action.payload
     },
 
     //get organisation list
@@ -101,6 +134,6 @@ const adminSlice = createSlice({
   },
 })
 
-export const { logout } = adminSlice.actions
+export const { logout, setAuth } = adminSlice.actions
 
 export default adminSlice.reducer
