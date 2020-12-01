@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-export const getUsers = createAsyncThunk('admin/getUsers', async () => {
+export const getUsers = createAsyncThunk('admin/getUsers', async (config) => {
   const url = '/sc-api-gateway/acl/users'
-  let res = await axios.get(url).then((res) => res.data)
+  let res = await axios.get(url, config).then((res) => res.data)
   return res
 })
 
@@ -17,7 +17,7 @@ export const postNewUser = createAsyncThunk(
   }
 )
 
-export const editUser = createAsyncThunk('admin/editUser', async (data) => {
+export const putUser = createAsyncThunk('admin/putUser', async (data) => {
   const url = `/sc-api-gateway/acl/users/${data.record['account-id']}`
   await axios.put(url, data.post)
 
@@ -67,16 +67,17 @@ const adminSlice = createSlice({
     },
 
     //edit user
-    [editUser.pending]: (state) => {
+    [putUser.pending]: (state) => {
       state.status = 'loading'
     },
-    [editUser.fulfilled]: (state, action) => {
+    [putUser.fulfilled]: (state, action) => {
+      console.log(action.payload)
       state.status = 'success'
       state.data = state.data.map((i) =>
         i['account-id'] === action.payload['account-id'] ? action.payload : i
       )
     },
-    [editUser.failed]: (state, action) => {
+    [putUser.failed]: (state, action) => {
       state.status = 'failed'
       state.error = action.payload
     },

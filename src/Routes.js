@@ -4,7 +4,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 
 //components
 // import { InfoPanel, Leaders } from './modules/CIP'
-import { SignIn } from './components/SignIn'
+import { SignInForm } from './components/form/SignInForm'
 import Users from './modules/Users/Users'
 import Roles from './modules/Roles/Roles'
 import Roadmap from './modules/Roadmap'
@@ -13,7 +13,7 @@ import { Dictionary, Indicator, IndicatorInfo } from './modules/CMD'
 
 import { Home } from './components/Home'
 
-export const Routes = () => {
+const Routes = () => {
   return (
     <Switch>
       <Redirect exact from='/' to='/Роли' />
@@ -45,16 +45,9 @@ export const Routes = () => {
           </Home>
         )}
       />
-      {/* <Route
-        path='/Инфопанели'
-        component={() => (
-          <Home>
-            <InfoPanel />
-          </Home>
-        )}
-      /> */}
-      <Route exact path='/авторизация' component={SignIn} />
-      <Route exact path='*' render={() => <Redirect to='/Роли' />} />
+      <Route exact path='/авторизация' component={SignInForm} />
     </Switch>
   )
 }
+
+export default React.memo(Routes)

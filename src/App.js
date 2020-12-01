@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Routes } from './Routes'
+import Routes from './Routes'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { getRoles, getModules } from './features/roles/rolesSlice'
@@ -10,22 +10,28 @@ import 'antd/dist/antd.css'
 import './App.css'
 
 function App() {
-  const { auth } = useSelector((state) => state.admin)
+  const { auth, config } = useSelector((state) => state.admin)
   const { roles, modules } = useSelector((state) => state.roles)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getOrganisationList())
-  }, [])
+    if (auth.status === 'success') {
+      dispatch(getOrganisationList(config))
+    }
+  }, [config, auth])
 
   useEffect(() => {
     //TASK:request all available roles and modules for form options
     if (auth.status === 'success') {
-      roles.data.length === 0 && dispatch(getRoles(auth.data))
-      modules.data.length === 0 && dispatch(getModules())
+      if (roles.status === 'idle') {
+        dispatch(getRoles({ auth: auth.data, config }))
+      }
+      if (modules.status === 'idle') {
+        dispatch(getModules(config))
+      }
     }
-  }, [auth, roles, modules])
+  }, [auth, roles, modules, config])
 
   return <Routes />
 }

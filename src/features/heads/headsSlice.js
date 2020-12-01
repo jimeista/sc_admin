@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-export const getHeads = createAsyncThunk('admin/getHeads', async (data) => {
+export const getHeads = createAsyncThunk('admin/getHeads', async (config) => {
   const url = '/sc-api-gateway/acl/supervisors'
   const res = await axios
-    .get(url)
+    .get(url, config)
     .then((res) => res.data)
     .catch((err) => console.log(err))
 

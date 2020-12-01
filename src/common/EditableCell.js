@@ -11,6 +11,7 @@ export const EditableCell = ({
   record,
   index,
   children,
+  notRequired,
   ...restProps
 }) => {
   const { Option } = Select
@@ -83,7 +84,7 @@ export const EditableCell = ({
           }}
           rules={[
             {
-              required: true,
+              required: notRequired ? notRequired : true,
               message: `Введите ${title}!`,
             },
           ]}

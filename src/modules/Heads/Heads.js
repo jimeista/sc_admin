@@ -7,13 +7,13 @@ import HeadsTable from './HeadsTable'
 import HeadsModal from './HeadsModal'
 
 const Heads = () => {
-  const { organisationList } = useSelector((state) => state.admin)
+  const { organisationList, config } = useSelector((state) => state.admin)
   const { status, data } = useSelector((state) => state.heads)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    data.length === 0 && dispatch(getHeads())
-  }, [data])
+    config && data.length === 0 && dispatch(getHeads(config))
+  }, [data, config])
 
   return (
     <div>

@@ -8,14 +8,14 @@ import UserControllers from './UserControllers'
 
 const Users = () => {
   const { data, status } = useSelector((state) => state.users)
-  const { roles } = useSelector((state) => state.roles)
-  const { organisationList } = useSelector((state) => state.admin)
+  const { roles, modules } = useSelector((state) => state.roles)
+  const { organisationList, config } = useSelector((state) => state.admin)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    data.length === 0 && dispatch(getUsers())
-  }, [data])
+    config && data.length === 0 && dispatch(getUsers(config))
+  }, [data, config])
 
   const role_options = useMemo(() => {
     if (roles.status === 'success') {
@@ -29,18 +29,28 @@ const Users = () => {
     if (organisationList.status === 'success') {
       return organisationList.data.map((i) => ({
         ...i,
-        value: `${i.abbreviation}-${i['full-name']}`,
+        value: `${i['full-name']} - ${i.abbreviation}`,
       }))
     }
 
     return []
   }, [organisationList])
 
+  const modules_options = useMemo(() => {
+    if (modules.status === 'success') {
+      return modules.data.map((i) => ({
+        ...i,
+        value: i.name,
+      }))
+    }
+  }, [modules])
+
   return (
     <>
       <UserControllers
         roles={role_options}
         organisations={organisation_options}
+        modules={modules_options}
       />
       <UserTable
         data={data}

@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { CustomTable as Table } from '../../common/Table'
 import { useDispatch } from 'react-redux'
 
-import { deleteUser, editUser } from '../../features/users/usersSlice'
+import { deleteUser, putUser } from '../../features/users/usersSlice'
 
 import { setColumnsHelper, setDataSourceHelper } from '../../utils/users_table'
 import { onRequest } from '../../utils/users_helper'
 
-const UserTable = ({ data, status, roles, organisations }) => {
+const UserTable = ({ data, status, roles, organisations, modules }) => {
   const [dataSource, setDataSource] = useState([])
 
   const dispatch = useDispatch()
@@ -19,12 +19,12 @@ const UserTable = ({ data, status, roles, organisations }) => {
   }, [data, status])
 
   const onEdit = (record_) => {
-    let { post, record } = onRequest(record_, roles, organisations)
+    let { post, record } = onRequest(record_, roles, organisations, modules)
 
     delete record['№']
     delete record['key']
 
-    dispatch(editUser({ post, record }))
+    dispatch(putUser({ post, record }))
   }
   const onDelete = (record) => {
     dispatch(deleteUser(record['account-id']))
@@ -34,7 +34,8 @@ const UserTable = ({ data, status, roles, organisations }) => {
     <Table
       columns={setColumnsHelper(
         organisations.map((o) => o.value),
-        roles
+        roles,
+        modules
       )}
       data={dataSource}
       setData={setDataSource}

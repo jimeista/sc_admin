@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-export const getRoles = createAsyncThunk('admin/getRoles', async (auth) => {
+export const getRoles = createAsyncThunk('admin/getRoles', async (data) => {
   const url = '/sc-api-gateway/acl/roles'
   let isAdmin = false
 
   //check if SUPER-ADMIN is loged to show super-admin role
-  auth.roles.forEach((name) => {
+  data.auth.roles.forEach((name) => {
     if (name === 'SUPER-ADMIN') {
       isAdmin = true
     }
@@ -14,7 +14,7 @@ export const getRoles = createAsyncThunk('admin/getRoles', async (auth) => {
 
   //validate SUPER-ADMIN privileges
   const res = await axios
-    .get(url)
+    .get(url, data.config)
     .then((res) => {
       if (!isAdmin) {
         return res.data.filter((i) => i.repr !== 'Супер-Администратор')
@@ -26,24 +26,27 @@ export const getRoles = createAsyncThunk('admin/getRoles', async (auth) => {
   return res
 })
 
-export const getModules = createAsyncThunk('admin/getModules', async (data) => {
-  const url = '/sc-api-gateway/acl/modules'
-  const res = await axios
-    .get(url)
-    .then((res) => res.data)
-    .catch((err) => console.log(err))
+export const getModules = createAsyncThunk(
+  'admin/getModules',
+  async (config) => {
+    const url = '/sc-api-gateway/acl/modules'
+    const res = await axios
+      .get(url, config)
+      .then((res) => res.data)
+      .catch((err) => console.log(err))
 
-  return res
-})
+    return res
+  }
+)
 
 export const getRoleModules = createAsyncThunk(
   'admin/getRoleModules',
-  async (roles) => {
+  async (data) => {
     let modules = []
-    for (const role of roles) {
+    for (const role of data.roles) {
       const url = `/sc-api-gateway/acl/roles/${role.id}/authorities`
-      let data = await axios
-        .get(url)
+      let data_ = await axios
+        .get(url, data.config)
         .then((res) => {
           // console.log(res.data)
           return {
@@ -54,7 +57,7 @@ export const getRoleModules = createAsyncThunk(
         })
         .catch((err) => console.log(err))
 
-      modules = [...modules, data]
+      modules = [...modules, data_]
     }
 
     return modules

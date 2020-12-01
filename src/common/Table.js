@@ -124,6 +124,7 @@ export const CustomTable = (props) => {
         data: col.data,
         placeholder: col.placeholder,
         editing: isEditing(record),
+        notRequired: col.notRequired,
       }),
     }
   })

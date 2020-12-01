@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
+// import { useSelector } from 'react-redux'
 
 import { Menu, Button } from 'antd'
 import {
@@ -12,6 +13,8 @@ import {
   FileOutlined,
 } from '@ant-design/icons'
 
+import { setSideNavMenu } from '../utils/menu_helper'
+
 const { SubMenu } = Menu
 
 export const SideNavMenu = ({ width }) => {
@@ -19,10 +22,6 @@ export const SideNavMenu = ({ width }) => {
     collapsed: false,
     btnheight: 50,
   })
-
-  const toggleCollapsed = () => {
-    setState((state) => ({ ...state, collapsed: !state.collapsed }))
-  }
 
   useEffect(() => {
     width < 600 &&
@@ -33,15 +32,28 @@ export const SideNavMenu = ({ width }) => {
       }))
   }, [width])
 
+  const toggleCollapsed = () => {
+    setState((state) => ({ ...state, collapsed: !state.collapsed }))
+  }
+
   const menu = useMemo(() => {
-    return sidenavmenu.map((ob, index) => (
+    const modules = [
+      'Роли',
+      'Руководители',
+      'Аналитические индикаторы',
+      'Справочники',
+      'Пользователи',
+    ]
+    let menu_ = setSideNavMenu(modules)
+    // console.log(menu_)
+    return menu_.map((i, index) => (
       <SubMenu
-        key={ob.submenu}
+        key={i.submenu}
         icon={index % 2 === 0 ? <MailOutlined /> : <ContainerOutlined />}
-        title={ob.submenu}
+        title={i.submenu}
         className='SideNavMenu_style_sub_menu'
       >
-        {ob.menuitems.map((menuitem) => (
+        {i.menuitems.map((menuitem) => (
           <Menu.Item
             key={menuitem}
             icon={<FileOutlined />}
@@ -86,36 +98,3 @@ export const SideNavMenu = ({ width }) => {
     </div>
   )
 }
-
-const sidenavmenu = [
-  {
-    submenu: 'Управление мастер-данными',
-    menuitems: [
-      'Справочники',
-      'Аналитические индикаторы',
-      'Показатели индикаторов',
-      'Карта ремонтных работ',
-    ],
-  },
-  {
-    submenu: 'Управление информационной панелью',
-    // menuitems: ['Руководители', 'Инфопанели'],
-    menuitems: ['Руководители'],
-  },
-  // {
-  //   submenu: 'Управление открытыми данными',
-  //   menuitems: [],
-  // },
-  // {
-  //   submenu: 'Аудирование данных',
-  //   menuitems: ['Контроль', 'Аудит и сверка'],
-  // },
-  // {
-  //   submenu: 'Управление информационными данными',
-  //   menuitems: [],
-  // },
-  {
-    submenu: 'Управление пользователями',
-    menuitems: ['Роли', 'Пользователи'],
-  },
-]

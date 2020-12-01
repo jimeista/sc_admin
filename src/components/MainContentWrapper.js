@@ -1,9 +1,19 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 
 import { Button } from 'antd'
 import { QuestionOutlined } from '@ant-design/icons'
 
+import { logout } from '../features/admin/adminSlice'
+
 export const MainContentWrapper = ({ children }) => {
+  const dispatch = useDispatch()
+
+  const onLogout = () => {
+    localStorage.removeItem('user')
+    dispatch(logout())
+  }
+
   return (
     <div
       style={{ width: '100%', height: '100%' }}
@@ -21,7 +31,7 @@ export const MainContentWrapper = ({ children }) => {
           >
             ФИО/Организация
           </span>
-          <Button className='MainContent_style_header_btn'>Выйти</Button>
+          <Button onClick={onLogout}>Выйти</Button>
         </div>
       </div>
       <div className='main-content-wrapper MainContent_style_body'>

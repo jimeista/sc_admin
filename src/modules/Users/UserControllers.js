@@ -5,18 +5,20 @@ import { useDispatch } from 'react-redux'
 import { postNewUser } from '../../features/users/usersSlice'
 import { onRequest } from '../../utils/users_helper'
 
-const UserControllers = ({ roles, organisations }) => {
+const UserControllers = ({ roles, organisations, modules }) => {
   const [form] = Form.useForm()
   const { Option } = Select
 
   const dispatch = useDispatch()
 
   const onAdd = async () => {
-    let fields = await form.validateFields()
+    let record = await form.validateFields()
+    if (typeof record.roles === 'undefined') {
+      record = { ...record, roles: [] }
+    }
 
-    let ob = onRequest(fields, roles, organisations)
-
-    delete fields.password
+    delete record.password
+    let ob = onRequest(record, roles, organisations, modules)
 
     dispatch(postNewUser(ob))
     form.resetFields()
@@ -56,12 +58,12 @@ const UserControllers = ({ roles, organisations }) => {
         <Form.Item
           name='roles'
           style={{ width: '60%' }}
-          rules={[
-            {
-              required: true,
-              message: `Выберите роль пользователя!`,
-            },
-          ]}
+          // rules={[
+          //   {
+          //     required: true,
+          //     message: `Выберите роль пользователя!`,
+          //   },
+          // ]}
         >
           <Select
             placeholder='Роли'
@@ -71,8 +73,26 @@ const UserControllers = ({ roles, organisations }) => {
             options={roles}
           />
         </Form.Item>
-        <Form.Item name='username' style={{ width: '60%' }}>
-          <Input placeholder='Логин' type={'email'} />
+        <Form.Item name='modules' style={{ width: '60%' }}>
+          <Select
+            placeholder='Модули'
+            allowClear
+            mode='multiple'
+            tagRender={tagRender}
+            options={modules}
+          />
+        </Form.Item>
+        <Form.Item
+          name='username'
+          style={{ width: '60%' }}
+          rules={[
+            {
+              required: true,
+              message: `Введите логин`,
+            },
+          ]}
+        >
+          <Input placeholder='Логин' />
         </Form.Item>
         <Form.Item
           name='password'
