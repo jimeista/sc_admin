@@ -1,13 +1,14 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import { Button } from 'antd'
-import { QuestionOutlined } from '@ant-design/icons'
+import { Avatar, Button } from 'antd'
+import { UserOutlined } from '@ant-design/icons'
 
 import { logout } from '../features/admin/adminSlice'
 
 const MainContentWrapper = ({ children }) => {
+  const { auth } = useSelector((state) => state.admin)
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -27,12 +28,13 @@ const MainContentWrapper = ({ children }) => {
           {/* <a href='#'>ru</a> | <a href='#'>kaz</a> */}
         </div>
         <div className='MainContent_style_header'>
-          <QuestionOutlined style={{ marginRight: '1rem' }} />
+          <Avatar icon={<UserOutlined />} />
           <span
             style={{ margin: '0 1rem' }}
             className='MainContent_style_header_fio'
           >
-            ФИО/Организация
+            {auth.status === 'success' &&
+              `${auth.data.name}/${auth.data.organisation.abbreviation}-${auth.data.organisation['full-name']}`}
           </span>
           <Button onClick={onLogout}>Выйти</Button>
         </div>

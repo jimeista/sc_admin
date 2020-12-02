@@ -19,7 +19,7 @@ const Routes = () => {
       <Redirect exact from='/' to='/Роли' />
       <ProtectedRoute exact path='/Роли' component={Roles} />
       <ProtectedRoute exact path='/Пользователи' component={Users} />
-      <ProtectedRoute exact path='/Карта ремонтных работ' component={Roadmap} />
+      <ProtectedRoute exact path='/Ремонт дорог' component={Roadmap} />
       <ProtectedRoute exact path='/Руководители' component={Heads} />
       <Route
         path='/Справочники'

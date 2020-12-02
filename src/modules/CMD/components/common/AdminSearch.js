@@ -2,7 +2,7 @@ import React, { useRef, useContext } from 'react'
 import { Input } from 'antd'
 import { AppContext } from '../../context/main'
 
-export const AdminSearch = ({ style, ref }) => {
+export const AdminSearch = ({ placeholder }) => {
   const inptRef = useRef()
   const { setSearchText } = useContext(AppContext)
 
@@ -10,7 +10,7 @@ export const AdminSearch = ({ style, ref }) => {
 
   return (
     <Input
-      placeholder='Поиск справочника'
+      placeholder={placeholder ? placeholder : 'Поиск справочника'}
       defaultValue=''
       ref={inptRef}
       allowClear

@@ -17,7 +17,7 @@ const UserControllers = ({ roles, organisations, modules }) => {
       record = { ...record, roles: [] }
     }
 
-    delete record.password
+    // delete record.password
     let ob = onRequest(record, roles, organisations, modules)
 
     dispatch(postNewUser(ob))

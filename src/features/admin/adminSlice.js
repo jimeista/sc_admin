@@ -86,7 +86,7 @@ const adminSlice = createSlice({
       state.auth.data = action.payload.data
       state.config = action.payload.config
     },
-    [getAuth.failed]: (state, action) => {
+    [getAuth.rejected]: (state, action) => {
       state.auth.status = 'failed'
       state.auth.error = action.payload
     },
@@ -99,7 +99,7 @@ const adminSlice = createSlice({
       state.authorities.status = 'success'
       state.authorities.data = [action.payload, ...state.authorities.data]
     },
-    [getAuthorities.failed]: (state, action) => {
+    [getAuthorities.rejected]: (state, action) => {
       state.authorities.status = 'failed'
       state.authorities.error = action.payload
     },
@@ -112,7 +112,7 @@ const adminSlice = createSlice({
       state.organisationList.status = 'success'
       state.organisationList.data = action.payload
     },
-    [getOrganisationList.failed]: (state, action) => {
+    [getOrganisationList.rejected]: (state, action) => {
       state.organisationList.status = 'failed'
       state.organisationList.error = action.payload
     },
@@ -127,7 +127,7 @@ const adminSlice = createSlice({
         i.id === action.payload.id ? { ...action.payload } : i
       )
     },
-    [putOrganisationList.failed]: (state, action) => {
+    [putOrganisationList.rejected]: (state, action) => {
       state.organisationList.status = 'failed'
       state.organisationList.error = action.payload
     },

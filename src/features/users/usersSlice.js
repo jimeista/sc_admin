@@ -11,7 +11,10 @@ export const postNewUser = createAsyncThunk(
   'admin/postNewUser',
   async (data) => {
     const url = '/sc-api-gateway/acl/users'
-    let id = await axios.post(url, data.post).then((res) => res.data)
+    let id = await axios.post(url, data.post).then((res) => {
+      console.log(res)
+      return res.data
+    })
 
     return { 'account-id': id, ...data.record }
   }

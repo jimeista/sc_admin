@@ -136,7 +136,7 @@ export const AdminTable = ({
     )
   }
 
-  const mergedColumns = cols.map((col, index) => {
+  const mergedColumns = cols.map((col) => {
     if (!col.editable) {
       return col
     }

@@ -173,7 +173,7 @@ export const Controllers = ({ isStrategy }) => {
     <div className={'form_indicators'}>
       {!fetchedDictionaryData.loading && (
         <Form form={form}>
-          <Form.Item>
+          <Form.Item style={{ width: '60%' }}>
             <Form.Item name='input'>
               <Input
                 placeholder={'Введите название индикатора'}

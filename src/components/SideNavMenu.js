@@ -92,7 +92,11 @@ const SideNavMenu = ({ width }) => {
       </Button>
       <Menu
         defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
+        defaultOpenKeys={[
+          'Управление пользователями',
+          'Управление мастер-данными',
+          'Управление информационной панелью',
+        ]}
         mode='inline'
         inlineCollapsed={width < 600 ? false : state.collapsed}
         style={{ height: '100%' }}

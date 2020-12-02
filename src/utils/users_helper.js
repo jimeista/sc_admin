@@ -7,9 +7,9 @@ export const onRequest = (record, roles, organisations, modules) => {
     username: record.username,
     password: record.password ? record.password : '',
     roles: roles.filter((i) => record.roles.includes(i.value)).map((i) => i.id),
-    modules: modules
-      .filter((i) => record.modules.includes(i.value))
-      .map((i) => i.id),
+    modules: record.modules
+      ? modules.filter((i) => record.modules.includes(i.value)).map((i) => i.id)
+      : [],
   }
 
   //client post object

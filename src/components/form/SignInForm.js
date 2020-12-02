@@ -17,7 +17,9 @@ export const SignInForm = () => {
   useEffect(() => {
     if (auth.status === 'success') {
       message.success('Авторизация прошла успешно')
-    } else if (auth.status === 'failed') {
+    }
+
+    if (auth.status === 'failed') {
       message.error('Ошибка авторизации')
     }
 

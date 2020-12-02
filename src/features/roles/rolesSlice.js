@@ -6,19 +6,19 @@ export const getRoles = createAsyncThunk('admin/getRoles', async (data) => {
   let isAdmin = false
 
   //check if SUPER-ADMIN is loged to show super-admin role
-  data.auth.roles.forEach((name) => {
-    if (name === 'SUPER-ADMIN') {
-      isAdmin = true
-    }
-  })
+  // data.auth.roles.forEach((name) => {
+  //   if (name === 'SUPER-ADMIN') {
+  //     isAdmin = true
+  //   }
+  // })
 
   //validate SUPER-ADMIN privileges
   const res = await axios
     .get(url, data.config)
     .then((res) => {
-      if (!isAdmin) {
-        return res.data.filter((i) => i.repr !== 'Супер-Администратор')
-      }
+      // if (!isAdmin) {
+      //   return res.data.filter((i) => i.repr !== 'Супер-Администратор')
+      // }
       return res.data
     })
     .catch((err) => console.log(err))
