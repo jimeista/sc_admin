@@ -48,6 +48,7 @@ const SideNavMenu = ({ width }) => {
         }
       })
     })
+
     let menu_ = setSideNavMenu(Object.values(permitted_modules))
 
     return menu_.map((i, index) => (

@@ -24,15 +24,12 @@ function App() {
     if (user && auth.status === 'idle') {
       dispatch(setAuth({ auth: user.auth, config: user.config }))
     }
-  }, [])
+  }, [auth])
 
   useEffect(() => {
     if (roles.status === 'success' && auth.status === 'success') {
-      let arr = auth.data.roles.map((r) =>
-        r === 'SUPER-ADMIN' ? 'Супер-Администратор' : r
-      )
       roles.data.forEach((role) => {
-        if (arr.includes(role.repr)) {
+        if (auth.data.roles.includes(role.repr)) {
           dispatch(getAuthorities({ config, id: role.id, repr: role.repr }))
         }
       })

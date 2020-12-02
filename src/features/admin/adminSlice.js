@@ -75,6 +75,10 @@ const adminSlice = createSlice({
       state.auth.data = action.payload.auth
       state.config = action.payload.config
     },
+    setAuthorities: (state) => {
+      state.authorities.status = 'idle'
+      state.authorities.data = []
+    },
   },
   extraReducers: {
     //get current user info
@@ -134,6 +138,6 @@ const adminSlice = createSlice({
   },
 })
 
-export const { logout, setAuth } = adminSlice.actions
+export const { logout, setAuth, setAuthorities } = adminSlice.actions
 
 export default adminSlice.reducer
