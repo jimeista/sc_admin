@@ -9,6 +9,7 @@ import roadmapReducer from './features/roadmap/roadmapSlice'
 import rolesReducer from './features/roles/rolesSlice'
 import usersReducer from './features/users/usersSlice'
 import headsReducer from './features/heads/headsSlice'
+import indicatorReducer from './features/indicator/indicatorSlice'
 
 import './index.css'
 import App from './App'
@@ -20,6 +21,7 @@ const store = configureStore({
     roles: rolesReducer,
     users: usersReducer,
     heads: headsReducer,
+    indicator: indicatorReducer,
   },
 })
 

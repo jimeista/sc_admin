@@ -33,6 +33,7 @@ function App() {
           dispatch(getAuthorities({ config, id: role.id, repr: role.repr }))
         }
       })
+      // dispatch(getAuthorities({config, roles:roles.data}))
     }
   }, [auth, roles, config])
 

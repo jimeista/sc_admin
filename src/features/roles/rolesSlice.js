@@ -3,27 +3,13 @@ import axios from 'axios'
 
 export const getRoles = createAsyncThunk('admin/getRoles', async (data) => {
   const url = '/sc-api-gateway/acl/roles'
-  let isAdmin = false
 
-  //check if SUPER-ADMIN is loged to show super-admin role
-  // data.auth.roles.forEach((name) => {
-  //   if (name === 'SUPER-ADMIN') {
-  //     isAdmin = true
-  //   }
-  // })
-
-  //validate SUPER-ADMIN privileges
-  const res = await axios
+  return await axios
     .get(url, data.config)
     .then((res) => {
-      // if (!isAdmin) {
-      //   return res.data.filter((i) => i.repr !== 'Супер-Администратор')
-      // }
       return res.data
     })
     .catch((err) => console.log(err))
-
-  return res
 })
 
 export const getModules = createAsyncThunk(
@@ -48,7 +34,6 @@ export const getRoleModules = createAsyncThunk(
       let data_ = await axios
         .get(url, data.config)
         .then((res) => {
-          // console.log(res.data)
           return {
             id: role.id,
             repr: role.repr,

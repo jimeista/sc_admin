@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { Avatar, Button } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 
-import { logout, setAuthorities } from '../features/admin/adminSlice'
+import { logout } from '../features/admin/adminSlice'
 
 const MainContentWrapper = ({ children }) => {
   const { auth } = useSelector((state) => state.admin)
@@ -14,7 +14,6 @@ const MainContentWrapper = ({ children }) => {
 
   const onLogout = () => {
     dispatch(logout())
-    dispatch(setAuthorities())
     localStorage.removeItem('user')
     history.push('/авторизация')
   }

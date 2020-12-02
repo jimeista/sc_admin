@@ -10,6 +10,8 @@ import Users from './modules/Users/Users'
 import Roles from './modules/Roles/Roles'
 import Roadmap from './modules/Roadmap'
 import Heads from './modules/Heads/Heads'
+import AnalyticIndicator from './modules/AnalyticIndicator/Indicator'
+
 import { Dictionary, Indicator, IndicatorInfo } from './modules/CMD'
 
 import Home from './components/Home'
@@ -24,6 +26,7 @@ const Routes = () => {
       <ProtectedRoute exact path='/Пользователи' component={Users} />
       <ProtectedRoute exact path='/Ремонт дорог' component={Roadmap} />
       <ProtectedRoute exact path='/Руководители' component={Heads} />
+      <ProtectedRoute exact path='/test' component={AnalyticIndicator} />
       <Route
         path='/Справочники'
         component={() => (

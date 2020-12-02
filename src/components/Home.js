@@ -28,14 +28,19 @@ const Home = ({ children }) => {
 
   return (
     <div
-      className='App Admin_main_style'
+      // className='App Admin_main_style'
       style={{ display: width < 600 ? 'block' : 'flex' }}
     >
       <SideNavMenu width={width} />
       <MainContentWrapper>
         <div
-          style={{ width: '100%', margin: '20px auto', padding: 5 }}
-          className='Admin_main_style_content'
+          style={{
+            width: '100%',
+            margin: '20px auto',
+            padding: 5,
+            overflow: 'scroll',
+          }}
+          // className='Admin_main_style_content'
         >
           {children}
         </div>
