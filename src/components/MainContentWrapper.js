@@ -7,7 +7,7 @@ import { QuestionOutlined } from '@ant-design/icons'
 
 import { logout } from '../features/admin/adminSlice'
 
-export const MainContentWrapper = ({ children }) => {
+const MainContentWrapper = ({ children }) => {
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -43,3 +43,5 @@ export const MainContentWrapper = ({ children }) => {
     </div>
   )
 }
+
+export default React.memo(MainContentWrapper)

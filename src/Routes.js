@@ -11,7 +11,7 @@ import Roadmap from './modules/Roadmap'
 import Heads from './modules/Heads/Heads'
 import { Dictionary, Indicator, IndicatorInfo } from './modules/CMD'
 
-import { Home } from './components/Home'
+import Home from './components/Home'
 
 const Routes = () => {
   return (

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 
-import { SideNavMenu } from './SideNavMenu'
-import { MainContentWrapper } from './MainContentWrapper'
+import SideNavMenu from './SideNavMenu'
+import MainContentWrapper from './MainContentWrapper'
 
-export const Home = ({ children }) => {
+const Home = ({ children }) => {
   let [width, setWidth] = useState(window.innerWidth)
 
   const getWidth = () =>
@@ -43,3 +43,5 @@ export const Home = ({ children }) => {
     </div>
   )
 }
+
+export default React.memo(Home)

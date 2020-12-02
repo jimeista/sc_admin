@@ -17,7 +17,7 @@ import { setSideNavMenu } from '../utils/menu_helper'
 
 const { SubMenu } = Menu
 
-export const SideNavMenu = ({ width }) => {
+const SideNavMenu = ({ width }) => {
   const [state, setState] = useState({
     collapsed: false,
     btnheight: 50,
@@ -49,6 +49,7 @@ export const SideNavMenu = ({ width }) => {
       })
     })
     let menu_ = setSideNavMenu(Object.values(permitted_modules))
+
     return menu_.map((i, index) => (
       <SubMenu
         key={i.submenu}
@@ -101,3 +102,5 @@ export const SideNavMenu = ({ width }) => {
     </div>
   )
 }
+
+export default React.memo(SideNavMenu)

@@ -30,12 +30,11 @@ const checkModule = (menu, module) => {
 }
 
 const configure = (menu, submenu, module) => {
-  // console.log(menu)
   let item = menu[submenu]
   if (item) {
     menu = {
       ...menu,
-      [submenu]: { ...item, menuitems: [...item.menuitems], module },
+      [submenu]: { submenu, menuitems: [...item.menuitems, module] },
     }
   } else {
     menu = { ...menu, [submenu]: { submenu, menuitems: [module] } }
