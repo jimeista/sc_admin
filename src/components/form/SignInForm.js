@@ -45,8 +45,8 @@ export const SignInForm = () => {
     <div className={'Form_main_style'}>
       <div className={`Form_style_wrapper`}>
         <div className={`title_back`}>
-          Панель андминистратора <br />
-          Ситуационного Центра Города Алматы
+          Панель администратора <br />
+          Ситуационного центра города алматы
         </div>
         <Form form={form} className={`Form_style_wrap`}>
           <Form.Item

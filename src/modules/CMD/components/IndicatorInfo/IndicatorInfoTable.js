@@ -45,7 +45,7 @@ export const IndicatorInfoTable = ({ plan, isStrategy }) => {
 
       return plan === 'План'
         ? item.planned && {
-            key: index,
+            key: item['indicator-name'],
             id: item.id,
             year,
             План: item.planned,
@@ -53,7 +53,7 @@ export const IndicatorInfoTable = ({ plan, isStrategy }) => {
             comment: item['edit-comment'],
           }
         : item.fact && {
-            key: index,
+            key: item['indicator-name'],
             id: item.id,
             year,
             Факт: item.fact,
@@ -115,7 +115,6 @@ export const IndicatorInfoTable = ({ plan, isStrategy }) => {
       url2={`/sc-analytic-indicators/api/indicators/${modalIndicator.id}/indexes`}
       save={save}
       edit={edit}
-      
     />
   )
 }
