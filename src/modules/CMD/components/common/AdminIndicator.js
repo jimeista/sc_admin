@@ -93,8 +93,9 @@ export const AdminIndicator = ({ isLink, isStrategy }) => {
       dataIndex: 'Индикатор',
       width: 250,
       editable: true,
-      render: (text, record) =>
-        isLink ? (
+      render: (text, record) => {
+        console.log(record)
+        return isLink ? (
           <a
             onClick={() => {
               setOpen(true)
@@ -108,7 +109,8 @@ export const AdminIndicator = ({ isLink, isStrategy }) => {
           </a>
         ) : (
           text
-        ),
+        )
+      },
       sorter: (a, b) => strcmp(a.Индикатор, b.Индикатор),
       sortDirections: ['ascend'],
     },

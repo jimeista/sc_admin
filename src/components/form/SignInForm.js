@@ -78,11 +78,11 @@ export const SignInForm = () => {
             />
           </Form.Item>
           <div className={`Form_btn`}>
-            <div>
-              <span onClick={onCancel}>сбросить</span>
+            <div onClick={onCancel}>
+              <span>сбросить</span>
             </div>
-            <div>
-              <span onClick={onSubmit}>применить</span>
+            <div onClick={onSubmit}>
+              <span>применить</span>
             </div>
           </div>
         </Form>

@@ -15,7 +15,9 @@ export const IndicatorInfoTable = ({ plan, isStrategy }) => {
       title: 'Дата',
       dataIndex: 'year',
       key: 'year',
-      render: (text) => <a>{text}</a>,
+      render: (text) => {
+        return <a>{text}</a>
+      },
     },
     {
       title: plan,
