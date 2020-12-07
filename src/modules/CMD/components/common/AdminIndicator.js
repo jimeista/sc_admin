@@ -94,10 +94,10 @@ export const AdminIndicator = ({ isLink, isStrategy }) => {
       width: 250,
       editable: true,
       render: (text, record) => {
-        console.log(record)
         return isLink ? (
           <a
             onClick={() => {
+              console.log(record)
               setOpen(true)
               setModalIndicator({
                 name: record.key,
