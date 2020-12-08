@@ -6,7 +6,7 @@ import { Button, Input, Select } from '../common'
 
 import { AppContext } from '../../context/main'
 
-export const Controllers = ({ ant_form, setIsError }) => {
+export const Controllers = ({ ant_form }) => {
   const inptRef = useRef()
   const inptRef2 = useRef()
 

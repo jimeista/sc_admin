@@ -17,8 +17,9 @@ export const Controllers = ({ plan }) => {
 
   const [form] = Form.useForm()
 
+  // console.log(modalIndicator)
   const handleSubmit = () => {
-    if (state.date && state.value) {
+    if ((state.date && state.value) || state.value === 0) {
       const ob = {
         date: state.date.month
           ? `${state.date.year}-${state.date.month}-15`
@@ -34,7 +35,6 @@ export const Controllers = ({ plan }) => {
         `/sc-analytic-indicators/api/indicators/${modalIndicator.id}/indexes`,
         ob
       ).then((res) => {
-        console.log(res)
         setStatus({
           alert: true,
           message: 'Успешно',

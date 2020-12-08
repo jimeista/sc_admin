@@ -1,4 +1,10 @@
-import React, { useMemo, useState, useContext, useEffect } from 'react'
+import React, {
+  useMemo,
+  useCallback,
+  useState,
+  useContext,
+  useEffect,
+} from 'react'
 import { Table, Form, Space, Popconfirm } from 'antd'
 import {
   EditOutlined,
@@ -48,10 +54,12 @@ const AdminTable = ({
     }
   }, [data, searchText])
 
-  const isEditing = (record) => {
-    console.log(record, editingKey)
-    return record.key === editingKey
-  }
+  const isEditing = useCallback(
+    (record) => {
+      return record.key === editingKey
+    },
+    [editingKey]
+  )
 
   const edit = (record, form, setEditingKey) => {
     form.setFieldsValue({
@@ -64,18 +72,21 @@ const AdminTable = ({
     setEditingKey('')
   }
 
-  const handleDelete = (id) => {
-    deleteAPI(`${url}/${id}`).then((res) =>
-      getAPI(url2 ? url2 : url)
-        .then((res) =>
-          setFetchedData({
-            loading: false,
-            data: res.data,
-          })
-        )
-        .catch((err) => console.log(err))
-    )
-  }
+  const handleDelete = useCallback(
+    (id) => {
+      deleteAPI(`${url}/${id}`).then((res) =>
+        getAPI(url2 ? url2 : url)
+          .then((res) =>
+            setFetchedData({
+              loading: false,
+              data: res.data,
+            })
+          )
+          .catch((err) => console.log(err))
+      )
+    },
+    [url, url2, setFetchedData]
+  )
 
   // console.log(data)
   const mergedColumns = useMemo(() => {
@@ -151,13 +162,13 @@ const AdminTable = ({
         onCell: (record) => {
           return {
             record,
-            setIndicator: col.setIndicator,
+            // setindicator: col.setIndicator,
             inputType: col.type,
             dataIndex: col.dataIndex,
             title: col.title,
             data: col.data,
             editing: isEditing(record),
-            callBack: col.callBack,
+            // callback: col.callBack,
           }
         },
       }
