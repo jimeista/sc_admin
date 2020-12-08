@@ -48,7 +48,10 @@ const AdminTable = ({
     }
   }, [data, searchText])
 
-  const isEditing = (record) => record.key === editingKey
+  const isEditing = (record) => {
+    console.log(record, editingKey)
+    return record.key === editingKey
+  }
 
   const edit = (record, form, setEditingKey) => {
     form.setFieldsValue({
@@ -74,7 +77,7 @@ const AdminTable = ({
     )
   }
 
-  console.log(data)
+  // console.log(data)
   const mergedColumns = useMemo(() => {
     const arr = isLink
       ? cols
@@ -135,9 +138,10 @@ const AdminTable = ({
           },
         ]
 
-    cols = cols.length > 0 && cols[0].title === 'Все справочники' ? cols : arr
+    let cols_ =
+      cols.length > 0 && cols[0].title === 'Все справочники' ? cols : arr
 
-    return cols.map((col) => {
+    return cols_.map((col) => {
       if (!col.editable) {
         return col
       }
@@ -158,7 +162,7 @@ const AdminTable = ({
         },
       }
     })
-  }, [])
+  }, [cols, editingKey, isEditing, handleDelete, save, isLink, form])
 
   return (
     <Form form={form} component={false}>

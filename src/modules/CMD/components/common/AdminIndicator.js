@@ -180,7 +180,13 @@ export const AdminIndicator = ({ isLink, isStrategy }) => {
     ]
 
     return columns_
-  }, [fetchedDictionaryData, isLink, isStrategy, dictionary_names])
+  }, [
+    fetchedDictionaryData,
+    isLink,
+    isStrategy,
+    dictionary_names,
+    setModalIndicator,
+  ])
 
   const save = async (record, form, setEditingKey) => {
     try {
