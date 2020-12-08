@@ -8,7 +8,6 @@ export const AdminSelect = ({
   style = { margin: 5, marginLeft: 0, marginRight: 8 },
   callBack,
   defaultValue,
-
 }) => {
   const {
     setSelectedDictionaryName,
@@ -40,6 +39,7 @@ export const AdminSelect = ({
         onChange={handleChangeOptionName}
         className='AdminSelect_style'
         defaultValue={defaultValue}
+        virtual={false}
       />
     ) : (
       <TreeSelect
@@ -48,6 +48,7 @@ export const AdminSelect = ({
         style={style}
         treeData={setTreeData(dictionary_names)}
         className='AdminSelect_style'
+        virtual={false}
       />
     )
 
