@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import { Tabs } from 'antd'
 
 import IndicatorTable from './IndicatorTable'
 import IndicatorControllers from './IndicatorControllers'
@@ -12,6 +13,7 @@ import {
 
 const Indicator = () => {
   const dispatch = useDispatch()
+  const { TabPane } = Tabs
 
   useEffect(() => {
     dispatch(getIndicator())
@@ -19,10 +21,15 @@ const Indicator = () => {
   }, [])
 
   return (
-    <div>
-      <IndicatorControllers />
-      <IndicatorTable />
-    </div>
+    <Tabs defaultActiveKey='1' tabPosition={'top'}>
+      <TabPane tab='Панель администратора' key='1'>
+        <IndicatorControllers />
+        <IndicatorTable />
+      </TabPane>
+      <TabPane tab='Индикатор стратегии' key='2'>
+        dadas
+      </TabPane>
+    </Tabs>
   )
 }
 

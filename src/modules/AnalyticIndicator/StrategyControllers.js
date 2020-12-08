@@ -7,15 +7,13 @@ import { postIndicator } from '../../features/indicator/indicatorSlice'
 
 const { Option } = Select
 
-const IndicatorControllers = () => {
+const StrategyControllers = () => {
   const [form] = Form.useForm()
 
   const dispatch = useDispatch()
   const { dictionaries } = useSelector((state) => state.indicator)
 
-  // const [data,setData] = useState([])
-
-  // useEffect(() => {}, [])
+  const [data, setData] = useState([])
 
   const onSubmit = async () => {
     let record = await form.validateFields()
@@ -52,14 +50,14 @@ const IndicatorControllers = () => {
         />
       </Form.Item>
       <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
-        {dictionaries_.map((name) => renderSelects(dictionaries, name))}
+        {dictionaries_.map((name) => renderSelect(dictionaries, name))}
         <Button onClick={onSubmit}>Добавить</Button>
       </div>
     </Form>
   )
 }
 
-export default React.memo(IndicatorControllers)
+export default React.memo(StrategyControllers)
 
 const getDictionaryOptions = (data, key) => {
   if (data.status === 'success') {
@@ -79,7 +77,7 @@ const getDictionaryOptions = (data, key) => {
   return []
 }
 
-const renderSelects = (data, name) => {
+const renderSelect = (data, name) => {
   return (
     <Form.Item
       name={name}
