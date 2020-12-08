@@ -159,7 +159,6 @@ const AdminTable = ({
     })
   }, [])
 
-  console.log(data, filtered)
   return (
     <Form form={form} component={false}>
       <Table

@@ -118,7 +118,6 @@ export const IndicatorInfoTable = ({ plan, isStrategy }) => {
     }
   }
 
-  console.log(dataSource)
   return (
     <AdminTable
       cols={columns}
