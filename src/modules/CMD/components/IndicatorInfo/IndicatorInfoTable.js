@@ -1,4 +1,4 @@
-import React, { useMemo, useContext } from 'react'
+import React, { useMemo, useEffect, useContext, useState } from 'react'
 import AdminTable from '../common/AdminTable'
 import { AppContext } from '../../context/main'
 import { putAPI, getAPI } from '../../utils/api'
@@ -48,21 +48,20 @@ export const IndicatorInfoTable = ({ plan, isStrategy }) => {
       dataSource_ = fetchedIndicatorInfoData.data.map((item, index) => {
         const date = item['last-edit'].substr(0, item['last-edit'].indexOf('T'))
         const year = item.date.substr(0, 7)
-
         return plan === 'План'
-          ? {
+          ? item.planned && {
               key: `${item['indicator-name']}-${item.id}`,
               id: item.id,
               year,
-              План: item.planned ? item.planned : null,
+              План: item.planned,
               date,
               comment: item['edit-comment'],
             }
-          : {
+          : item.fact && {
               key: `${item['indicator-name']}-${item.id}`,
               id: item.id,
               year,
-              Факт: item.fact ? item.fact : null,
+              Факт: item.fact,
               date,
               comment: item['edit-comment'],
             }
@@ -70,9 +69,7 @@ export const IndicatorInfoTable = ({ plan, isStrategy }) => {
     }
 
     if (dataSource_.length > 0) {
-      dataSource_ = dataSource_.filter(
-        (ob) => typeof ob !== 'undefined' && typeof ob !== 'object'
-      )
+      dataSource_ = dataSource_.filter((ob) => ob !== undefined && ob !== null)
     }
 
     return dataSource_

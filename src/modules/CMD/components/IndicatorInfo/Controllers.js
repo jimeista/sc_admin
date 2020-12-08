@@ -29,12 +29,14 @@ export const Controllers = ({ plan }) => {
       }
 
       setState({ date: null, value: null })
+      console.log(ob)
 
       postAPI(
         `/sc-analytic-indicators/api/indicators/${modalIndicator.id}/indexes`,
         ob
       )
         .then((res) => {
+          console.log(res)
           setStatus({
             alert: true,
             message: 'Успешно',

@@ -87,8 +87,6 @@ export const DictionaryTable = () => {
                   }
             )
           )
-
-      console.log(obb, selectedDictionaryName, data_)
     }
 
     setData(data_)
