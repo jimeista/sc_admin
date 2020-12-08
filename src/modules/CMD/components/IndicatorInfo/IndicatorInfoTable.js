@@ -1,5 +1,5 @@
-import React, { useContext } from 'react'
-import { Table } from '../common'
+import React, { useMemo, useContext } from 'react'
+import AdminTable from '../common/AdminTable'
 import { AppContext } from '../../context/main'
 import { putAPI, getAPI } from '../../utils/api'
 
@@ -10,62 +10,73 @@ export const IndicatorInfoTable = ({ plan, isStrategy }) => {
     modalIndicator,
   } = useContext(AppContext)
 
-  const columns = [
-    {
-      title: 'Дата',
-      dataIndex: 'year',
-      key: 'year',
-      render: (text) => {
-        return <a>{text}</a>
+  const columns = useMemo(() => {
+    return [
+      {
+        title: 'Дата',
+        dataIndex: 'year',
+        key: 'year',
+        render: (text) => {
+          return <a>{text}</a>
+        },
       },
-    },
-    {
-      title: plan,
-      dataIndex: plan,
-      key: plan,
-      type: 'number',
-      editable: true,
-    },
-    {
-      title: 'Дата изменения',
-      dataIndex: 'date',
-      key: 'date',
-    },
-    {
-      title: 'Коментарий',
-      key: 'comment',
-      editable: true,
-      dataIndex: 'comment',
-    },
-  ]
+      {
+        title: plan,
+        dataIndex: plan,
+        key: plan,
+        type: 'number',
+        editable: true,
+      },
+      {
+        title: 'Дата изменения',
+        dataIndex: 'date',
+        key: 'date',
+      },
+      {
+        title: 'Коментарий',
+        key: 'comment',
+        editable: true,
+        dataIndex: 'comment',
+      },
+    ]
+  }, [plan])
 
-  let dataSource =
-    !fetchedIndicatorInfoData.loading &&
-    fetchedIndicatorInfoData.data.map((item, index) => {
-      const date = item['last-edit'].substr(0, item['last-edit'].indexOf('T'))
-      const year = item.date.substr(0, 7)
+  let dataSource = useMemo(() => {
+    let dataSource_ = []
 
-      return plan === 'План'
-        ? item.planned && {
-            key: item['indicator-name'],
-            id: item.id,
-            year,
-            План: item.planned,
-            date,
-            comment: item['edit-comment'],
-          }
-        : item.fact && {
-            key: item['indicator-name'],
-            id: item.id,
-            year,
-            Факт: item.fact,
-            date,
-            comment: item['edit-comment'],
-          }
-    })
+    if (!fetchedIndicatorInfoData.loading) {
+      dataSource_ = fetchedIndicatorInfoData.data.map((item, index) => {
+        const date = item['last-edit'].substr(0, item['last-edit'].indexOf('T'))
+        const year = item.date.substr(0, 7)
 
-  dataSource =
-    dataSource && dataSource.filter((ob) => ob !== undefined && ob !== null)
+        return plan === 'План'
+          ? {
+              key: `${item['indicator-name']}-${item.id}`,
+              id: item.id,
+              year,
+              План: item.planned ? item.planned : null,
+              date,
+              comment: item['edit-comment'],
+            }
+          : {
+              key: `${item['indicator-name']}-${item.id}`,
+              id: item.id,
+              year,
+              Факт: item.fact ? item.fact : null,
+              date,
+              comment: item['edit-comment'],
+            }
+      })
+    }
+
+    if (dataSource_.length > 0) {
+      dataSource_ = dataSource_.filter(
+        (ob) => typeof ob !== 'undefined' && typeof ob !== 'object'
+      )
+    }
+
+    return dataSource_
+  }, [fetchedIndicatorInfoData, plan])
 
   const edit = (record, form, setEditingKey) => {
     form.setFieldsValue({
@@ -107,8 +118,9 @@ export const IndicatorInfoTable = ({ plan, isStrategy }) => {
     }
   }
 
+  console.log(dataSource)
   return (
-    <Table
+    <AdminTable
       cols={columns}
       data={dataSource}
       loading={fetchedIndicatorInfoData.loading}

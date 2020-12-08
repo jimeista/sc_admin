@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useMemo, useState, useContext, useEffect } from 'react'
 import { Table, Form, Space, Popconfirm } from 'antd'
 import {
   EditOutlined,
@@ -11,7 +11,7 @@ import { getAPI, deleteAPI } from '../../utils/api'
 
 import { EditableCell } from './EditableCell'
 
-export const AdminTable = ({
+const AdminTable = ({
   cols,
   data,
   loading,
@@ -29,23 +29,22 @@ export const AdminTable = ({
 
   useEffect(() => {
     if (data && searchText) {
-      setFiltered(
-        data.filter((item) => {
-          let obb =
-            item.children &&
-            item.children.some((ob) => {
-              const isNestedFilter = ob.key
-                .toLowerCase()
-                .includes(searchText.toLowerCase())
-              return isNestedFilter
-            })
+      let arr = data.filter((item) => {
+        let obb =
+          item.children &&
+          item.children.some((ob) => {
+            const isNestedFilter = ob.key
+              .toLowerCase()
+              .includes(searchText.toLowerCase())
+            return isNestedFilter
+          })
 
-          const isFilter = item.key
-            .toLowerCase()
-            .includes(searchText.toLowerCase())
-          return obb ? obb : isFilter
-        })
-      )
+        const isFilter =
+          item.key && item.key.toLowerCase().includes(searchText.toLowerCase())
+        return obb ? obb : isFilter
+      })
+
+      setFiltered(arr)
     }
   }, [data, searchText])
 
@@ -62,67 +61,6 @@ export const AdminTable = ({
     setEditingKey('')
   }
 
-  const arr = isLink
-    ? cols
-    : [
-        ...cols,
-        {
-          title: 'Действие',
-          dataIndex: '',
-          key: 'x',
-          render: (_, record) => {
-            const editable = isEditing(record)
-            return editable ? (
-              <span>
-                <a
-                  onClick={() => save(record, form, setEditingKey)}
-                  style={{
-                    marginRight: 8,
-                  }}
-                >
-                  <SaveOutlined
-                    className='icon_edit_btn_style'
-                    title='Сохранить'
-                  />
-                </a>
-                <Popconfirm
-                  title='Вы уверены что хотите оменить изменения?'
-                  onConfirm={cancel}
-                >
-                  <CloseOutlined
-                    className='icon_edit_btn_style'
-                    title='Отменить'
-                  />
-                </Popconfirm>
-              </span>
-            ) : (
-              <Space>
-                <a
-                  disabled={editingKey !== ''}
-                  onClick={() => edit(record, form, setEditingKey)}
-                >
-                  <EditOutlined
-                    className='icon_edit_btn_style'
-                    title='Редактировать'
-                  />
-                </a>
-                <Popconfirm
-                  title='Вы уверены что хотите удалить даныне?'
-                  onConfirm={() => handleDelete(record.id)}
-                >
-                  <DeleteOutlined
-                    className='icon_edit_btn_style'
-                    title='Удалить'
-                  />
-                </Popconfirm>
-              </Space>
-            )
-          },
-        },
-      ]
-
-  cols = cols[0].title === 'Все справочники' ? cols : arr
-
   const handleDelete = (id) => {
     deleteAPI(`${url}/${id}`).then((res) =>
       getAPI(url2 ? url2 : url)
@@ -136,28 +74,92 @@ export const AdminTable = ({
     )
   }
 
-  const mergedColumns = cols.map((col) => {
-    if (!col.editable) {
-      return col
-    }
+  const mergedColumns = useMemo(() => {
+    const arr = isLink
+      ? cols
+      : [
+          ...cols,
+          {
+            title: 'Действие',
+            dataIndex: '',
+            key: 'x',
+            render: (_, record) => {
+              const editable = isEditing(record)
+              return editable ? (
+                <span>
+                  <a
+                    onClick={() => save(record, form, setEditingKey)}
+                    style={{
+                      marginRight: 8,
+                    }}
+                  >
+                    <SaveOutlined
+                      className='icon_edit_btn_style'
+                      title='Сохранить'
+                    />
+                  </a>
+                  <Popconfirm
+                    title='Вы уверены что хотите оменить изменения?'
+                    onConfirm={cancel}
+                  >
+                    <CloseOutlined
+                      className='icon_edit_btn_style'
+                      title='Отменить'
+                    />
+                  </Popconfirm>
+                </span>
+              ) : (
+                <Space>
+                  <a
+                    disabled={editingKey !== ''}
+                    onClick={() => edit(record, form, setEditingKey)}
+                  >
+                    <EditOutlined
+                      className='icon_edit_btn_style'
+                      title='Редактировать'
+                    />
+                  </a>
+                  <Popconfirm
+                    title='Вы уверены что хотите удалить даныне?'
+                    onConfirm={() => handleDelete(record.id)}
+                  >
+                    <DeleteOutlined
+                      className='icon_edit_btn_style'
+                      title='Удалить'
+                    />
+                  </Popconfirm>
+                </Space>
+              )
+            },
+          },
+        ]
 
-    return {
-      ...col,
-      onCell: (record) => {
-        return {
-          record,
-          setIndicator: col.setIndicator,
-          inputType: col.type,
-          dataIndex: col.dataIndex,
-          title: col.title,
-          data: col.data,
-          editing: isEditing(record),
-          callBack: col.callBack,
-        }
-      },
-    }
-  })
+    cols = cols.length > 0 && cols[0].title === 'Все справочники' ? cols : arr
 
+    return cols.map((col) => {
+      if (!col.editable) {
+        return col
+      }
+
+      return {
+        ...col,
+        onCell: (record) => {
+          return {
+            record,
+            setIndicator: col.setIndicator,
+            inputType: col.type,
+            dataIndex: col.dataIndex,
+            title: col.title,
+            data: col.data,
+            editing: isEditing(record),
+            callBack: col.callBack,
+          }
+        },
+      }
+    })
+  }, [])
+
+  console.log(data, filtered)
   return (
     <Form form={form} component={false}>
       <Table
@@ -195,3 +197,5 @@ export const AdminTable = ({
     </Form>
   )
 }
+
+export default React.memo(AdminTable)

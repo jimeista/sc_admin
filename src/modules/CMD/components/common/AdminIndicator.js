@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react'
+import React, { useEffect, useMemo, useContext, useState } from 'react'
 import { putAPI, getAPI } from '../../utils/api'
 import {
   getObjectKeys,
@@ -7,7 +7,8 @@ import {
 } from '../../utils/helper'
 import { AppContext } from '../../context/main'
 
-import { Table, Modal } from '../common'
+import { Modal } from '../common'
+import AdminTable from '../common/AdminTable'
 
 export const AdminIndicator = ({ isLink, isStrategy }) => {
   const [open, setOpen] = useState(false)
@@ -19,8 +20,6 @@ export const AdminIndicator = ({ isLink, isStrategy }) => {
     fetchedIndicatorData,
     setFetchedIndicatorData,
   } = useContext(AppContext)
-  let columns = []
-  const dataSource = []
 
   useEffect(() => {
     getAPI('/sc-analytic-indicators/api/indicators').then((res) => {
@@ -31,138 +30,157 @@ export const AdminIndicator = ({ isLink, isStrategy }) => {
     })
   }, [])
 
-  let names = [...dictionary_names, 'Отрасль'] //table column names
-  names = names.filter((name) =>
-    isStrategy ? name !== 'Сфера' : name !== 'Стратегия 2050'
-  )
-  names.sort()
+  const dataSource = useMemo(() => {
+    if (!fetchedIndicatorData.loading) {
+      let datasource_ = {}
+      const arr = isStrategy
+        ? fetchedIndicatorData.data.filter((item) => {
+            if (
+              item.dictionaries.Тип &&
+              item.dictionaries.Тип === 'Стратегия'
+            ) {
+              return item
+            }
+          })
+        : fetchedIndicatorData.data.filter((item) => {
+            if (
+              item.dictionaries.Тип &&
+              item.dictionaries.Тип === 'Индикатор'
+            ) {
+              return item
+            }
+          })
 
-  //get filter and select option drop data
-  let filter = {} //table column's filter options
-  let option_data = {} // on edit drop select options
-  if (!fetchedDictionaryData.loading) {
-    fetchedDictionaryData.data.map((item) => {
-      filter = {
-        ...filter,
-        [item.name]: item.options.map((option) => option.name),
-      }
+      arr.forEach((indicator) => {
+        let ob = {
+          id: indicator.id,
+          key: `${indicator.name}-${indicator.id}`,
+          Индикатор: indicator.name,
+        }
+        getObjectKeys(indicator.dictionaries).map((dictionary_name) => {
+          ob = {
+            ...ob,
+            [dictionary_name]: indicator.dictionaries[dictionary_name],
+          }
+        })
 
-      if (
-        !isStrategy ? item.name === 'Сфера' : item.name === 'Стратегия 2050'
-      ) {
-        const arr = item.options.map((i) => i.options.map((ii) => ii.name))
-        filter = { ...filter, Отрасль: [].concat(...arr) }
-      }
+        datasource_ = { ...datasource_, [indicator.name]: ob }
+      })
+
+      return Object.values(datasource_)
+    } else {
+      return []
+    }
+  }, [fetchedIndicatorData, isStrategy])
+
+  const columns = useMemo(() => {
+    let names = [...dictionary_names, 'Отрасль'] //table column names
+    names = names.filter((name) =>
+      isStrategy ? name !== 'Сфера' : name !== 'Стратегия 2050'
+    )
+    names.sort()
+
+    //get filter and select option drop data
+    let filter = {} //table column's filter options
+    let option_data = {} // on edit drop select options
+    if (!fetchedDictionaryData.loading) {
+      fetchedDictionaryData.data.forEach((item) => {
+        filter = {
+          ...filter,
+          [item.name]: item.options.map((option) => option.name),
+        }
+
+        if (
+          !isStrategy ? item.name === 'Сфера' : item.name === 'Стратегия 2050'
+        ) {
+          const arr = item.options.map((i) => i.options.map((ii) => ii.name))
+          filter = { ...filter, Отрасль: [].concat(...arr) }
+        }
+
+        option_data = {
+          ...option_data,
+          [item.name]: item.options.map((option) => {
+            return {
+              title: option.name,
+              value: option.name,
+              id: option.id,
+              children: [],
+            }
+          }),
+        }
+      })
+
+      const obj = fetchedDictionaryData.data.find((item) =>
+        isStrategy ? item.name === 'Стратегия 2050' : item.name === 'Сфера'
+      )
 
       option_data = {
         ...option_data,
-        [item.name]: item.options.map((option) => {
-          return {
-            title: option.name,
-            value: option.name,
-            id: option.id,
-            children: [],
-          }
-        }),
-      }
-    })
-
-    const obj = fetchedDictionaryData.data.find((item) =>
-      isStrategy ? item.name === 'Стратегия 2050' : item.name === 'Сфера'
-    )
-
-    option_data = {
-      ...option_data,
-      Отрасль: [].concat(
-        ...obj.options.map((op) =>
-          op.options.map((o) => ({
-            title: o.name,
-            value: o.name,
-            id: o.id,
-            children: [],
-          }))
-        )
-      ),
-    }
-  }
-
-  //set columns and dataSource for table
-  columns = [
-    {
-      title: 'Индикатор',
-      dataIndex: 'Индикатор',
-      width: 250,
-      editable: true,
-      render: (text, record) => {
-        return isLink ? (
-          <a
-            onClick={() => {
-              console.log(record)
-              setOpen(true)
-              setModalIndicator({
-                name: record.key,
-                id: record.id,
-              })
-            }}
-          >
-            {text}
-          </a>
-        ) : (
-          text
-        )
-      },
-      sorter: (a, b) => strcmp(a.Индикатор, b.Индикатор),
-      sortDirections: ['ascend'],
-    },
-    ...names.map((name) => {
-      const filtered =
-        filter[name] &&
-        filter[name].map((option_name) => ({
-          text: option_name,
-          value: option_name,
-        }))
-
-      return {
-        title: capitalizeFirstLetter(
-          name === 'Стратегия 2050' ? 'Сфера' : name
+        Отрасль: [].concat(
+          ...obj.options.map((op) =>
+            op.options.map((o) => ({
+              title: o.name,
+              value: o.name,
+              id: o.id,
+              children: [],
+            }))
+          )
         ),
-        dataIndex: name,
-        editable: true,
+      }
+    }
+
+    //set columns and dataSource for table
+    let columns_ = [
+      {
+        title: 'Индикатор',
+        dataIndex: 'Индикатор',
         width: 250,
-        data: option_data[name],
-        filters: filtered,
-        type: 'select',
-        onFilter: (value, record) => record[name] === value,
-      }
-    }),
-  ]
+        editable: true,
+        render: (text, record) => {
+          return isLink ? (
+            <a
+              onClick={() => {
+                setOpen(true)
+                setModalIndicator({
+                  name: record.key,
+                  id: record.id,
+                })
+              }}
+            >
+              {text}
+            </a>
+          ) : (
+            text
+          )
+        },
+        sorter: (a, b) => strcmp(a.Индикатор, b.Индикатор),
+        sortDirections: ['ascend'],
+      },
+      ...names.map((name) => {
+        const filtered =
+          filter[name] &&
+          filter[name].map((option_name) => ({
+            text: option_name,
+            value: option_name,
+          }))
 
-  if (!fetchedIndicatorData.loading) {
-    const arr = isStrategy
-      ? fetchedIndicatorData.data.filter(
-          (item) =>
-            item.dictionaries.Тип && item.dictionaries.Тип === 'Стратегия'
-        )
-      : fetchedIndicatorData.data.filter(
-          (item) =>
-            item.dictionaries.Тип && item.dictionaries.Тип === 'Индикатор'
-        )
-
-    arr.map((indicator) => {
-      let ob = {
-        id: indicator.id,
-        key: indicator.name,
-        Индикатор: indicator.name,
-      }
-      getObjectKeys(indicator.dictionaries).map((dictionary_name) => {
-        ob = {
-          ...ob,
-          [dictionary_name]: indicator.dictionaries[dictionary_name],
+        return {
+          title: capitalizeFirstLetter(
+            name === 'Стратегия 2050' ? 'Сфера' : name
+          ),
+          dataIndex: name,
+          editable: true,
+          width: 250,
+          data: option_data[name],
+          filters: filtered,
+          type: 'select',
+          onFilter: (value, record) => record[name] === value,
         }
-      })
-      dataSource.push(ob)
-    })
-  }
+      }),
+    ]
+
+    return columns_
+  }, [fetchedDictionaryData, isLink, isStrategy, dictionary_names])
 
   const save = async (record, form, setEditingKey) => {
     try {
@@ -221,7 +239,7 @@ export const AdminIndicator = ({ isLink, isStrategy }) => {
   return (
     <>
       <Modal open={open} setOpen={setOpen} className='AdminIndicator_style' />
-      <Table
+      <AdminTable
         cols={columns}
         data={dataSource}
         loading={fetchedIndicatorData.loading}

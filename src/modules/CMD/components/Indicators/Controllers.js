@@ -116,8 +116,6 @@ export const Controllers = ({ isStrategy }) => {
         !isStrategy ? item.name !== 'Стратегия 2050' : item.name !== 'Сфера'
       )
 
-      console.log(ob)
-
       selects = ob.map((item, index) => {
         const name = isStrategy ? 'Стратегия 2050' : 'Сфера'
         const data = item.options.map((option) =>

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { AdminTable as Table } from '../common/AdminTable'
+import AdminTable from '../common/AdminTable'
 import { AppContext } from '../../context/main'
 import { getAPI, putAPI } from '../../utils/api'
 
@@ -107,7 +107,7 @@ export const DictionaryTable = () => {
   }
 
   return (
-    <Table
+    <AdminTable
       cols={columns}
       data={data}
       loading={fetchedDictionaryData.loading}
