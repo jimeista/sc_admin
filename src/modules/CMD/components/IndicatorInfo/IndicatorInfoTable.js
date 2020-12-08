@@ -49,15 +49,18 @@ export const IndicatorInfoTable = ({ plan, isStrategy }) => {
         const date = item['last-edit'].substr(0, item['last-edit'].indexOf('T'))
         const year = item.date.substr(0, 7)
         return plan === 'План'
-          ? item.planned && {
-              key: `${item['indicator-name']}-${item.id}`,
-              id: item.id,
-              year,
-              План: item.planned,
-              date,
-              comment: item['edit-comment'],
-            }
-          : item.fact && {
+          ? item.planned
+            ? {
+                key: `${item['indicator-name']}-${item.id}`,
+                id: item.id,
+                year,
+                План: item.planned,
+                date,
+                comment: item['edit-comment'],
+              }
+            : null
+          : item.fact
+          ? {
               key: `${item['indicator-name']}-${item.id}`,
               id: item.id,
               year,
@@ -65,6 +68,7 @@ export const IndicatorInfoTable = ({ plan, isStrategy }) => {
               date,
               comment: item['edit-comment'],
             }
+          : null
       })
     }
 

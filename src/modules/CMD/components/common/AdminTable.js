@@ -74,6 +74,7 @@ const AdminTable = ({
     )
   }
 
+  console.log(data)
   const mergedColumns = useMemo(() => {
     const arr = isLink
       ? cols

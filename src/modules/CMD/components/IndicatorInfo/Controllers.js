@@ -29,54 +29,53 @@ export const Controllers = ({ plan }) => {
       }
 
       setState({ date: null, value: null })
-      console.log(ob)
 
       postAPI(
         `/sc-analytic-indicators/api/indicators/${modalIndicator.id}/indexes`,
         ob
-      )
-        .then((res) => {
-          console.log(res)
-          setStatus({
-            alert: true,
-            message: 'Успешно',
-            description: 'Данные успешно отправлены на сервер',
-            type: 'success',
-          })
+      ).then((res) => {
+        console.log(res)
+        setStatus({
+          alert: true,
+          message: 'Успешно',
+          description: 'Данные успешно отправлены на сервер',
+          type: 'success',
+        })
 
-          setTimeout(
-            () =>
-              setStatus({
-                alert: false,
-              }),
-            15000
-          )
+        setTimeout(
+          () =>
+            setStatus({
+              alert: false,
+            }),
+          15000
+        )
 
-          getAPI(
-            `/sc-analytic-indicators/api/indicators/${modalIndicator.id}/indexes`
-          ).then(function (res) {
-            setFetchedIndicatorInfoData({
-              data: res.data,
-              loading: false,
-            })
+        getAPI(
+          `/sc-analytic-indicators/api/indicators/${modalIndicator.id}/indexes`
+        ).then(function (res) {
+          setFetchedIndicatorInfoData({
+            data: res.data,
+            loading: false,
           })
         })
-        .catch((err) => {
-          setStatus({
-            alert: true,
-            message: 'Ошибка',
-            description: 'Ошибка с записью данных на сервер',
-            type: 'error',
-          })
+      })
+      // .catch((err) => {
+      //   console.log(err)
+      //   setStatus({
+      //     alert: true,
+      //     message: 'Ошибка',
+      //     description: 'Ошибка с записью данных на сервер',
+      //     type: 'error',
+      //   })
 
-          setTimeout(
-            () =>
-              setStatus({
-                alert: false,
-              }),
-            15000
-          )
-        })
+      //   setTimeout(
+      //     () =>
+      //       setStatus({
+      //         alert: false,
+      //       }),
+      //     15000
+      //   )
+      // })
 
       form.resetFields()
     } else {
@@ -132,6 +131,8 @@ export const Controllers = ({ plan }) => {
             <InputNumber
               onChange={(value) => setState((state) => ({ ...state, value }))}
               placeholder={plan}
+              min={0}
+              max={100}
             />
           </Form.Item>
           <Button type='primary' onClick={handleSubmit}>
