@@ -124,7 +124,6 @@ export const CustomTable = (props) => {
         data: col.data,
         placeholder: col.placeholder,
         editing: isEditing(record),
-        notRequired: col.notRequired,
       }),
     }
   })
@@ -145,6 +144,21 @@ export const CustomTable = (props) => {
           onChange: cancel,
         }}
         loading={props.loading}
+        locale={{
+          filterTitle: 'Меню фильтра',
+          filterConfirm: 'Ок',
+          filterReset: 'Сбросить',
+          filterEmptyText: 'Нет фильтров',
+          selectAll: 'Выбрать текущую страницу',
+          selectInvert: 'Invert current page',
+          selectionAll: 'Выбрать все',
+          sortTitle: 'Сортировать',
+          expand: 'Expand row',
+          collapse: 'Collapse row',
+          triggerDesc: 'Сортировать по убыванию',
+          triggerAsc: 'Сортировать по возрастанию',
+          cancelSort: 'Отменить сортировку',
+        }}
       />
     </Form>
   )

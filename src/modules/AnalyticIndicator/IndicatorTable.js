@@ -2,7 +2,10 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Input } from 'antd'
 
-import { deleteIndicator } from '../../features/indicator/indicatorSlice'
+import {
+  deleteIndicator,
+  putIndicator,
+} from '../../features/indicator/indicatorSlice'
 import { CustomTable as Table } from '../../common/Table'
 import { setTableColumns, setTableData } from '../../utils/indicator_table'
 
@@ -11,7 +14,7 @@ const IndicatorTable = () => {
   const [filtered, setFiltered] = useState()
 
   const dispatch = useDispatch()
-  const { data, status, dictionaries, id } = useSelector(
+  const { data, status, dictionaries, deletedId, putId } = useSelector(
     (state) => state.indicator
   )
 
@@ -19,10 +22,20 @@ const IndicatorTable = () => {
     let data_ = data.filter((i) => i.dictionaries['Тип'] === 'Индикатор')
     status === 'success' && setDataSource(setTableData(data_))
 
-    if (id) {
-      setFiltered((state) => state.filter((i) => i.id !== id))
+    if (deletedId) {
+      setFiltered((state) => state && state.filter((i) => i.id !== deletedId))
     }
-  }, [data, status, id])
+
+    if (putId) {
+      setFiltered(
+        (state) =>
+          state &&
+          state.map((i) =>
+            i.id === putId.id ? setTableData([putId.value])[0] : i
+          )
+      )
+    }
+  }, [data, status, deletedId, putId])
 
   const onSearch = (e) => {
     let filtered_ = dataSource.filter((i) =>
@@ -39,6 +52,47 @@ const IndicatorTable = () => {
       return []
     }
   }, [dictionaries])
+
+  const onEdit = (record) => {
+    console.log(record)
+
+    let client = {
+      id: record.id,
+      name: record.name,
+      dictionaries: { Тип: 'Индикатор' },
+    }
+    let server = {
+      name: record.name,
+      dictionaries: [227],
+    }
+
+    Object.keys(record).forEach((key) => {
+      if (
+        key !== 'id' &&
+        key !== 'name' &&
+        key !== 'key' &&
+        key !== 'Отрасль' &&
+        key !== 'Тип' &&
+        record[key] !== undefined
+      ) {
+        //prepare for client
+        client = {
+          ...client,
+          dictionaries: { ...client.dictionaries, [key]: record[key] },
+        }
+
+        //prepare for server post
+        let dictionary_ = dictionaries.data.find((i) => i.name === key)
+        let id = dictionary_.options.find((o) => o.name === record[key]).id
+
+        server = { ...server, dictionaries: [...server.dictionaries, id] }
+      } else {
+      }
+    })
+
+    console.log(client, server)
+    dispatch(putIndicator({ id: record.id, client, server }))
+  }
 
   const onDelete = (record) => {
     dispatch(deleteIndicator(record.id))
@@ -57,7 +111,7 @@ const IndicatorTable = () => {
         data={filtered ? filtered : dataSource}
         setData={setDataSource}
         loading={dictionaries.status !== 'success' ? true : false}
-        // handleEdit={onEdit}
+        handleEdit={onEdit}
         handleDelete={onDelete}
         isEditable={true}
         isDeletable={true}

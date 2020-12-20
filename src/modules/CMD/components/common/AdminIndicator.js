@@ -198,6 +198,7 @@ export const AdminIndicator = ({ isLink, isStrategy }) => {
       })
 
       data_post.dictionaries = [...data_post.dictionaries, ...ids]
+      console.log(data_post)
       putAPI(`/sc-analytic-indicators/api/indicators/${record.id}`, data_post)
         .then((res) =>
           getAPI('/sc-analytic-indicators/api/indicators').then((res) => {

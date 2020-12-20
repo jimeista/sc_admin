@@ -11,7 +11,6 @@ export const EditableCell = ({
   record,
   index,
   children,
-  notRequired,
   ...restProps
 }) => {
   const { Option } = Select
@@ -86,7 +85,7 @@ export const EditableCell = ({
           }}
           rules={[
             {
-              required: notRequired ? notRequired : true,
+              required: dictionaries.includes(title) ? false : true,
               message: `Введите ${title}!`,
             },
           ]}
@@ -99,3 +98,13 @@ export const EditableCell = ({
     </td>
   )
 }
+
+const dictionaries = [
+  'Государственная программа',
+  'Единица измерения',
+  'Ответственный орган',
+  'Источник информации',
+  'Отрасль',
+  'Периодичность обновления',
+  'Сфера',
+]

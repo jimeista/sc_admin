@@ -31,35 +31,11 @@ export const setColumnsHelper = (organisations, roles, modules) => {
       placeholder: 'Роль',
       type: 'multi-select',
       data: roles,
-      notRequired: false,
       render: (tags) => {
         return (
           <span>
             {tags.map((tag) => {
               let color = tag.length > 5 ? 'geekblue' : 'blue'
-              return (
-                <Tag color={color} key={tag} style={{ margin: '5px 5px' }}>
-                  {tag.toUpperCase()}
-                </Tag>
-              )
-            })}
-          </span>
-        )
-      },
-    },
-    {
-      title: 'Модули',
-      dataIndex: 'modules',
-      editable: true,
-      placeholder: 'Модули',
-      type: 'multi-select',
-      data: modules,
-      notRequired: false,
-      render: (tags) => {
-        return (
-          <span>
-            {tags.map((tag) => {
-              let color = tag.length > 3 ? 'blue' : 'geekblue'
               return (
                 <Tag color={color} key={tag} style={{ margin: '5px 5px' }}>
                   {tag.toUpperCase()}

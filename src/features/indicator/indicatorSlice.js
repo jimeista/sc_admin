@@ -18,6 +18,15 @@ export const postIndicator = createAsyncThunk(
   }
 )
 
+export const putIndicator = createAsyncThunk(
+  'admin/putIndicator',
+  async (data) => {
+    const url = `/sc-analytic-indicators/api/indicators/${data.id}`
+    await axios.put(url, data.server)
+    return { 'contains-current-year-values': false, ...data.client }
+  }
+)
+
 export const deleteIndicator = createAsyncThunk(
   'admin/deleteIndicator',
   async (id) => {
@@ -78,6 +87,22 @@ const indicatorSlice = createSlice({
       state.error = action.payload
     },
 
+    //put indicator
+    [putIndicator.pending]: (state) => {
+      state.status = 'loading'
+    },
+    [putIndicator.fulfilled]: (state, action) => {
+      state.status = 'success'
+      state.data = state.data.map((i) =>
+        i.id === action.payload.id ? action.payload : i
+      )
+      state.putId = { id: action.payload.id, value: action.payload }
+    },
+    [putIndicator.rejected]: (state, action) => {
+      state.status = 'failed'
+      state.error = action.payload
+    },
+
     //delete user
     [deleteIndicator.pending]: (state) => {
       state.status = 'loading'
@@ -86,7 +111,7 @@ const indicatorSlice = createSlice({
       state.status = 'success'
       let index = state.data.findIndex((i) => i.id === action.payload)
       state.data.splice(index, 1)
-      state.id = action.payload
+      state.deletedId = action.payload
     },
     [deleteIndicator.rejected]: (state, action) => {
       state.status = 'failed'
