@@ -1,28 +1,20 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Input } from 'antd'
 
-import { deleteIndicator } from '../../features/indicator/indicatorSlice'
 import { CustomTable as Table } from '../../common/Table'
 import { setTableColumns, setTableData } from '../../utils/indicator_table'
 
-const IndicatorTable = () => {
+const StrategyTable = () => {
   const [dataSource, setDataSource] = useState([])
   const [filtered, setFiltered] = useState()
 
-  const dispatch = useDispatch()
-  const { data, status, dictionaries, id } = useSelector(
-    (state) => state.indicator
-  )
+  const { data, status, dictionaries } = useSelector((state) => state.indicator)
 
   useEffect(() => {
-    let data_ = data.filter((i) => i.dictionaries['Тип'] === 'Индикатор')
+    let data_ = data.filter((i) => i.dictionaries['Тип'] === 'Стратегия')
     status === 'success' && setDataSource(setTableData(data_))
-
-    if (id) {
-      setFiltered((state) => state.filter((i) => i.id !== id))
-    }
-  }, [data, status, id])
+  }, [data, status])
 
   const onSearch = (e) => {
     let filtered_ = dataSource.filter((i) =>
@@ -34,15 +26,11 @@ const IndicatorTable = () => {
 
   const columns = useMemo(() => {
     if (dictionaries.status === 'success') {
-      return setTableColumns(dictionaries.data, 'Сфера')
+      return setTableColumns(dictionaries.data, 'Стратегия 2050')
     } else {
       return []
     }
   }, [dictionaries])
-
-  const onDelete = (record) => {
-    dispatch(deleteIndicator(record.id))
-  }
 
   return (
     <>
@@ -58,7 +46,7 @@ const IndicatorTable = () => {
         setData={setDataSource}
         loading={dictionaries.status !== 'success' ? true : false}
         // handleEdit={onEdit}
-        handleDelete={onDelete}
+        // handleDelete={onDelete}
         isEditable={true}
         isDeletable={true}
       />
@@ -66,4 +54,4 @@ const IndicatorTable = () => {
   )
 }
 
-export default React.memo(IndicatorTable)
+export default React.memo(StrategyTable)

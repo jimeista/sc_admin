@@ -5,6 +5,7 @@ import { Tabs } from 'antd'
 
 import IndicatorTable from './IndicatorTable'
 import IndicatorControllers from './IndicatorControllers'
+import StrategyTable from './StrategyTable'
 
 import {
   getIndicator,
@@ -23,11 +24,12 @@ const Indicator = () => {
   return (
     <Tabs defaultActiveKey='1' tabPosition={'top'}>
       <TabPane tab='Панель администратора' key='1'>
-        <IndicatorControllers />
+        <IndicatorControllers dictionary={'Сфера'} />
         <IndicatorTable />
       </TabPane>
       <TabPane tab='Индикатор стратегии' key='2'>
-        dadas
+        <IndicatorControllers dictionary={'Стратегия 2050'} />
+        <StrategyTable />
       </TabPane>
     </Tabs>
   )

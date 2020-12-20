@@ -51,7 +51,7 @@ const adminSlice = createSlice({
       state.status = 'success'
       state.data = action.payload
     },
-    [getUsers.failed]: (state, action) => {
+    [getUsers.rejected]: (state, action) => {
       state.status = 'failed'
       state.error = action.payload
     },
@@ -64,7 +64,7 @@ const adminSlice = createSlice({
       state.status = 'success'
       state.data = [action.payload, ...state.data]
     },
-    [postNewUser.failed]: (state, action) => {
+    [postNewUser.rejected]: (state, action) => {
       state.status = 'failed'
       state.error = action.payload
     },
@@ -80,7 +80,7 @@ const adminSlice = createSlice({
         i['account-id'] === action.payload['account-id'] ? action.payload : i
       )
     },
-    [putUser.failed]: (state, action) => {
+    [putUser.rejected]: (state, action) => {
       state.status = 'failed'
       state.error = action.payload
     },
@@ -94,7 +94,7 @@ const adminSlice = createSlice({
       let index = state.data.findIndex((i) => i.id === action.payload)
       state.data.splice(index, 1)
     },
-    [deleteUser.failed]: (state, action) => {
+    [deleteUser.rejected]: (state, action) => {
       state.status = 'failed'
       state.error = action.payload
     },

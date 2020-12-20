@@ -1,7 +1,6 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { ProtectedRoute } from './components/ProtectedRoute'
-import { useSelector } from 'react-redux'
 
 //components
 // import { InfoPanel, Leaders } from './modules/CIP'
@@ -17,8 +16,6 @@ import { Dictionary, Indicator, IndicatorInfo } from './modules/CMD'
 import Home from './components/Home'
 
 const Routes = () => {
-  // const { authorities } = useSelector((state) => state.admin)
-
   return (
     <Switch>
       <Redirect exact from='/' to='/Роли' />

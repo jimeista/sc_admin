@@ -37,8 +37,9 @@ const Home = ({ children }) => {
           style={{
             width: '100%',
             margin: '20px auto',
-            padding: 5,
-            overflow: 'scroll',
+            padding: '10px 2% 0',
+            // overflow: 'scroll',
+            overflow: 'hidden',
           }}
           // className='Admin_main_style_content'
         >

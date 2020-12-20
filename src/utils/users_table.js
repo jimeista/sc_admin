@@ -2,6 +2,7 @@ import React from 'react'
 import { Tag } from 'antd'
 
 export const setColumnsHelper = (organisations, roles, modules) => {
+  console.log(organisations)
   return [
     {
       title: '№',
@@ -21,7 +22,7 @@ export const setColumnsHelper = (organisations, roles, modules) => {
       editable: true,
       placeholder: 'Организация',
       type: 'select',
-      data: organisations,
+      data: organisations.map((value) => ({ value })),
     },
     {
       title: 'Роль',

@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Input, Select, Button, Form } from 'antd'
+import { Input, Button, Form } from 'antd'
 
+import {
+  renderControllerSelects,
+  dictionaries_,
+} from '../../utils/indicator_helper'
 import { postIndicator } from '../../features/indicator/indicatorSlice'
-
-const { Option } = Select
 
 const StrategyControllers = () => {
   const [form] = Form.useForm()
@@ -13,15 +15,13 @@ const StrategyControllers = () => {
   const dispatch = useDispatch()
   const { dictionaries } = useSelector((state) => state.indicator)
 
-  const [data, setData] = useState([])
-
   const onSubmit = async () => {
     let record = await form.validateFields()
     let client = { name: record.name, dictionaries: {} }
     let server = { name: record.name, dictionaries: [227] }
 
     Object.keys(record).forEach((key) => {
-      if (key !== 'name' && key !== 'Отрасль') {
+      if (key !== 'name' && key !== 'Отрасль' && record[key] !== undefined) {
         //prepare for client
         client = {
           ...client,
@@ -36,12 +36,13 @@ const StrategyControllers = () => {
       }
     })
 
-    console.log(client, server)
-    // dispatch(postIndicator({ client, server }))
+    // console.log(client, server)
+    dispatch(postIndicator({ client, server }))
+    form.resetFields()
   }
 
   return (
-    <Form form={form}>
+    <Form form={form} style={{ margin: '30px auto' }}>
       <Form.Item name={'name'}>
         <Input
           placeholder={'Введите название индикатора'}
@@ -50,7 +51,9 @@ const StrategyControllers = () => {
         />
       </Form.Item>
       <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
-        {dictionaries_.map((name) => renderSelect(dictionaries, name))}
+        {[...dictionaries_, 'Стратегия 2050'].map((name) =>
+          renderControllerSelects(dictionaries, name)
+        )}
         <Button onClick={onSubmit}>Добавить</Button>
       </div>
     </Form>
@@ -58,55 +61,3 @@ const StrategyControllers = () => {
 }
 
 export default React.memo(StrategyControllers)
-
-const getDictionaryOptions = (data, key) => {
-  if (data.status === 'success') {
-    if (key === 'Отрасль') {
-      let field = data.data.find((i) => i.name === 'Сфера')
-      let strategy = data.data.find((i) => i.name === 'Стратегия 2050')
-
-      return [
-        ...field.options.map((o) => o.name),
-        ...strategy.options.map((o) => o.name),
-      ]
-    } else {
-      let dictionary = data.data.find((i) => i.name === key)
-      return dictionary.options.map((o) => o.name)
-    }
-  }
-  return []
-}
-
-const renderSelect = (data, name) => {
-  return (
-    <Form.Item
-      name={name}
-      key={name}
-      style={{ marginRight: 10, width: '32%' }}
-      rules={[
-        {
-          required: true,
-          message: `Выберите опцию`,
-        },
-      ]}
-    >
-      <Select placeholder={name} allowClear>
-        {getDictionaryOptions(data, name).map((value) => (
-          <Option key={value} value={value}>
-            {value}
-          </Option>
-        ))}
-      </Select>
-    </Form.Item>
-  )
-}
-
-const dictionaries_ = [
-  'Государственная программа',
-  'Единица измерения',
-  'Источник информации',
-  'Ответственный орган',
-  'Отрасль',
-  'Периодичность обновления',
-  'Сфера',
-]
