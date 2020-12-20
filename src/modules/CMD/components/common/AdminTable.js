@@ -65,6 +65,7 @@ const AdminTable = ({
     form.setFieldsValue({
       ...record,
     })
+    // console.log(record)
     setEditingKey(record.key)
   }
 

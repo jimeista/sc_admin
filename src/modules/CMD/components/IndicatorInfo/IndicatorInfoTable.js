@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useContext, useState } from 'react'
+import React, { useMemo, useContext } from 'react'
 import AdminTable from '../common/AdminTable'
 import { AppContext } from '../../context/main'
 import { putAPI, getAPI } from '../../utils/api'

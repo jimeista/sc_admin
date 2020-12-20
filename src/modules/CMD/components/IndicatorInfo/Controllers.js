@@ -132,7 +132,6 @@ export const Controllers = ({ plan }) => {
               onChange={(value) => setState((state) => ({ ...state, value }))}
               placeholder={plan}
               min={0}
-              max={100}
             />
           </Form.Item>
           <Button type='primary' onClick={handleSubmit}>

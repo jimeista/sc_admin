@@ -47,29 +47,6 @@ export const setColumnsHelper = (organisations, roles, modules) => {
       },
     },
     {
-      title: 'Модули',
-      dataIndex: 'modules',
-      editable: true,
-      placeholder: 'Модули',
-      type: 'multi-select',
-      data: modules,
-      notRequired: false,
-      render: (tags) => {
-        return (
-          <span>
-            {tags.map((tag) => {
-              let color = tag.length > 3 ? 'blue' : 'geekblue'
-              return (
-                <Tag color={color} key={tag} style={{ margin: '5px 5px' }}>
-                  {tag.toUpperCase()}
-                </Tag>
-              )
-            })}
-          </span>
-        )
-      },
-    },
-    {
       title: 'Логин',
       dataIndex: 'username',
       editable: true,
@@ -86,7 +63,6 @@ export const setDataSourceHelper = (data) => {
       name: i.name,
       organisation: `${i.organisation['full-name']} - ${i.organisation.abbreviation}`,
       roles: i.roles.map((role) => role),
-      modules: i.modules ? i.modules : [], //draft
       username: i.username,
       'account-id': i['account-id'],
     }

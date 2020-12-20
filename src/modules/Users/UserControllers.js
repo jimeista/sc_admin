@@ -73,15 +73,6 @@ const UserControllers = ({ roles, organisations, modules }) => {
             options={roles}
           />
         </Form.Item>
-        <Form.Item name='modules' style={{ width: '60%' }}>
-          <Select
-            placeholder='Модули'
-            allowClear
-            mode='multiple'
-            tagRender={tagRender}
-            options={modules}
-          />
-        </Form.Item>
         <Form.Item
           name='username'
           style={{ width: '60%' }}
