@@ -71,6 +71,6 @@ export const setDataSourceHelper = (data) =>
     position: i.position,
     'image-path': i['image-path'],
     'supervised-organisations': i['supervised-organisations'].map(
-      (o) => `${o.abbreviation}-${o['full-name']}`
+      (o) => o.abbreviation
     ),
   }))

@@ -31,14 +31,12 @@ export const WorkListModal = () => {
 
   const postFormData = useCallback(async () => {
     try {
-      let arr = prepareToShowDetailsObToArr(formData)
-      let ob = validateRoadWorkForm(arr, categories, organisations, regions)
+      let record = prepareToShowDetailsObToArr(formData)
+      let ob = validateRoadWorkForm(record, categories, organisations, regions)
 
       const coordinates = setCoordinates(mapData)
 
       ob = { data: ob, geometries: coordinates, mapData }
-      // console.log(ob)
-
       dispatch(postRoadmap(ob))
       dispatch(setCurrent(0))
       dispatch(resetMapData())
