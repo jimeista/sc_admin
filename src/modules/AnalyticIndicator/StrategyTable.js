@@ -8,6 +8,7 @@ import {
 } from '../../features/indicator/indicatorSlice'
 import { CustomTable as Table } from '../../common/Table'
 import { setTableColumns, setTableData } from '../../utils/indicator_table'
+import { findOptionId } from '../../utils/indicator_helper'
 
 const StrategyTable = () => {
   const [dataSource, setDataSource] = useState([])
@@ -88,7 +89,19 @@ const StrategyTable = () => {
         let id = dictionary_.options.find((o) => o.name === record[key]).id
 
         server = { ...server, dictionaries: [...server.dictionaries, id] }
-      } else {
+      } else if (key === 'Отрасль' && key !== undefined) {
+        let id = findOptionId(dictionaries, record[key])
+
+        //client
+        client = {
+          ...client,
+          dictionaries: { ...client.dictionaries, [key]: record[key] },
+        }
+
+        server = {
+          ...server,
+          dictionaries: [...server.dictionaries, id],
+        }
       }
     })
 

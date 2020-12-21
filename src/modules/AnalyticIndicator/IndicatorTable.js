@@ -8,6 +8,7 @@ import {
 } from '../../features/indicator/indicatorSlice'
 import { CustomTable as Table } from '../../common/Table'
 import { setTableColumns, setTableData } from '../../utils/indicator_table'
+import { findOptionId } from '../../utils/indicator_helper'
 
 const IndicatorTable = () => {
   const [dataSource, setDataSource] = useState([])
@@ -54,8 +55,6 @@ const IndicatorTable = () => {
   }, [dictionaries])
 
   const onEdit = (record) => {
-    console.log(record)
-
     let client = {
       id: record.id,
       name: record.name,
@@ -86,11 +85,23 @@ const IndicatorTable = () => {
         let id = dictionary_.options.find((o) => o.name === record[key]).id
 
         server = { ...server, dictionaries: [...server.dictionaries, id] }
-      } else {
+      } else if (key === 'Отрасль' && key !== undefined) {
+        let id = findOptionId(dictionaries, record[key])
+
+        //client
+        client = {
+          ...client,
+          dictionaries: { ...client.dictionaries, [key]: record[key] },
+        }
+
+        server = {
+          ...server,
+          dictionaries: [...server.dictionaries, id],
+        }
       }
     })
 
-    console.log(client, server)
+    // console.log(client, server)
     dispatch(putIndicator({ id: record.id, client, server }))
   }
 

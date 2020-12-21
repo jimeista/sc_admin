@@ -22,21 +22,30 @@ export const setTableColumns = (data, key) => {
     ...names.map((name) => {
       let filters = []
       if (name === 'Отрасль') {
-        let field = data.find((i) => i.name === 'Сфера')
-        let strategy = data.find((i) => i.name === 'Стратегия 2050')
+        let field = data.find((i) => i.name === 'Сфера').options
+        let strategy = data.find((i) => i.name === 'Стратегия 2050').options
 
-        filters = [
-          ...field.options.map((o) => ({
-            text: o.name,
-            value: o.name,
-            id: o.id,
-          })),
-          ...strategy.options.map((o) => ({
-            text: o.name,
-            value: o.name,
-            id: o.id,
-          })),
-        ]
+        field.forEach((i) => {
+          filters = [
+            ...filters,
+            ...i.options.map((ii) => ({
+              text: ii.name,
+              value: ii.name,
+              id: ii.name,
+            })),
+          ]
+        })
+
+        strategy.forEach((i) => {
+          filters = [
+            ...filters,
+            ...i.options.map((ii) => ({
+              text: ii.name,
+              value: ii.name,
+              id: ii.id,
+            })),
+          ]
+        })
       } else {
         filters = data
           .filter((i) => i.name === name)

@@ -6,6 +6,7 @@ import { Input, Button, Form } from 'antd'
 import {
   renderControllerSelects,
   dictionaries_,
+  findOptionId,
 } from '../../utils/indicator_helper'
 import { postIndicator } from '../../features/indicator/indicatorSlice'
 
@@ -40,17 +41,37 @@ const IndicatorControllers = ({ dictionary }) => {
         let id = dictionary_.options.find((o) => o.name === record[key]).id
 
         server = { ...server, dictionaries: [...server.dictionaries, id] }
+      } else if (key === 'Отрасль' && key !== undefined) {
+        let id = findOptionId(dictionaries, record[key])
+
+        //client
+        client = {
+          ...client,
+          dictionaries: { ...client.dictionaries, [key]: record[key] },
+        }
+
+        server = {
+          ...server,
+          dictionaries: [...server.dictionaries, id],
+        }
       }
     })
 
-    // console.log(client, server)
     dispatch(postIndicator({ client, server }))
     form.resetFields()
   }
 
   return (
     <Form form={form} style={{ margin: '30px auto' }}>
-      <Form.Item name={'name'}>
+      <Form.Item
+        name={'name'}
+        rules={[
+          {
+            required: true,
+            message: `Введите название индикатора`,
+          },
+        ]}
+      >
         <Input
           placeholder={'Введите название индикатора'}
           allowClear
