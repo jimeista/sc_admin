@@ -124,8 +124,8 @@ const IndicatorTable = () => {
         loading={dictionaries.status !== 'success' ? true : false}
         handleEdit={onEdit}
         handleDelete={onDelete}
-        isEditable={true}
-        isDeletable={true}
+        isEditable={false}
+        isDeletable={false}
       />
     </>
   )

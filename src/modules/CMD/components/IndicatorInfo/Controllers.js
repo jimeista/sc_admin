@@ -17,8 +17,9 @@ export const Controllers = ({ plan }) => {
 
   const [form] = Form.useForm()
 
+  // console.log(modalIndicator)
   const handleSubmit = () => {
-    if (state.date && state.value) {
+    if ((state.date && state.value) || state.value === 0) {
       const ob = {
         date: state.date.month
           ? `${state.date.year}-${state.date.month}-15`
@@ -33,48 +34,48 @@ export const Controllers = ({ plan }) => {
       postAPI(
         `/sc-analytic-indicators/api/indicators/${modalIndicator.id}/indexes`,
         ob
-      )
-        .then((res) => {
-          setStatus({
-            alert: true,
-            message: 'Успешно',
-            description: 'Данные успешно отправлены на сервер',
-            type: 'success',
-          })
+      ).then((res) => {
+        setStatus({
+          alert: true,
+          message: 'Успешно',
+          description: 'Данные успешно отправлены на сервер',
+          type: 'success',
+        })
 
-          setTimeout(
-            () =>
-              setStatus({
-                alert: false,
-              }),
-            15000
-          )
+        setTimeout(
+          () =>
+            setStatus({
+              alert: false,
+            }),
+          15000
+        )
 
-          getAPI(
-            `/sc-analytic-indicators/api/indicators/${modalIndicator.id}/indexes`
-          ).then(function (res) {
-            setFetchedIndicatorInfoData({
-              data: res.data,
-              loading: false,
-            })
+        getAPI(
+          `/sc-analytic-indicators/api/indicators/${modalIndicator.id}/indexes`
+        ).then(function (res) {
+          setFetchedIndicatorInfoData({
+            data: res.data,
+            loading: false,
           })
         })
-        .catch((err) => {
-          setStatus({
-            alert: true,
-            message: 'Ошибка',
-            description: 'Ошибка с записью данных на сервер',
-            type: 'error',
-          })
+      })
+      // .catch((err) => {
+      //   console.log(err)
+      //   setStatus({
+      //     alert: true,
+      //     message: 'Ошибка',
+      //     description: 'Ошибка с записью данных на сервер',
+      //     type: 'error',
+      //   })
 
-          setTimeout(
-            () =>
-              setStatus({
-                alert: false,
-              }),
-            15000
-          )
-        })
+      //   setTimeout(
+      //     () =>
+      //       setStatus({
+      //         alert: false,
+      //       }),
+      //     15000
+      //   )
+      // })
 
       form.resetFields()
     } else {
@@ -130,6 +131,7 @@ export const Controllers = ({ plan }) => {
             <InputNumber
               onChange={(value) => setState((state) => ({ ...state, value }))}
               placeholder={plan}
+              min={0}
             />
           </Form.Item>
           <Button type='primary' onClick={handleSubmit}>

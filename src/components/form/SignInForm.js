@@ -45,8 +45,8 @@ export const SignInForm = () => {
     <div className={'Form_main_style'}>
       <div className={`Form_style_wrapper`}>
         <div className={`title_back`}>
-          Панель андминистратора <br />
-          Ситуационного Центра Города Алматы
+          Панель администратора <br />
+          Ситуационного центра города алматы
         </div>
         <Form form={form} className={`Form_style_wrap`}>
           <Form.Item
@@ -78,11 +78,11 @@ export const SignInForm = () => {
             />
           </Form.Item>
           <div className={`Form_btn`}>
-            <div>
-              <span onClick={onCancel}>сбросить</span>
+            <div onClick={onCancel}>
+              <span>сбросить</span>
             </div>
-            <div>
-              <span onClick={onSubmit}>применить</span>
+            <div onClick={onSubmit}>
+              <span>применить</span>
             </div>
           </div>
         </Form>

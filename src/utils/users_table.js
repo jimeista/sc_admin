@@ -63,7 +63,6 @@ export const setDataSourceHelper = (data) => {
       name: i.name,
       organisation: `${i.organisation['full-name']} - ${i.organisation.abbreviation}`,
       roles: i.roles.map((role) => role),
-      modules: i.modules ? i.modules : [], //draft
       username: i.username,
       'account-id': i['account-id'],
     }

@@ -6,7 +6,6 @@ import { AdminInput as Input } from './AdminInput'
 import { AdminModal as Modal } from './AdminModal'
 import { AdminSearch as Search } from './AdminSearch'
 import { AdminSelect as Select } from './AdminSelect'
-import { AdminTable as Table } from './AdminTable'
 import { AdminTabs } from './AdminTabs'
 
 export {
@@ -18,6 +17,5 @@ export {
   Modal,
   Search,
   Select,
-  Table,
   AdminTabs,
 }

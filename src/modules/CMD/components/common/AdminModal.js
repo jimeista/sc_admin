@@ -21,9 +21,7 @@ export const AdminModal = ({ open, setOpen }) => {
         }))
       )
     }
-
-    return () => setFetchedIndicatorInfoData({ loading: true })
-  }, [modalIndicator, setFetchedIndicatorInfoData])
+  }, [modalIndicator])
 
   const { TabPane } = Tabs
 

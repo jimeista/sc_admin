@@ -10,6 +10,7 @@ import rolesReducer from './features/roles/rolesSlice'
 import usersReducer from './features/users/usersSlice'
 import headsReducer from './features/heads/headsSlice'
 import indicatorReducer from './features/indicator/indicatorSlice'
+import indicatorinfoReducer from './features/indicatorinfo/indicatorinfoSlice'
 
 import './index.css'
 import App from './App'
@@ -22,6 +23,7 @@ const store = configureStore({
     users: usersReducer,
     heads: headsReducer,
     indicator: indicatorReducer,
+    indicatorinfo: indicatorinfoReducer,
   },
 })
 

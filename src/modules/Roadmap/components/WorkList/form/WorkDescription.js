@@ -84,7 +84,7 @@ export const WorkDescription = (props) => {
     </>
   )
 }
-function PickerWithType({ type }) {
-  if (type === 'date') return <DatePicker />
-  return <DatePicker picker={type} />
-}
+// function PickerWithType({ type }) {
+//   if (type === 'date') return <DatePicker />
+//   return <DatePicker picker={type} />
+// }

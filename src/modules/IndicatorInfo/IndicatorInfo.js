@@ -3,36 +3,33 @@ import { useDispatch } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Tabs } from 'antd'
 
-import IndicatorTable from './IndicatorTable'
-import IndicatorControllers from './IndicatorControllers'
-import StrategyTable from './StrategyTable'
+import IndicatorinfoTable from './IndicatorinfoTable'
+import StrategyinfoTable from './StrategyinfoTable'
 
 import {
-  getIndicator,
+  getIndicatorInfo,
   getDictionaries,
-} from '../../features/indicator/indicatorSlice'
+} from '../../features/indicatorinfo/indicatorinfoSlice'
 
-const Indicator = () => {
+const IndicatorInfo = () => {
   const dispatch = useDispatch()
   const { TabPane } = Tabs
 
   useEffect(() => {
-    dispatch(getIndicator())
+    dispatch(getIndicatorInfo())
     dispatch(getDictionaries())
   }, [])
 
   return (
     <Tabs defaultActiveKey='1' tabPosition={'top'}>
       <TabPane tab='Аналитические индикаторы' key='1'>
-        <IndicatorControllers dictionary={'Сфера'} />
-        <IndicatorTable />
+        <IndicatorinfoTable />
       </TabPane>
       <TabPane tab='Индикатор стратегии' key='2'>
-        <IndicatorControllers dictionary={'Стратегия 2050'} />
-        <StrategyTable />
+        <StrategyinfoTable />
       </TabPane>
     </Tabs>
   )
 }
 
-export default withRouter(Indicator)
+export default withRouter(IndicatorInfo)

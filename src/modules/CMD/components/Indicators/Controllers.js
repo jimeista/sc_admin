@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from 'react'
+import React, { useRef, useState, useContext, useMemo } from 'react'
 import { Alert, Form } from 'antd'
 
 import { getAPI, postAPI } from '../../utils/api'
@@ -96,7 +96,7 @@ export const Controllers = ({ isStrategy }) => {
     setIndicator((state) => [...state, id])
   }
 
-  const renderSelect = () => {
+  const renderSelect = useMemo(() => {
     let selects = []
     let industry = []
     if (!fetchedDictionaryData.loading) {
@@ -167,7 +167,7 @@ export const Controllers = ({ isStrategy }) => {
     )
 
     return selects.map((select) => select)
-  }
+  }, [fetchedDictionaryData, isStrategy])
 
   return (
     <div className={'form_indicators'}>
@@ -187,7 +187,7 @@ export const Controllers = ({ isStrategy }) => {
                 }}
               />
             </Form.Item>
-            {renderSelect()}
+            {renderSelect}
             <Button
               type='primary'
               handleAdd={handleSubmit}

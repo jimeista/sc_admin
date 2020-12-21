@@ -1,4 +1,6 @@
-export const setTableColumns = (data, key) => {
+import React from 'react'
+
+export const setTableColumns = (data, key, link, setOpen, setRecord) => {
   let names = [
     'Государственная программа',
     'Единица измерения',
@@ -18,6 +20,20 @@ export const setTableColumns = (data, key) => {
       editable: true,
       sorter: (a, b) => strcmp(b.name, a.name),
       sortDirections: ['ascend'],
+      render: (text, record) => {
+        return link ? (
+          <a
+            onClick={() => {
+              setOpen(true)
+              setRecord(record)
+            }}
+          >
+            {text}
+          </a>
+        ) : (
+          text
+        )
+      },
     },
     ...names.map((name) => {
       let filters = []

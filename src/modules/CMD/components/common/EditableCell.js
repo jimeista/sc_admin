@@ -29,7 +29,7 @@ export const EditableCell = ({
           </Select>
         )
       case 'number':
-        return <InputNumber className='Edit_input_style' />
+        return <InputNumber className='Edit_input_style' min={0} />
       default:
         return <Input className='Edit_input_style' />
     }

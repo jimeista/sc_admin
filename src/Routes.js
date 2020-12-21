@@ -10,8 +10,9 @@ import Roles from './modules/Roles/Roles'
 import Roadmap from './modules/Roadmap'
 import Heads from './modules/Heads/Heads'
 import AnalyticIndicator from './modules/AnalyticIndicator/Indicator'
+import IndicatorInfo from './modules/IndicatorInfo/IndicatorInfo'
 
-import { Dictionary, Indicator, IndicatorInfo } from './modules/CMD'
+// import { Dictionary, Indicator, IndicatorInfo } from './modules/CMD'
 
 import Home from './components/Home'
 
@@ -23,8 +24,10 @@ const Routes = () => {
       <ProtectedRoute exact path='/Пользователи' component={Users} />
       <ProtectedRoute exact path='/Ремонт дорог' component={Roadmap} />
       <ProtectedRoute exact path='/Руководители' component={Heads} />
-      <ProtectedRoute exact path='/test' component={AnalyticIndicator} />
-      <Route
+      <ProtectedRoute exact path='/indicator' component={AnalyticIndicator} />
+      <ProtectedRoute exact path='/indicatorinfo' component={IndicatorInfo} />
+
+      {/* <Route
         path='/Справочники'
         component={() => (
           <Home>
@@ -47,7 +50,7 @@ const Routes = () => {
             <IndicatorInfo />
           </Home>
         )}
-      />
+      /> */}
       <Route exact path='/авторизация' component={SignInForm} />
     </Switch>
   )

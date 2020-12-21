@@ -15,7 +15,7 @@ const HeadsModal = ({ organisations }) => {
       let arr = organisations.data.map((i, index) => ({
         key: i.id,
         '#': ++index,
-        'full-name': `${i.abbreviation}-${i['full-name']}`,
+        'full-name': i['full-name'],
         abbreviation: i.abbreviation,
         id: i.id,
       }))

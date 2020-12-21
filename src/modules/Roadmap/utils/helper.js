@@ -63,7 +63,17 @@ export const prepareToShowDetailsObToArr = (ob) => {
   const arr = []
 
   Object.keys(ob).map((key) => {
-    if (
+    if (key === 'start-date') {
+      arr.push({
+        name: key,
+        value: ob['is-start-date'] ? `${ob[key]}-01-01` : ob[key],
+      })
+    } else if (key === 'end-date') {
+      arr.push({
+        name: key,
+        value: ob['is-end-date'] ? `${ob[key]}-12-31` : ob[key],
+      })
+    } else if (
       typeof ob[key] !== 'undefined' &&
       typeof ob[key] !== 'object' &&
       key !== 'is-start-date' &&
@@ -116,12 +126,6 @@ export const validateRoadWorkForm = (
       }
       if (item.name === 'commentary') {
         commentary = item.value
-      }
-
-      if (item.name === 'end-date' || item.name === 'start-date') {
-        item.value.length > 4
-          ? (ob = { ...ob, [item.name]: item.value })
-          : (ob = { ...ob, [item.name]: `${item.value}-01-01` })
       }
       //find id for item.names
       else if (item.name === 'category') {
