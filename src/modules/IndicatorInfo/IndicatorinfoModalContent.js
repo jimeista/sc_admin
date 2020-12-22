@@ -45,12 +45,6 @@ const IndicatorinfoModalContent = ({ record }) => {
         width: '10%',
       },
       {
-        title: 'Ед. измерения',
-        dataIndex: 'measurement',
-        align: 'center',
-        width: '10%',
-      },
-      {
         title: 'Коментарий',
         dataIndex: 'edit-comment',
       },
@@ -62,7 +56,6 @@ const IndicatorinfoModalContent = ({ record }) => {
       key: `${i['indicator-name']}-${i.id}`,
       planned: i.planned,
       fact: i.fact,
-      measurement: i.measurement,
       date: i.date.slice(0, 7),
       'last-edit': i['last-edit'].slice(0, 10),
       id: i.id,

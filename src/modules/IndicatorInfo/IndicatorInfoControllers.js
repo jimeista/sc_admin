@@ -25,21 +25,13 @@ const IndicatorInfoControllers = ({ name, record }) => {
       planned: name === 'План' ? num : null,
     }
 
-    // dispatch(
-    //   postIndicatorInfoPopUp({
-    //     id: record.id,
-    //     data,
-    //     'last-edit': moment().format('YYYY-MM-DD'),
-    //     'indicator-name': record.name,
-    //   })
-    // )
-
-    console.log({
-      id: record.id,
-      data,
-      'last-edit': moment().format('YYYY-MM-DD'),
-      'indicator-name': record.name,
-    })
+    dispatch(
+      postIndicatorInfoPopUp({
+        id: record.id,
+        data,
+        'last-edit': moment().format('YYYY-MM-DD'),
+      })
+    )
     form.resetFields()
   }
 
