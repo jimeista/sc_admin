@@ -1,16 +1,46 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import moment from 'moment'
 import { Form, DatePicker, Select, InputNumber, Space, Button } from 'antd'
 
-const IndicatorInfoControllers = ({ name }) => {
+import { postIndicatorInfoPopUp } from '../../features/indicatorinfo/indicatorinfoSlice'
+
+const IndicatorInfoControllers = ({ name, record }) => {
   const [form] = Form.useForm()
   const { Option } = Select
 
-  const onSubmit = async () => {
-    let record = await form.validateFields()
+  const dispatch = useDispatch()
 
+  const onSubmit = async () => {
+    let record_ = await form.validateFields()
+
+    let date = moment(record_.date, 'YYYY').format('YYYY')
+    let num = record_['num']
+    let month = record_['month']
+
+    const data = {
+      date: month ? `${date}-${month}-15` : `${date}-12-31`,
+      'edit-comment': '',
+      fact: name === 'Факт' ? num : null,
+      planned: name === 'План' ? num : null,
+    }
+
+    // dispatch(
+    //   postIndicatorInfoPopUp({
+    //     id: record.id,
+    //     data,
+    //     'last-edit': moment().format('YYYY-MM-DD'),
+    //     'indicator-name': record.name,
+    //   })
+    // )
+
+    console.log({
+      id: record.id,
+      data,
+      'last-edit': moment().format('YYYY-MM-DD'),
+      'indicator-name': record.name,
+    })
     form.resetFields()
-    console.log(moment(record.date, 'YYYY-MM-DD').format('YYYY-MM-DD'))
   }
 
   return (
@@ -23,7 +53,12 @@ const IndicatorInfoControllers = ({ name }) => {
             return moment(string, 'YYYY-MM-DD')
           }}
         >
-          <DatePicker placeholder='Год' allowClear={false} />
+          <DatePicker
+            placeholder='Год'
+            allowClear={false}
+            locale={locale}
+            picker={'year'}
+          />
         </Form.Item>
         <Form.Item name={'month'} style={{ width: 150, overflow: 'hidden' }}>
           <Select placeholder='Месяц'>
@@ -75,3 +110,29 @@ const month = [
     value: 'Декабрь',
   },
 ]
+
+const locale = {
+  lang: {
+    locale: 'ru',
+    placeholder: 'Выбрать дату',
+    today: 'Сегодня',
+    now: 'Сейчас',
+    ok: 'ок',
+    clear: 'очистить',
+    month: 'Месяц',
+    year: 'Год',
+    yearFormat: 'YYYY',
+    dateFormat: 'M/D/YYYY',
+    dayFormat: 'D',
+    dateTimeFormat: 'M/D/YYYY HH:mm:ss',
+    monthFormat: 'MMMM',
+    monthBeforeYear: false,
+  },
+  timePickerLocale: {
+    placeholder: 'Выбрать время',
+  },
+  dateFormat: 'YYYY-MM-DD',
+  dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
+  weekFormat: 'YYYY-wo',
+  monthFormat: 'YYYY-MM',
+}

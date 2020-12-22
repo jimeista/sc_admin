@@ -2,7 +2,10 @@ import React, { useEffect, useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Tabs } from 'antd'
 
-import { getIndicatorInfoPopUp } from '../../features/indicatorinfo/indicatorinfoSlice'
+import {
+  getIndicatorInfoPopUp,
+  deleteIndicatorInfoPopUp,
+} from '../../features/indicatorinfo/indicatorinfoSlice'
 import { CustomTable as Table } from '../../common/Table'
 
 import IndicatorInfoControllers from './IndicatorInfoControllers'
@@ -66,10 +69,14 @@ const IndicatorinfoModalContent = ({ record }) => {
     }))
   }, [data])
 
+  const onDelete = (record) => {
+    dispatch(deleteIndicatorInfoPopUp(record.id))
+  }
+
   return (
     <Tabs defaultActiveKey='1' tabPosition={'top'}>
       <TabPane tab='План' key='1'>
-        <IndicatorInfoControllers name={'План'} />
+        <IndicatorInfoControllers name={'План'} record={record} />
         <Table
           columns={[
             ...columns,
@@ -83,12 +90,13 @@ const IndicatorinfoModalContent = ({ record }) => {
           data={dataSource}
           setData={setData}
           loading={popup.status !== 'success' ? true : false}
+          handleDelete={onDelete}
           isEditable={false}
           isDeletable={false}
         />
       </TabPane>
       <TabPane tab='Факт' key='2'>
-        <IndicatorInfoControllers name={'Факт'} />
+        <IndicatorInfoControllers name={'Факт'} record={record} />
         <Table
           columns={[
             ...columns,
@@ -102,6 +110,7 @@ const IndicatorinfoModalContent = ({ record }) => {
           data={dataSource}
           setData={setData}
           loading={popup.status !== 'success' ? true : false}
+          handleDelete={onDelete}
           isEditable={false}
           isDeletable={false}
         />

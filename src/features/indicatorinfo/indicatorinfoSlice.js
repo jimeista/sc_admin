@@ -19,6 +19,29 @@ export const getIndicatorInfoPopUp = createAsyncThunk(
   }
 )
 
+export const postIndicatorInfoPopUp = createAsyncThunk(
+  'admin/postIndicatorInfoPopUp',
+  async (ob) => {
+    const url = `/sc-analytic-indicators/api/indicators/${ob.id}/indexes`
+    let res = await axios.post(url, ob.data)
+    return {
+      id: res.data,
+      ...ob.data,
+      'last-edit': ob['last-edit'],
+      'indicator-name': ob['indicator-name'],
+    }
+  }
+)
+
+export const deleteIndicatorInfoPopUp = createAsyncThunk(
+  'admin/deleteIndicatorInfoPopUp',
+  async (id) => {
+    const url = `/sc-analytic-indicators/api/indexes/${id}`
+    await axios.delete(url)
+    return id
+  }
+)
+
 export const getDictionaries = createAsyncThunk(
   'admin/getDictionaries',
   async () => {
@@ -62,7 +85,7 @@ const indicatorinfoSlice = createSlice({
       state.error = action.payload
     },
 
-    //get indicator
+    //get indicatorinfo
     [getIndicatorInfoPopUp.pending]: (state) => {
       state.popup.status = 'loading'
     },
@@ -71,6 +94,33 @@ const indicatorinfoSlice = createSlice({
       state.popup.data = action.payload
     },
     [getIndicatorInfoPopUp.rejected]: (state, action) => {
+      state.popup.status = 'failed'
+      state.popup.error = action.payload
+    },
+
+    //post indicatorinfo
+    [postIndicatorInfoPopUp.pending]: (state) => {
+      state.popup.status = 'loading'
+    },
+    [postIndicatorInfoPopUp.fulfilled]: (state, action) => {
+      state.popup.status = 'success'
+      state.popup.data = [action.payload, state.popup.data]
+    },
+    [postIndicatorInfoPopUp.rejected]: (state, action) => {
+      state.popup.status = 'failed'
+      state.popup.error = action.payload
+    },
+
+    //delete indicatorinfo
+    [deleteIndicatorInfoPopUp.pending]: (state) => {
+      state.popup.status = 'loading'
+    },
+    [deleteIndicatorInfoPopUp.fulfilled]: (state, action) => {
+      state.popup.status = 'success'
+      let index = state.popup.data.findIndex((i) => i.id === action.payload)
+      state.popup.data.splice(index, 1)
+    },
+    [deleteIndicatorInfoPopUp.rejected]: (state, action) => {
       state.popup.status = 'failed'
       state.popup.error = action.payload
     },
