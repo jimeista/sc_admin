@@ -5,6 +5,7 @@ import { Tabs } from 'antd'
 import {
   getIndicatorInfoPopUp,
   deleteIndicatorInfoPopUp,
+  putIndicatorInfoPopUp,
 } from '../../features/indicatorinfo/indicatorinfoSlice'
 import { CustomTable as Table } from '../../common/Table'
 
@@ -47,6 +48,7 @@ const IndicatorinfoModalContent = ({ record }) => {
       {
         title: 'Коментарий',
         dataIndex: 'edit-comment',
+        editable: true,
       },
     ]
   }, [])
@@ -59,11 +61,38 @@ const IndicatorinfoModalContent = ({ record }) => {
       date: i.date.slice(0, 7),
       'last-edit': i['last-edit'].slice(0, 10),
       id: i.id,
+      'edit-comment': i['edit-comment'],
     }))
   }, [data])
 
   const onDelete = (record) => {
     dispatch(deleteIndicatorInfoPopUp(record.id))
+  }
+
+  const onEditPlan = (record) => {
+    const ob = popup.data.find((i) => i.id === record.id)
+
+    const data = {
+      'edit-comment': record['edit-comment'],
+      fact: ob.fact,
+      date: ob.date,
+      planned: record.planned,
+    }
+
+    dispatch(putIndicatorInfoPopUp({ id: record.id, data }))
+  }
+
+  const onEditFact = (record) => {
+    const ob = popup.data.find((i) => i.id === record.id)
+
+    const data = {
+      planned: ob.planned,
+      date: ob.date,
+      'edit-comment': record['edit-comment'],
+      fact: record.fact,
+    }
+
+    dispatch(putIndicatorInfoPopUp({ id: record.id, data }))
   }
 
   return (
@@ -78,12 +107,15 @@ const IndicatorinfoModalContent = ({ record }) => {
               dataIndex: 'planned',
               align: 'center',
               width: '10%',
+              editable: true,
+              type: 'planfact',
             },
           ]}
           data={dataSource.filter((i) => i.planned !== null)}
           setData={setData}
           loading={popup.status !== 'success' ? true : false}
           handleDelete={onDelete}
+          handleEdit={onEditPlan}
           isEditable={false}
           isDeletable={false}
         />
@@ -98,12 +130,15 @@ const IndicatorinfoModalContent = ({ record }) => {
               dataIndex: 'fact',
               align: 'center',
               width: '10%',
+              editable: true,
+              type: 'planfact',
             },
           ]}
           data={dataSource.filter((i) => i.fact !== null)}
           setData={setData}
           loading={popup.status !== 'success' ? true : false}
           handleDelete={onDelete}
+          handleEdit={onEditFact}
           isEditable={false}
           isDeletable={false}
         />

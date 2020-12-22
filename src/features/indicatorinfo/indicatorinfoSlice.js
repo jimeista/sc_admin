@@ -29,6 +29,16 @@ export const postIndicatorInfoPopUp = createAsyncThunk(
   }
 )
 
+export const putIndicatorInfoPopUp = createAsyncThunk(
+  'admin/putIndicatorInfoPopUp',
+  async (ob) => {
+    const url = `/sc-analytic-indicators/api/indexes/${ob.id}`
+    let res = await axios.put(url, ob.data)
+
+    return { id: ob.id, ...res.data }
+  }
+)
+
 export const deleteIndicatorInfoPopUp = createAsyncThunk(
   'admin/deleteIndicatorInfoPopUp',
   async (id) => {
@@ -113,6 +123,25 @@ const indicatorinfoSlice = createSlice({
       }
     },
     [postIndicatorInfoPopUp.rejected]: (state, action) => {
+      state.popup.status = 'failed'
+      state.popup.error = action.payload
+    },
+
+    //put indicatorinfo
+    [putIndicatorInfoPopUp.pending]: (state) => {
+      state.popup.status = 'loading'
+    },
+    [putIndicatorInfoPopUp.fulfilled]: (state, action) => {
+      state.popup.status = 'success'
+
+      let index = state.popup.data.findIndex((i) => i.id === action.payload.id)
+
+      state.popup.data[index] = {
+        ...state.popup.data[index],
+        ...action.payload,
+      }
+    },
+    [putIndicatorInfoPopUp.rejected]: (state, action) => {
       state.popup.status = 'failed'
       state.popup.error = action.payload
     },

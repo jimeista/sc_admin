@@ -62,6 +62,8 @@ export const EditableCell = ({
             parser={(value) => value.replace('%', '')}
           />
         )
+      case 'planfact':
+        return <InputNumber min={0} />
       default:
         return (
           <Input
