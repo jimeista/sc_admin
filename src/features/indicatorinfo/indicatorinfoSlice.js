@@ -25,7 +25,6 @@ export const postIndicatorInfoPopUp = createAsyncThunk(
     const url = `/sc-analytic-indicators/api/indicators/${ob.id}/indexes`
     let res = await axios.post(url, ob.data)
 
-    console.log(res)
     return res.data
   }
 )
@@ -101,7 +100,17 @@ const indicatorinfoSlice = createSlice({
     },
     [postIndicatorInfoPopUp.fulfilled]: (state, action) => {
       state.popup.status = 'success'
-      state.popup.data = [action.payload, ...state.popup.data]
+
+      let index = state.popup.data.findIndex((i) => i.id === action.payload.id)
+
+      if (index !== -1) {
+        state.popup.data[index] = {
+          ...state.popup.data[index],
+          ...action.payload,
+        }
+      } else {
+        state.popup.data = [action.payload, ...state.popup.data]
+      }
     },
     [postIndicatorInfoPopUp.rejected]: (state, action) => {
       state.popup.status = 'failed'

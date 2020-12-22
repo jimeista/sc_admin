@@ -80,7 +80,7 @@ const IndicatorinfoModalContent = ({ record }) => {
               width: '10%',
             },
           ]}
-          data={dataSource}
+          data={dataSource.filter((i) => i.planned !== null)}
           setData={setData}
           loading={popup.status !== 'success' ? true : false}
           handleDelete={onDelete}
@@ -100,7 +100,7 @@ const IndicatorinfoModalContent = ({ record }) => {
               width: '10%',
             },
           ]}
-          data={dataSource}
+          data={dataSource.filter((i) => i.fact !== null)}
           setData={setData}
           loading={popup.status !== 'success' ? true : false}
           handleDelete={onDelete}
