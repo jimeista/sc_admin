@@ -137,6 +137,9 @@ export const CustomTable = (props) => {
         pagination={{
           onChange: cancel,
         }}
+        // expandable={{
+        //   defaultExpandAllRows: true,
+        // }}
         loading={props.loading}
         locale={{
           filterTitle: 'Меню фильтра',

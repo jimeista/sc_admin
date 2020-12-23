@@ -9,6 +9,7 @@ import roadmapReducer from './features/roadmap/roadmapSlice'
 import rolesReducer from './features/roles/rolesSlice'
 import usersReducer from './features/users/usersSlice'
 import headsReducer from './features/heads/headsSlice'
+import dictionaryReducer from './features/dictionary/dictionarySlice'
 import indicatorReducer from './features/indicator/indicatorSlice'
 import indicatorinfoReducer from './features/indicatorinfo/indicatorinfoSlice'
 
@@ -22,6 +23,7 @@ const store = configureStore({
     roles: rolesReducer,
     users: usersReducer,
     heads: headsReducer,
+    dictionary: dictionaryReducer,
     indicator: indicatorReducer,
     indicatorinfo: indicatorinfoReducer,
   },

@@ -11,8 +11,9 @@ import Roadmap from './modules/Roadmap'
 import Heads from './modules/Heads/Heads'
 import AnalyticIndicator from './modules/AnalyticIndicator/Indicator'
 import IndicatorInfo from './modules/IndicatorInfo/IndicatorInfo'
+import Dictionary from './modules/Dictionary/Dictionary'
 
-// import { Dictionary, Indicator, IndicatorInfo } from './modules/CMD'
+import { Dictionary as DictionaryOld } from './modules/CMD'
 
 import Home from './components/Home'
 
@@ -24,33 +25,27 @@ const Routes = () => {
       <ProtectedRoute exact path='/Пользователи' component={Users} />
       <ProtectedRoute exact path='/Ремонт дорог' component={Roadmap} />
       <ProtectedRoute exact path='/Руководители' component={Heads} />
-      <ProtectedRoute exact path='/indicator' component={AnalyticIndicator} />
-      <ProtectedRoute exact path='/indicatorinfo' component={IndicatorInfo} />
+      <ProtectedRoute
+        exact
+        path='/Аналитические индикаторы'
+        component={AnalyticIndicator}
+      />
+      <ProtectedRoute
+        exact
+        path='/Показатели индикаторов'
+        component={IndicatorInfo}
+      />
+      <ProtectedRoute exact path='/dictionary' component={Dictionary} />
 
-      {/* <Route
+      <Route
         path='/Справочники'
         component={() => (
           <Home>
-            <Dictionary />
+            <DictionaryOld />
           </Home>
         )}
       />
-      <Route
-        path='/Аналитические индикаторы'
-        component={() => (
-          <Home>
-            <Indicator />
-          </Home>
-        )}
-      />
-      <Route
-        path='/Показатели индикаторов'
-        component={() => (
-          <Home>
-            <IndicatorInfo />
-          </Home>
-        )}
-      /> */}
+
       <Route exact path='/авторизация' component={SignInForm} />
     </Switch>
   )
