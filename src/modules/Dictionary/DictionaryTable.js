@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Input } from 'antd'
 
+import { deleteDictionary } from '../../features/dictionary/dictionarySlice'
 import { CustomTable as Table } from '../../common/Table'
 import {
   setTableDefaultDataSource,
@@ -13,18 +14,12 @@ const DictionaryTable = () => {
   const [dataSource, setDataSource] = useState([])
   const [filtered, setFiltered] = useState()
 
+  const dispatch = useDispatch()
   const { data, status, selected } = useSelector((state) => state.dictionary)
-
-  //set table datasource on initial data load
-  useEffect(() => {
-    if (status === 'success' && selected === undefined) {
-      setDataSource(setTableDefaultDataSource(data))
-    }
-  }, [status, data, selected])
 
   //set table datasource on selecting option
   useEffect(() => {
-    if (selected) {
+    if (status === 'success') {
       if (selected === 'Сфера' || selected === 'Стратегия 2050') {
         setDataSource(setTableUniqueDataSource(data, selected))
       } else if (selected === 'Все справочники') {
@@ -33,9 +28,9 @@ const DictionaryTable = () => {
         setDataSource(setTableOtherDataSource(data, selected))
       }
     }
-  }, [selected, data])
+  }, [selected, data, status])
 
-  console.log(dataSource)
+  //   console.log(dataSource)
 
   //set table filtered datasource on search
   const onSearch = (e) => {
@@ -65,7 +60,9 @@ const DictionaryTable = () => {
 
   const onEdit = (record) => {}
 
-  const onDelete = (record) => {}
+  const onDelete = (record) => {
+    dispatch(deleteDictionary(record.id))
+  }
 
   return (
     <>
@@ -83,8 +80,8 @@ const DictionaryTable = () => {
         loading={status !== 'success' ? true : false}
         handleEdit={onEdit}
         handleDelete={onDelete}
-        isEditable={selected ? false : true}
-        isDeletable={selected ? false : true}
+        isEditable={selected !== 'Все справочники' ? false : true}
+        isDeletable={selected !== 'Все справочники' ? false : true}
         expandable={filtered ? true : false}
       />
     </>

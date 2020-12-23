@@ -13,10 +13,6 @@ import AnalyticIndicator from './modules/AnalyticIndicator/Indicator'
 import IndicatorInfo from './modules/IndicatorInfo/IndicatorInfo'
 import Dictionary from './modules/Dictionary/Dictionary'
 
-import { Dictionary as DictionaryOld } from './modules/CMD'
-
-import Home from './components/Home'
-
 const Routes = () => {
   return (
     <Switch>
@@ -35,16 +31,7 @@ const Routes = () => {
         path='/Показатели индикаторов'
         component={IndicatorInfo}
       />
-      <ProtectedRoute exact path='/dictionary' component={Dictionary} />
-
-      <Route
-        path='/Справочники'
-        component={() => (
-          <Home>
-            <DictionaryOld />
-          </Home>
-        )}
-      />
+      <ProtectedRoute exact path='/Справочники' component={Dictionary} />
 
       <Route exact path='/авторизация' component={SignInForm} />
     </Switch>

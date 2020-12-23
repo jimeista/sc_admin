@@ -11,8 +11,9 @@ const Dictionary = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    console.log('fetching ..')
     dispatch(getDictionaries())
-  }, [])
+  }, [dispatch])
 
   return (
     <Space direction={'vertical'} style={{ width: '100%' }}>
