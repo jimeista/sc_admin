@@ -46,7 +46,6 @@ const HeadsModal = ({ organisations }) => {
         setData={setDataSource}
         loading={organisations.status !== 'success'}
         handleEdit={onEdit}
-        isEditable={true}
       />
     </Modal>
   )

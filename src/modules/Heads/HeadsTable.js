@@ -18,7 +18,7 @@ const HeadsTable = ({ organisations, data, status }) => {
     let options =
       organisations.status === 'success' &&
       organisations.data.map((i) => ({
-        value: `${i.abbreviation}-${i['full-name']}`,
+        value: `${i.abbreviation}`,
         id: i.id,
         label: `${i.abbreviation}-${i['full-name']}`,
       }))
@@ -29,9 +29,7 @@ const HeadsTable = ({ organisations, data, status }) => {
     if (organisations.status === 'success') {
       let ids = organisations.data
         .filter((i) =>
-          record['supervised-organisations'].includes(
-            `${i.abbreviation}-${i['full-name']}`
-          )
+          record['supervised-organisations'].includes(`${i.abbreviation}`)
         )
         .map((i) => i.id)
 
@@ -43,10 +41,15 @@ const HeadsTable = ({ organisations, data, status }) => {
           client: {
             name: record.name,
             'supervised-organisations': record['supervised-organisations'].map(
-              (i) => ({
-                abbreviation: i.split('-')[0],
-                'full-name': i.split('-')[1],
-              })
+              (i) => {
+                let abb = i.split('-')[0]
+                let name = i.split('-')[1]
+
+                return {
+                  abbreviation: abb ? abb : i,
+                  'full-name': name ? name : '',
+                }
+              }
             ),
           },
           server: ob,
@@ -63,7 +66,6 @@ const HeadsTable = ({ organisations, data, status }) => {
         setData={setDataSource}
         loading={status !== 'success'}
         handleEdit={onEdit}
-        isEditable={true}
       />
     </div>
   )

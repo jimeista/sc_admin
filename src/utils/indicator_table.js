@@ -24,6 +24,7 @@ export const setTableColumns = (data, key, link, setOpen, setRecord) => {
         return link ? (
           <a
             onClick={() => {
+              // console.log(record)
               setOpen(true)
               setRecord(record)
             }}

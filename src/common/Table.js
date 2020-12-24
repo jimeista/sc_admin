@@ -82,11 +82,11 @@ export const CustomTable = (props) => {
       const row = await form.validateFields()
       const newData = [...props.data]
       const index = newData.findIndex((item) => key === item.key)
-
       const item = newData[index]
+
       // newData.splice(index, 1, { ...item, ...row })
       // props.setData(newData)
-      props.handleEdit({ ...item, ...row })
+      props.handleEdit({ ...item, ...row, key })
       setEditingKey('')
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo)

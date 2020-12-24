@@ -36,12 +36,13 @@ export const setColumnsHelper = (options) => {
               return (
                 <Tag
                   color={color}
-                  key={`${tag.split('-')[0]}-${index}`}
+                  // key={`${tag.split('-')[0]}-${index}`}
+                  key={`${tag}-${index}`}
                   style={{ margin: '5px 5px' }}
                 >
                   {/* {`${tag['abbreviation'].toUpperCase()} -
                     ${tag['full-name'].toUpperCase()}`} */}
-                  {tag.toUpperCase()}
+                  {tag && tag.toUpperCase()}
                 </Tag>
               )
             })}

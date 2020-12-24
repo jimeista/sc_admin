@@ -2,12 +2,15 @@ import React, { useMemo, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Input } from 'antd'
 
-import { deleteDictionary } from '../../features/dictionary/dictionarySlice'
+import {
+  deleteDictionary,
+  putDictionary,
+} from '../../features/dictionary/dictionarySlice'
 import { CustomTable as Table } from '../../common/Table'
 import {
   setTableDefaultDataSource,
   setTableOtherDataSource,
-  setTableUniqueDataSource,
+  setTableFieldDataSource,
 } from '../../utils/dictionary_table'
 
 const DictionaryTable = () => {
@@ -21,7 +24,7 @@ const DictionaryTable = () => {
   useEffect(() => {
     if (status === 'success') {
       if (selected === 'Сфера' || selected === 'Стратегия 2050') {
-        setDataSource(setTableUniqueDataSource(data, selected))
+        setDataSource(setTableFieldDataSource(data, selected))
       } else if (selected === 'Все справочники') {
         setDataSource(setTableDefaultDataSource(data))
       } else {
@@ -54,11 +57,22 @@ const DictionaryTable = () => {
       {
         title: 'Наименование',
         dataIndex: 'name',
+        editable: true,
       },
     ]
   }, [])
 
-  const onEdit = (record) => {}
+  const onEdit = (record) => {
+    console.log(
+      { tag: selected, name: record['name'], id: record.id },
+      record,
+      data,
+      dataSource
+    )
+    // dispatch(
+    //   putDictionary({ tag: selected, name: record['name'], id: record.id })
+    // )
+  }
 
   const onDelete = (record) => {
     dispatch(deleteDictionary(record.id))

@@ -32,7 +32,7 @@ export const setTableDefaultDataSource = (data) => {
   return arr
 }
 
-export const setTableUniqueDataSource = (data, selected) => {
+export const setTableFieldDataSource = (data, selected) => {
   let ob = data.find((i) => i.name === selected)
 
   let arr = []
@@ -43,7 +43,7 @@ export const setTableUniqueDataSource = (data, selected) => {
       name: i.name,
       id: i.id,
       children: i.options.map((ii) => ({
-        key: ii.name,
+        key: `${ii.name}-${ii.id}`,
         name: ii.name,
         id: ii.id,
       })),
