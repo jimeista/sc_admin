@@ -6,9 +6,11 @@ export const setTableDefaultDataSource = (data) => {
         let ob = {
           key: ii.name,
           name: ii.name,
+          tag: i.tag,
           children: ii.options.map((o) => ({
             key: `${ii.name}-${o.name}-${o.id}`,
             name: o.name,
+            tag: ii.tag,
           })),
         }
 
@@ -42,10 +44,14 @@ export const setTableFieldDataSource = (data, selected) => {
       key: i.name,
       name: i.name,
       id: i.id,
+      tag: i.tag,
       children: i.options.map((ii) => ({
         key: `${ii.name}-${ii.id}`,
         name: ii.name,
         id: ii.id,
+        tag: ii.tag,
+        'parent-id': i.id,
+        'parent-name': i.name,
       })),
     }
 
@@ -61,6 +67,7 @@ export const setTableOtherDataSource = (data, selected) => {
     key: i.name,
     name: i.name,
     id: i.id,
+    tag: i.tag,
   }))
 
   return arr

@@ -14,32 +14,32 @@ export const postDictionary = createAsyncThunk(
   'admin/postDictionary',
   async (data) => {
     const url = '/sc-analytic-indicators/api/dictionaries'
-    let res = await axios.post(url, data)
+    await axios.post(url, data)
 
-    console.log(res)
-    return { ...data, id: res.id }
+    let res = await axios.get(url).then((res) => res.data)
+    return res
   }
 )
 
 export const putDictionary = createAsyncThunk(
   'admin/putDictionary',
   async (data) => {
-    const url = `/sc-analytic-indicators/api/dictionaries/${data.id}`
-    let res = await axios.put(url, data.server)
+    const url = `/sc-analytic-indicators/api/dictionaries`
+    await axios.put(`${url}/${data.id}`, data.data)
 
-    console.log(res)
-    return { ...data.client, id: data.id }
+    let res = await axios.get(url).then((res) => res.data)
+    return res
   }
 )
 
 export const deleteDictionary = createAsyncThunk(
   'admin/deleteDictionary',
   async (id) => {
-    const url = `/sc-analytic-indicators/api/dictionaries/${id}`
-    let res = await axios.delete(url)
+    const url = `/sc-analytic-indicators/api/dictionaries`
+    await axios.delete(`${url}/${id}`)
 
-    console.log(res)
-    return id
+    let res = await axios.get(url).then((res) => res.data)
+    return res
   }
 )
 
@@ -76,7 +76,7 @@ const dictionarySlice = createSlice({
     },
     [postDictionary.fulfilled]: (state, action) => {
       state.status = 'success'
-      // state.data = [action.payload, ...state.data]
+      state.data = action.payload
     },
     [postDictionary.rejected]: (state, action) => {
       state.status = 'failed'
@@ -89,7 +89,7 @@ const dictionarySlice = createSlice({
     },
     [putDictionary.fulfilled]: (state, action) => {
       state.status = 'success'
-      // state.data = [action.payload, ...state.data]
+      state.data = action.payload
     },
     [putDictionary.rejected]: (state, action) => {
       state.status = 'failed'
@@ -102,8 +102,7 @@ const dictionarySlice = createSlice({
     },
     [deleteDictionary.fulfilled]: (state, action) => {
       state.status = 'success'
-      // let index = state.data.findIndex((i) => i.id === action.payload)
-      // state.data.splice(index, 1)
+      state.data = action.payload
     },
     [deleteDictionary.rejected]: (state, action) => {
       state.status = 'failed'

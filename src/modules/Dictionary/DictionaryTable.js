@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Input } from 'antd'
+import { Input, Form } from 'antd'
 
 import {
   deleteDictionary,
@@ -13,15 +13,26 @@ import {
   setTableFieldDataSource,
 } from '../../utils/dictionary_table'
 
+//данная компонента реализует:
+//отрисовку данных, поиск, редактирование и удаление справочника
 const DictionaryTable = () => {
   const [dataSource, setDataSource] = useState([])
-  const [filtered, setFiltered] = useState()
+  const [filtered, setFiltered] = useState() //массив фильтрованных значении по поиску
 
   const dispatch = useDispatch()
   const { data, status, selected } = useSelector((state) => state.dictionary)
 
-  //set table datasource on selecting option
+  const [form] = Form.useForm()
+
   useEffect(() => {
+    //при загрузке или обновления страницы
+    //форма и значение фильтрованных данных поиска сбрасываются
+    setFiltered()
+    form.resetFields()
+
+    //при успешной загрузке, данные подстраиваются под структуру ant table
+    //в зависимости от выбранного значения справочника выполняется последовательная логика
+    //детальное описание функции прописанно в надлежащем файле
     if (status === 'success') {
       if (selected === 'Сфера' || selected === 'Стратегия 2050') {
         setDataSource(setTableFieldDataSource(data, selected))
@@ -31,27 +42,36 @@ const DictionaryTable = () => {
         setDataSource(setTableOtherDataSource(data, selected))
       }
     }
-  }, [selected, data, status])
+  }, [selected, data, status, form])
 
-  //   console.log(dataSource)
-
-  //set table filtered datasource on search
+  //реализация поиска по таблице
   const onSearch = (e) => {
     let filtered_ = []
-    dataSource.forEach((i) => {
-      let arr = i.children.filter((с) =>
-        с.name.toLowerCase().includes(e.target.value.toLowerCase())
-      )
+    if (
+      selected === 'Все справочники' ||
+      selected === 'Сфера' ||
+      selected === 'Стратегия 2050'
+    ) {
+      dataSource.forEach((i) => {
+        //переменная для фильтраванных дочерних эллементов
+        let arr = i.children.filter((с) =>
+          с.name.toLowerCase().includes(e.target.value.toLowerCase())
+        )
 
-      if (arr.length > 0) {
-        filtered_ = [{ ...i, children: arr }, ...filtered_]
-      }
-    })
+        if (arr.length > 0) {
+          filtered_ = [{ ...i, children: arr }, ...filtered_]
+        }
+      })
+    } else {
+      filtered_ = dataSource.filter((i) =>
+        i.name.toLowerCase().includes(e.target.value.toLowerCase())
+      )
+    }
 
     filtered_.length > 0 ? setFiltered(filtered_) : setFiltered([])
   }
 
-  //set table initial columns
+  //инициализация своиства ant table columns
   const columns = useMemo(() => {
     return [
       {
@@ -62,31 +82,34 @@ const DictionaryTable = () => {
     ]
   }, [])
 
+  //реализация редактирования данных с таблицы
   const onEdit = (record) => {
-    console.log(
-      { tag: selected, name: record['name'], id: record.id },
-      record,
-      data,
-      dataSource
+    dispatch(
+      putDictionary({
+        id: record.record.id,
+        data: {
+          tag: record.record.tag,
+          name: record['name'],
+        },
+      })
     )
-    // dispatch(
-    //   putDictionary({ tag: selected, name: record['name'], id: record.id })
-    // )
   }
 
+  //реализация удаления данных с таблицы
   const onDelete = (record) => {
     dispatch(deleteDictionary(record.id))
   }
 
   return (
-    <>
-      <Input
-        placeholder='Поиск справочника'
-        onChange={onSearch}
-        allowClear={true}
-        style={{ width: '30%', margin: '15px 0' }}
-      />
-
+    <Form form={form}>
+      <Form.Item name={'search'}>
+        <Input
+          placeholder='Поиск справочника'
+          onChange={onSearch}
+          allowClear={true}
+          style={{ width: '30%', margin: '15px 0' }}
+        />
+      </Form.Item>
       <Table
         columns={columns}
         data={filtered ? filtered : dataSource}
@@ -98,7 +121,7 @@ const DictionaryTable = () => {
         isDeletable={selected !== 'Все справочники' ? false : true}
         expandable={filtered ? true : false}
       />
-    </>
+    </Form>
   )
 }
 

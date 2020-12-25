@@ -8,10 +8,12 @@ const { Option } = Select
 
 const DictionaryForm = ({ form }) => {
   const { data, selected } = useSelector((state) => state.dictionary)
-  const [options, setOptions] = useState([])
+  const [options, setOptions] = useState([]) //опции для формы по отрослям
 
   const dispatch = useDispatch()
 
+  //если выбранна определенная сфера
+  //сохрани отрасли в состояние options
   useEffect(() => {
     if (selected === 'Сфера' || selected === 'Стратегия 2050') {
       let ob = data.find((i) => i.name === selected)
@@ -19,18 +21,21 @@ const DictionaryForm = ({ form }) => {
     }
   }, [selected, data])
 
+  //post запрос данных по сфере и отраслям
   const onFieldSubmit = async () => {
     let record = await form.validateFields()
     let ob = data.find((i) => i.name === selected)
 
+    //валидация формы
     if (record['selected'] === undefined) {
       message.warning('Выберите сферу')
     } else if (record['unique_name'] === undefined) {
       message.warning('Введите название сферы')
     } else {
+      //находим id выбранного отрасля
       ob = ob.options.find((i) => i.name === record['selected'])
-      // console.log(ob)
 
+      //структура отправки данных на сервер
       ob = {
         tag: 'Отрасль',
         'parent-id': ob.id,
@@ -38,31 +43,35 @@ const DictionaryForm = ({ form }) => {
       }
 
       dispatch(postDictionary(ob))
-      // console.log(ob)
       form.resetFields()
     }
   }
 
+  //post запрос данных по сфере
   const onSubmit = async () => {
     let record = await form.validateFields()
+    //находим id выбранной сферы
     let ob = data.find((i) => i.name === selected)
 
+    //обозначение названия ключа формы для record
     let name =
       selected === 'Сфера' || selected === 'Стратегия 2050'
         ? 'field_name'
         : 'name'
 
+    //валидация формы
     if (record[name] === undefined) {
       message.warning('Введите название сферы')
     } else {
+      //структура отправки данных на сервер
       ob = { tag: ob.name, 'parent-id': ob.id, name: record[name] }
-      // console.log(ob)
 
       dispatch(postDictionary(ob))
       form.resetFields()
     }
   }
 
+  //отрисовка формы сферы и отрасля
   if (selected === 'Сфера' || selected === 'Стратегия 2050') {
     return (
       <Space direction={'vertical'} style={{ width: '100%' }}>
@@ -104,6 +113,7 @@ const DictionaryForm = ({ form }) => {
     )
   }
 
+  //отрисовка формы по сфере
   if (
     selected !== 'Все справочники' &&
     selected !== 'Сфера' &&
@@ -121,6 +131,7 @@ const DictionaryForm = ({ form }) => {
     )
   }
 
+  //форма недоступна при выборе всех справочников
   return null
 }
 

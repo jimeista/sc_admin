@@ -10,8 +10,9 @@ import DictionaryControllers from './DictionaryControllers'
 const Dictionary = () => {
   const dispatch = useDispatch()
 
+  //главная страница загрузки компоненты "Справочники"
+  //делаем запрос списка справочников при инициализации компоненты
   useEffect(() => {
-    console.log('fetching ..')
     dispatch(getDictionaries())
   }, [dispatch])
 
