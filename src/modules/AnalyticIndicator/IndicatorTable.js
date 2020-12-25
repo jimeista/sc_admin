@@ -10,6 +10,8 @@ import { CustomTable as Table } from '../../common/Table'
 import { setTableColumns, setTableData } from '../../utils/indicator_table'
 import { findOptionId } from '../../utils/indicator_helper'
 
+//данная компонента реализует:
+//отрисовку данных, поиск, редактирование и удаление аналитического индикатора
 const IndicatorTable = () => {
   const [dataSource, setDataSource] = useState([])
   const [filtered, setFiltered] = useState()
@@ -38,6 +40,7 @@ const IndicatorTable = () => {
     }
   }, [data, status, deletedId, putId])
 
+  //реализация поиска по таблице
   const onSearch = (e) => {
     let filtered_ = dataSource.filter((i) =>
       i.name.toLowerCase().includes(e.target.value.toLowerCase())
@@ -46,6 +49,7 @@ const IndicatorTable = () => {
     setFiltered(filtered_)
   }
 
+  //инициализация своиства ant table columns
   const columns = useMemo(() => {
     if (dictionaries.status === 'success') {
       return setTableColumns(dictionaries.data, 'Сфера')
@@ -54,6 +58,7 @@ const IndicatorTable = () => {
     }
   }, [dictionaries])
 
+  //реализация редактирования данных с таблицы
   const onEdit = (record) => {
     let client = {
       id: record.id,
@@ -105,6 +110,7 @@ const IndicatorTable = () => {
     dispatch(putIndicator({ id: record.id, client, server }))
   }
 
+  //реализация удаления данных с таблицы
   const onDelete = (record) => {
     dispatch(deleteIndicator(record.id))
   }
@@ -124,8 +130,8 @@ const IndicatorTable = () => {
         loading={dictionaries.status !== 'success' ? true : false}
         handleEdit={onEdit}
         handleDelete={onDelete}
-        isEditable={false}
-        isDeletable={false}
+        isEditable={true}
+        isDeletable={true}
       />
     </>
   )

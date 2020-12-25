@@ -32,7 +32,7 @@ const DictionaryTable = () => {
 
     //при успешной загрузке, данные подстраиваются под структуру ant table
     //в зависимости от выбранного значения справочника выполняется последовательная логика
-    //детальное описание функции прописанно в надлежащем файле
+    //детальное описание функции setTable.. прописанно в надлежащем файле
     if (status === 'success') {
       if (selected === 'Сфера' || selected === 'Стратегия 2050') {
         setDataSource(setTableFieldDataSource(data, selected))
@@ -117,8 +117,8 @@ const DictionaryTable = () => {
         loading={status !== 'success' ? true : false}
         handleEdit={onEdit}
         handleDelete={onDelete}
-        isEditable={selected !== 'Все справочники' ? false : true}
-        isDeletable={selected !== 'Все справочники' ? false : true}
+        isEditable={selected !== 'Все справочники' ? true : false}
+        isDeletable={selected !== 'Все справочники' ? true : false}
         expandable={filtered ? true : false}
       />
     </Form>

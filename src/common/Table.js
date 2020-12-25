@@ -43,7 +43,7 @@ export const CustomTable = (props) => {
         ) : (
           <Space>
             <a
-              disabled={editingKey !== '' || props.isEditable}
+              disabled={editingKey !== '' || !props.isEditable}
               onClick={() => edit(record, form, setEditingKey)}
             >
               <EditOutlined
@@ -52,7 +52,7 @@ export const CustomTable = (props) => {
               />
             </a>
             <Popconfirm
-              disabled={props.isDeletable}
+              disabled={!props.isDeletable}
               title='Вы уверены что хотите удалить даныне?'
               onConfirm={() => onDelete(record)}
             >

@@ -16,10 +16,12 @@ const Indicator = () => {
   const dispatch = useDispatch()
   const { TabPane } = Tabs
 
+  //главная страница загрузки индикаторов
+  //делаем get запрос списка справочника и индикатора при инициализации компоненты
   useEffect(() => {
     dispatch(getIndicator())
     dispatch(getDictionaries())
-  }, [])
+  }, [dispatch])
 
   return (
     <Tabs defaultActiveKey='1' tabPosition={'top'}>

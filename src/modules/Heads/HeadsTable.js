@@ -59,15 +59,15 @@ const HeadsTable = ({ organisations, data, status }) => {
   }
 
   return (
-    <div>
-      <Table
-        columns={columns}
-        data={dataSource}
-        setData={setDataSource}
-        loading={status !== 'success'}
-        handleEdit={onEdit}
-      />
-    </div>
+    <Table
+      columns={columns}
+      data={dataSource}
+      setData={setDataSource}
+      loading={status !== 'success'}
+      handleEdit={onEdit}
+      isEditable={true}
+      isDeletable={true}
+    />
   )
 }
 

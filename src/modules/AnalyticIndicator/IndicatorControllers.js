@@ -10,12 +10,14 @@ import {
 } from '../../utils/indicator_helper'
 import { postIndicator } from '../../features/indicator/indicatorSlice'
 
+//компонента управления формы post запроса индикатора
 const IndicatorControllers = ({ dictionary }) => {
   const [form] = Form.useForm()
 
   const dispatch = useDispatch()
   const { dictionaries } = useSelector((state) => state.indicator)
 
+  //post запрос данных по новому индикатору
   const onSubmit = async () => {
     let id = dictionary === 'Сфера' ? 227 : 229
     let record = await form.validateFields()
@@ -61,6 +63,7 @@ const IndicatorControllers = ({ dictionary }) => {
     form.resetFields()
   }
 
+  //отрисовка формы
   return (
     <Form form={form} style={{ margin: '30px auto' }}>
       <Form.Item
@@ -78,6 +81,7 @@ const IndicatorControllers = ({ dictionary }) => {
           style={{ width: '30%' }}
         />
       </Form.Item>
+      {/* отрисовка селектов */}
       <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
         {[...dictionaries_, dictionary].map((name) =>
           renderControllerSelects(dictionaries, name)

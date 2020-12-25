@@ -6,6 +6,8 @@ import { postDictionary } from '../../features/dictionary/dictionarySlice'
 
 const { Option } = Select
 
+//данная компонента реализует логику post запроса
+//в зависимости выбранной сферы
 const DictionaryForm = ({ form }) => {
   const { data, selected } = useSelector((state) => state.dictionary)
   const [options, setOptions] = useState([]) //опции для формы по отрослям
@@ -92,6 +94,7 @@ const DictionaryForm = ({ form }) => {
             name={'selected'}
           >
             <Select placeholder={'Сделайте выбор'}>
+              {/* отрисовка списка отраслей */}
               {options.map((name) => (
                 <Option key={name} value={name}>
                   {name}
