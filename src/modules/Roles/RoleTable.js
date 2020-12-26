@@ -8,28 +8,31 @@ import {
 } from '../../features/roles/rolesSlice'
 import { setRoleColumns, setRoleDataSource } from '../../utils/roles_table'
 
-//UI: render table
 const RoleTable = ({ role_modules, options, modules }) => {
   const dispatch = useDispatch()
   const [data, setData] = useState([])
 
   useEffect(() => {
-    //TASK: if role's modules are ready,show them on table
-    //LOGIC: set table datasource state
+    //при успешной загрузке, данные подстраиваются под структуру ant table
     role_modules.status === 'success' &&
       setData(setRoleDataSource(role_modules.data))
   }, [role_modules])
 
+  //реализация редактирования данных с таблицы
   const onEdit = (record) => {
-    //store newly added modules
-    let added = []
-    let arr = record.modules.map((i) => i['permitted-module']) //initial modules
-    added = record['permitted-modules'].filter((name) => !arr.includes(name))
+    //данная функция делает проверку на список новодобавленных и удаленных модулей из таблицы
+    let arr = record.modules.map((i) => i['permitted-module']) //записываем наименования всех модулей
+
+    //проверка на добавление нового модуля
+    //фильтруем и вытаскиваем id новых модулей
+    let added = record['permitted-modules'].filter(
+      (name) => !arr.includes(name)
+    )
     added = modules.data.filter((i) => added.includes(i.name)).map((i) => i.id)
 
-    // //check if module is removed
-    let removed = [] //store removed modules
-    removed = record.modules
+    //проверка на удаление нового модуля
+    //фильтруем и вытаскиваем id удаленных модулей
+    let removed = record.modules
       .filter(
         (item) =>
           !record['permitted-modules'].includes(item['permitted-module'])
@@ -47,6 +50,7 @@ const RoleTable = ({ role_modules, options, modules }) => {
     )
   }
 
+  //реализация удаления данных с таблицы
   const onDelete = (record) => {
     dispatch(deleteRoleModule(record.key))
   }

@@ -8,20 +8,16 @@ import { postRoleModules } from '../../features/roles/rolesSlice'
 const RoleControllers = ({ options }) => {
   const [form] = Form.useForm()
   const dispatch = useDispatch()
-  // const { modules } = useSelector((state) => state.admin)
 
-  // console.log('loading controllers', options)
-
-  //TASK: add new role's modules on put request (redux side)
+  //post запрос данных по новой роли
   const onAdd = useCallback(async () => {
     try {
-      //extract form data to post
       let row = await form.validateFields()
 
-      let ids = [] // request needs module's ids
-      let modules = [] //client side needs module names
+      let ids = [] // переменная массива ids модулей для отправки на сервер
+      let modules = [] //переменная наименовании модулей для отрисовки на клиенте
 
-      //fill above looping through options modules
+      //заполняем вышеуказанные переменные
       options.forEach((i) => {
         if (row['permitted-modules'].includes(i.value)) {
           ids = [...ids, i.id]
@@ -29,6 +25,7 @@ const RoleControllers = ({ options }) => {
         }
       })
 
+      //структура объекта отправки post запроса на сервер
       let post_new_role_module = { ...row, 'permitted-modules': ids } // post object
       dispatch(
         postRoleModules({ post_new_role_module, record_new_role_module: row })
@@ -38,10 +35,11 @@ const RoleControllers = ({ options }) => {
     } catch (err) {
       console.log(err)
     }
-  }, [form, options])
+  }, [form, options, dispatch])
 
   return (
     <Form form={form} className=' Roles_create'>
+      {/* форма поля ввода наименования новой роли*/}
       <Form.Item
         name='repr'
         rules={[
@@ -53,6 +51,7 @@ const RoleControllers = ({ options }) => {
       >
         <Input placeholder='Роли' allowClear style={{ width: '60%' }} />
       </Form.Item>
+      {/* форма выбора мультиселекта модулей*/}
       <Form.Item
         name='permitted-modules'
         rules={[
@@ -86,6 +85,7 @@ const RoleControllers = ({ options }) => {
 
 export default React.memo(RoleControllers)
 
+//вспомогательная функция для отрисовки мультиселекта
 function tagRender(props) {
   const { label, closable, onClose } = props
 
