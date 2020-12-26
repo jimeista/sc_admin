@@ -1,6 +1,8 @@
 import React from 'react'
 import { Tag, Avatar } from 'antd'
 
+//создаем наименования колонок под структуру antd table для руководителей
+//функция принимает options для отображения опции при редактировании
 export const setColumnsHelper = (options) => {
   return [
     {
@@ -28,6 +30,7 @@ export const setColumnsHelper = (options) => {
       type: 'multi-select',
       editable: true,
       data: options,
+      //при редактировании выпадает multiselect
       render: (tags) => {
         return (
           <span>
@@ -63,6 +66,7 @@ export const setColumnsHelper = (options) => {
   ]
 }
 
+//подгоняем data руководителей под структуру antd table
 export const setDataSourceHelper = (data) =>
   data.map((i, index) => ({
     key: i['supervisor-id'],
@@ -71,6 +75,7 @@ export const setDataSourceHelper = (data) =>
     name: i.name,
     position: i.position,
     'image-path': i['image-path'],
+    //в колону "курируемые организации" передается массив аббревиатур
     'supervised-organisations': i['supervised-organisations'].map(
       (o) => o.abbreviation
     ),
