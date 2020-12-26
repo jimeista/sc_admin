@@ -11,6 +11,8 @@ import { CustomTable as Table } from '../../common/Table'
 
 import IndicatorInfoControllers from './IndicatorInfoControllers'
 
+//данная компонента реализует отрисовку формы и таблицы показателей индикаторов
+//так же, редактирование и удаление показателей в таблице
 const IndicatorinfoModalContent = ({ record }) => {
   const dispatch = useDispatch()
   const { popup } = useSelector((state) => state.indicatorinfo)
@@ -19,17 +21,20 @@ const IndicatorinfoModalContent = ({ record }) => {
   const { TabPane } = Tabs
 
   useEffect(() => {
+    //при загрузке компоненты, производится запрос по показателям индикатора
     if (record) {
       dispatch(getIndicatorInfoPopUp(record.id))
     }
-  }, [record])
+  }, [record, dispatch])
 
   useEffect(() => {
+    //при успешной выгрузке, показатели отрисовываются в таблице
     if (popup.status === 'success') {
       setData(popup.data)
     }
   }, [popup])
 
+  //инициализация своиства ant table columns
   const columns = useMemo(() => {
     return [
       {
@@ -53,6 +58,8 @@ const IndicatorinfoModalContent = ({ record }) => {
     ]
   }, [])
 
+  //инициализация своиства ant table dataSource
+  //данную логику можно считать вспомогательной функцией преобразования data в dataSource
   const dataSource = useMemo(() => {
     return data.map((i) => ({
       key: `${i['indicator-name']}-${i.id}`,
@@ -65,10 +72,12 @@ const IndicatorinfoModalContent = ({ record }) => {
     }))
   }, [data])
 
+  //реализация удаления данных с таблицы
   const onDelete = (record) => {
     dispatch(deleteIndicatorInfoPopUp(record.id))
   }
 
+  //реализация редактирования данных с таблицы в таб План
   const onEditPlan = (record) => {
     const ob = popup.data.find((i) => i.id === record.id)
 
@@ -82,6 +91,7 @@ const IndicatorinfoModalContent = ({ record }) => {
     dispatch(putIndicatorInfoPopUp({ id: record.id, data }))
   }
 
+  //реализация редактирования данных с таблицы в таб Факт
   const onEditFact = (record) => {
     const ob = popup.data.find((i) => i.id === record.id)
 
@@ -95,6 +105,7 @@ const IndicatorinfoModalContent = ({ record }) => {
     dispatch(putIndicatorInfoPopUp({ id: record.id, data }))
   }
 
+  // переключение табов по план и факту
   return (
     <Tabs defaultActiveKey='1' tabPosition={'top'}>
       <TabPane tab='План' key='1'>
@@ -116,8 +127,8 @@ const IndicatorinfoModalContent = ({ record }) => {
           loading={popup.status !== 'success' ? true : false}
           handleDelete={onDelete}
           handleEdit={onEditPlan}
-          isEditable={false}
-          isDeletable={false}
+          isEditable={true}
+          isDeletable={true}
         />
       </TabPane>
       <TabPane tab='Факт' key='2'>
@@ -139,8 +150,8 @@ const IndicatorinfoModalContent = ({ record }) => {
           loading={popup.status !== 'success' ? true : false}
           handleDelete={onDelete}
           handleEdit={onEditFact}
-          isEditable={false}
-          isDeletable={false}
+          isEditable={true}
+          isDeletable={true}
         />
       </TabPane>
     </Tabs>

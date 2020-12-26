@@ -1,7 +1,12 @@
+//данные функии подстраивают data в структуру ant table
+//некоторые данные могут иметь вложенную структуру в зависимости от выбранного типа справочника
+
+//функиция возвращает структуру при выборе справочника "Все справочники"
 export const setTableDefaultDataSource = (data) => {
   let arr = []
   data.forEach((i) => {
-    if (i.name === 'Сфера') {
+    if (i.name === 'Сфера' || i.name === 'Стратегия 2050') {
+      //вложенность структуры
       i.options.forEach((ii) => {
         let ob = {
           key: ii.name,
@@ -34,6 +39,7 @@ export const setTableDefaultDataSource = (data) => {
   return arr
 }
 
+//функиция возвращает вложенную структуру отраслей при выборе справочника "Сфера" и "Стратегия 2050"
 export const setTableFieldDataSource = (data, selected) => {
   let ob = data.find((i) => i.name === selected)
 
@@ -50,8 +56,8 @@ export const setTableFieldDataSource = (data, selected) => {
         name: ii.name,
         id: ii.id,
         tag: ii.tag,
-        'parent-id': i.id,
-        'parent-name': i.name,
+        'parent-id': i.id, //необходимо для post запроса
+        'parent-name': i.name, //опционально, для dev mode
       })),
     }
 
@@ -61,6 +67,7 @@ export const setTableFieldDataSource = (data, selected) => {
   return arr
 }
 
+//функиция возвращает структуру при выборе весх типов справочника,кроме "Все справочники","Сфера","Стратегия 2050"
 export const setTableOtherDataSource = (data, selected) => {
   let ob = data.find((i) => i.name === selected)
   let arr = ob.options.map((i) => ({

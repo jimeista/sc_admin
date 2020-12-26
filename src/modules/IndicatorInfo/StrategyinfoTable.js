@@ -56,8 +56,6 @@ const StrategyTable = () => {
         data={filtered ? filtered : dataSource}
         setData={setDataSource}
         loading={dictionaries.status !== 'success' ? true : false}
-        isEditable={true}
-        isDeletable={true}
       />
 
       <Modal

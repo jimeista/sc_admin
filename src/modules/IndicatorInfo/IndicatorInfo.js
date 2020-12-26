@@ -3,30 +3,32 @@ import { useDispatch } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Tabs } from 'antd'
 
-import IndicatorinfoTable from './IndicatorinfoTable'
-import StrategyinfoTable from './StrategyinfoTable'
-
 import {
   getIndicatorInfo,
   getDictionaries,
 } from '../../features/indicatorinfo/indicatorinfoSlice'
 
+import IndicatorTable from './IndicatorTable'
+
 const IndicatorInfo = () => {
   const dispatch = useDispatch()
   const { TabPane } = Tabs
 
+  //главная страница загрузки показателей индикаторов
+  //делаем get запрос списка справочника и индикатора при инициализации компоненты
   useEffect(() => {
     dispatch(getIndicatorInfo())
     dispatch(getDictionaries())
-  }, [])
+  }, [dispatch])
 
+  //отрисовка переключения по табам показателей индикаторов
   return (
     <Tabs defaultActiveKey='1' tabPosition={'top'}>
       <TabPane tab='Аналитические индикаторы' key='1'>
-        <IndicatorinfoTable />
+        <IndicatorTable type={'Индикатор'} />
       </TabPane>
       <TabPane tab='Индикатор стратегии' key='2'>
-        <StrategyinfoTable />
+        <IndicatorTable type={'Стратегия'} />
       </TabPane>
     </Tabs>
   )

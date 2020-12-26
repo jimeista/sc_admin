@@ -1,5 +1,10 @@
 import React from 'react'
 
+//создаем наименования колонок под структуру antd table
+//функция принимает следующие данные:
+//массив справочников data, для фильтрации и выбора опции при редактировании строки таблицы
+//тип индикатора key для переключения по табам "Аналитические индикаторы" и "Индикаторы стратегии"
+//последние три параметра необходимы для компоненты "Показатели индикаторов", что позволяет открывать модальное окно и передавать данные "record" по выбранной строке
 export const setTableColumns = (data, key, link, setOpen, setRecord) => {
   let names = [
     'Государственная программа',
@@ -10,9 +15,10 @@ export const setTableColumns = (data, key, link, setOpen, setRecord) => {
     'Периодичность обновления',
   ]
 
-  names = [...names, key]
+  names = [...names, key] //key может быть "Сфера" или "Стратегия 2050"
 
   return [
+    //наименование индикатора сортируется
     {
       title: 'Индикатор',
       dataIndex: 'name',
@@ -25,8 +31,8 @@ export const setTableColumns = (data, key, link, setOpen, setRecord) => {
           <a
             onClick={() => {
               // console.log(record)
-              setOpen(true)
-              setRecord(record)
+              setOpen(true) //открывает модальное окно при клике
+              setRecord(record) //передаем информацию по выбранному индикатору
             }}
           >
             {text}
@@ -36,8 +42,12 @@ export const setTableColumns = (data, key, link, setOpen, setRecord) => {
         )
       },
     },
+    //наименования справочников
     ...names.map((name) => {
+      //необходимо передать каждой колонке соответствующие данные опции при редактировании и фильтрации таблицы
+      //данные для фильтрации нужно подстроить в формат ant table, так же ее можно использовать для выбора опции селекта при редактировании
       let filters = []
+
       if (name === 'Отрасль') {
         let field = data.find((i) => i.name === 'Сфера').options
         let strategy = data.find((i) => i.name === 'Стратегия 2050').options
@@ -71,6 +81,7 @@ export const setTableColumns = (data, key, link, setOpen, setRecord) => {
 
       filters = [].concat(...filters)
 
+      //немного стилизации длинны колонок таблицы
       let width =
         name === 'Единица измерения' || name === 'Периодичность обновления'
           ? '10%'
@@ -93,14 +104,17 @@ export const setTableColumns = (data, key, link, setOpen, setRecord) => {
   ]
 }
 
+//подгоняем индикатор data под структуру antd table
 export const setTableData = (data) => {
   return data.map((i) => {
+    //так как объект i,индикатор, содержит объект с наименованиями справочников
+    //необходимо каждый справочник подогнать под свой ключ
     let dictionaries = {}
+
     Object.keys(i.dictionaries).forEach((key) => {
       dictionaries = {
         ...dictionaries,
         [key]: i.dictionaries[key],
-        key: i.name,
       }
     })
 
@@ -113,6 +127,7 @@ export const setTableData = (data) => {
   })
 }
 
+//вспомогательная функция для сортировки
 export const strcmp = (a, b) => {
   if (a === b) {
     return 0

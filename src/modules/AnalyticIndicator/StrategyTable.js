@@ -6,9 +6,10 @@ import {
   deleteIndicator,
   putIndicator,
 } from '../../features/indicator/indicatorSlice'
-import { CustomTable as Table } from '../../common/Table'
 import { setTableColumns, setTableData } from '../../utils/indicator_table'
 import { findOptionId } from '../../utils/indicator_helper'
+
+import { CustomTable as Table } from '../../common/Table'
 
 //данная компонента реализует:
 //отрисовку данных, поиск, редактирование и удаление индикатора стратегии
@@ -22,9 +23,14 @@ const StrategyTable = () => {
   )
 
   useEffect(() => {
+    //при загрузке или обновления страницы
+    //таблица перерисуется в зависимости изменения data индикаторов
+    //находим индикаторы Тип индикаторы стратегии
     let data_ = data.filter((i) => i.dictionaries['Тип'] === 'Стратегия')
     status === 'success' && setDataSource(setTableData(data_))
 
+    //последовательная логика нужна для перерисовки клиента при редактировании и удалении данных с таблицы в момент поиска
+    //тоесть,значение поискового поля не пуста
     if (deletedId) {
       setFiltered((state) => state && state.filter((i) => i.id !== deletedId))
     }
@@ -65,16 +71,20 @@ const StrategyTable = () => {
 
   //реализация редактирования данных с таблицы
   const onEdit = (record) => {
+    //структура объекта на обновление клиентской части
     let client = {
       id: record.id,
       name: record.name,
       dictionaries: { Тип: 'Стратегия' },
     }
+    //структура объекта отправки put запроса на сервер
     let server = {
       name: record.name,
-      dictionaries: [229],
+      dictionaries: [229], //227 id индикатора Тип Стратегия
     }
 
+    //подготовка отправки put запроса
+    //находим id выбранных справочников
     Object.keys(record).forEach((key) => {
       if (
         key !== 'id' &&
@@ -82,28 +92,32 @@ const StrategyTable = () => {
         key !== 'key' &&
         key !== 'Отрасль' &&
         key !== 'Тип' &&
+        key !== 'record' &&
         record[key] !== undefined
       ) {
-        //prepare for client
+        //заполняем объект клиента наименованием справочника
         client = {
           ...client,
           dictionaries: { ...client.dictionaries, [key]: record[key] },
         }
 
-        //prepare for server post
+        //поиск объекта нужного справочника
         let dictionary_ = dictionaries.data.find((i) => i.name === key)
+        //находим id справочника
         let id = dictionary_.options.find((o) => o.name === record[key]).id
 
+        //заполняем объект сервера id справочника
         server = { ...server, dictionaries: [...server.dictionaries, id] }
-      } else if (key === 'Отрасль' && key !== undefined) {
+      } else if (key === 'Отрасль' && record[key] !== undefined) {
+        //поиск id отрасля по наименованию отрасля
         let id = findOptionId(dictionaries, record[key])
-
-        //client
+        //заполняем объект клиента наименованием отрасля
         client = {
           ...client,
           dictionaries: { ...client.dictionaries, [key]: record[key] },
         }
 
+        //заполняем объект сервера id отрасля
         server = {
           ...server,
           dictionaries: [...server.dictionaries, id],

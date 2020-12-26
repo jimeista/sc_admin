@@ -6,12 +6,13 @@ import {
   deleteDictionary,
   putDictionary,
 } from '../../features/dictionary/dictionarySlice'
-import { CustomTable as Table } from '../../common/Table'
 import {
   setTableDefaultDataSource,
   setTableOtherDataSource,
   setTableFieldDataSource,
 } from '../../utils/dictionary_table'
+
+import { CustomTable as Table } from '../../common/Table'
 
 //данная компонента реализует:
 //отрисовку данных, поиск, редактирование и удаление справочника

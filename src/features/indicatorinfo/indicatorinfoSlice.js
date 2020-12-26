@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
+//асинхронный get запрос индикаторов
 export const getIndicatorInfo = createAsyncThunk(
   'admin/getIndicatorInfo',
   async () => {
@@ -10,6 +11,7 @@ export const getIndicatorInfo = createAsyncThunk(
   }
 )
 
+//асинхронный get запрос показателей индикаторов
 export const getIndicatorInfoPopUp = createAsyncThunk(
   'admin/getIndicatorInfoPopUp',
   async (id) => {
@@ -19,6 +21,7 @@ export const getIndicatorInfoPopUp = createAsyncThunk(
   }
 )
 
+//асинхронный post запрос показателей индикаторов
 export const postIndicatorInfoPopUp = createAsyncThunk(
   'admin/postIndicatorInfoPopUp',
   async (ob) => {
@@ -29,6 +32,7 @@ export const postIndicatorInfoPopUp = createAsyncThunk(
   }
 )
 
+//асинхронный put запрос показателей индикаторов
 export const putIndicatorInfoPopUp = createAsyncThunk(
   'admin/putIndicatorInfoPopUp',
   async (ob) => {
@@ -39,6 +43,7 @@ export const putIndicatorInfoPopUp = createAsyncThunk(
   }
 )
 
+//асинхронный delete запрос показателей индикаторов
 export const deleteIndicatorInfoPopUp = createAsyncThunk(
   'admin/deleteIndicatorInfoPopUp',
   async (id) => {
@@ -48,6 +53,7 @@ export const deleteIndicatorInfoPopUp = createAsyncThunk(
   }
 )
 
+//асинхронный get запрос справочников
 export const getDictionaries = createAsyncThunk(
   'admin/getDictionaries',
   async () => {
@@ -60,16 +66,19 @@ export const getDictionaries = createAsyncThunk(
 const indicatorinfoSlice = createSlice({
   name: 'indicator',
   initialState: {
+    //индикаторы
     data: [],
     status: 'idle',
     error: null,
 
+    //показатели индикаторов
     popup: {
       data: [],
       status: 'idle',
       error: null,
     },
 
+    //справочники
     dictionaries: {
       data: [],
       status: 'idle',
@@ -78,7 +87,7 @@ const indicatorinfoSlice = createSlice({
   },
   reducers: {},
   extraReducers: {
-    //get indicator
+    //get запрос индикаторов
     [getIndicatorInfo.pending]: (state) => {
       state.status = 'loading'
     },
@@ -91,7 +100,7 @@ const indicatorinfoSlice = createSlice({
       state.error = action.payload
     },
 
-    //get indicatorinfo
+    //get запрос показателей индикаторов
     [getIndicatorInfoPopUp.pending]: (state) => {
       state.popup.status = 'loading'
     },
@@ -104,7 +113,7 @@ const indicatorinfoSlice = createSlice({
       state.popup.error = action.payload
     },
 
-    //post indicatorinfo
+    //post запрос показателей индикаторов
     [postIndicatorInfoPopUp.pending]: (state) => {
       state.popup.status = 'loading'
     },
@@ -113,6 +122,7 @@ const indicatorinfoSlice = createSlice({
 
       let index = state.popup.data.findIndex((i) => i.id === action.payload.id)
 
+      //данное условие необходимо для добавления план|факта к уже существующему объекту
       if (index !== -1) {
         state.popup.data[index] = {
           ...state.popup.data[index],
@@ -127,13 +137,14 @@ const indicatorinfoSlice = createSlice({
       state.popup.error = action.payload
     },
 
-    //put indicatorinfo
+    //put запрос показателей индикаторов
     [putIndicatorInfoPopUp.pending]: (state) => {
       state.popup.status = 'loading'
     },
     [putIndicatorInfoPopUp.fulfilled]: (state, action) => {
       state.popup.status = 'success'
 
+      //редактируем показатель индикатора
       let index = state.popup.data.findIndex((i) => i.id === action.payload.id)
 
       state.popup.data[index] = {
@@ -146,11 +157,12 @@ const indicatorinfoSlice = createSlice({
       state.popup.error = action.payload
     },
 
-    //delete indicatorinfo
+    //delete запрос показателей индикаторов
     [deleteIndicatorInfoPopUp.pending]: (state) => {
       state.popup.status = 'loading'
     },
     [deleteIndicatorInfoPopUp.fulfilled]: (state, action) => {
+      //удаляем показатель индикатора
       state.popup.status = 'success'
       let index = state.popup.data.findIndex((i) => i.id === action.payload)
       state.popup.data.splice(index, 1)
@@ -160,7 +172,7 @@ const indicatorinfoSlice = createSlice({
       state.popup.error = action.payload
     },
 
-    //get dictionary
+    //get запрос справочников
     [getDictionaries.pending]: (state) => {
       state.dictionaries.status = 'loading'
     },

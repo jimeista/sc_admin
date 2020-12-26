@@ -5,19 +5,24 @@ import { Form, DatePicker, Select, InputNumber, Space, Button } from 'antd'
 
 import { postIndicatorInfoPopUp } from '../../features/indicatorinfo/indicatorinfoSlice'
 
+//компонента управления формы показателей индикатора
+//данная компонента реализует post запрос формы
 const IndicatorInfoControllers = ({ name, record }) => {
   const [form] = Form.useForm()
   const { Option } = Select
 
   const dispatch = useDispatch()
 
+  //post запрос данных по новому показателю индикатора
   const onSubmit = async () => {
     let record_ = await form.validateFields()
 
+    //сохраняем значения с формы record до post запроса
     let date = moment(record_.date, 'YYYY').format('YYYY')
     let num = record_['num']
     let month = record_['month']
 
+    //структура объекта отправки post запроса на сервер
     const data = {
       date: month ? `${date}-${month}-15` : `${date}-12-31`,
       'edit-comment': '',
@@ -35,6 +40,8 @@ const IndicatorInfoControllers = ({ name, record }) => {
     form.resetFields()
   }
 
+  //отрисовка формы:
+  //календарь (год), селект выбора (месяц), поле ввода план|факта
   return (
     <Form form={form} style={{ width: '100%', display: 'flex' }}>
       <Space direction='horizontal'>
@@ -76,6 +83,7 @@ const IndicatorInfoControllers = ({ name, record }) => {
 
 export default React.memo(IndicatorInfoControllers)
 
+//hardcoded дата
 const month = [
   { id: '01', title: 'Январь', value: 'Январь' },
   { id: '02', title: 'Февраль', value: 'Февраль' },
@@ -103,6 +111,7 @@ const month = [
   },
 ]
 
+//конфигурация своиства ant datepicker на рус яз
 const locale = {
   lang: {
     locale: 'ru',

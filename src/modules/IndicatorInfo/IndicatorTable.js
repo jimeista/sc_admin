@@ -6,21 +6,28 @@ import IndicatorinfoModalContent from './IndicatorinfoModalContent'
 import { CustomTable as Table } from '../../common/Table'
 import { setTableColumns, setTableData } from '../../utils/indicator_table'
 
-const IndicatorinfoTable = () => {
+//главная страница отрисовки таблицы индикаторов
+//индикаторы таблицы, не редактируемые и не удаляемые
+//данная компонента позволяет открывать модальное окно показателей индикатора по свойству type
+const IndicatorTable = ({ type }) => {
   const [dataSource, setDataSource] = useState([])
   const [filtered, setFiltered] = useState()
-  const [open, setOpen] = useState(false)
-  const [record, setRecord] = useState(null)
+  const [open, setOpen] = useState(false) //состояние модального окна
+  const [record, setRecord] = useState(null) //состояние выбранного индикатора для отображения показателей в модальном окне
 
   const { data, status, dictionaries } = useSelector(
     (state) => state.indicatorinfo
   )
 
   useEffect(() => {
-    let data_ = data.filter((i) => i.dictionaries['Тип'] === 'Индикатор')
+    //при загрузке или обновления страницы
+    //таблица перерисуется в зависимости изменения data индикаторов
+    //находим индикаторы Тип аналитического индикатора
+    let data_ = data.filter((i) => i.dictionaries['Тип'] === type)
     status === 'success' && setDataSource(setTableData(data_))
-  }, [data, status])
+  }, [data, status, type])
 
+  //реализация поиска по таблице
   const onSearch = (e) => {
     let filtered_ = dataSource.filter((i) =>
       i.name.toLowerCase().includes(e.target.value.toLowerCase())
@@ -29,11 +36,14 @@ const IndicatorinfoTable = () => {
     setFiltered(filtered_)
   }
 
+  //инициализация своиства ant table columns
   const columns = useMemo(() => {
     if (dictionaries.status === 'success') {
+      //вспомогательная функиция setTableColumns
+      //реализует отрисовку соответсвующих справочников и открытие модального окна
       return setTableColumns(
         dictionaries.data,
-        'Сфера',
+        type === 'Индикатор' ? 'Сфера' : 'Стратегия 2050',
         true,
         setOpen,
         setRecord
@@ -41,7 +51,7 @@ const IndicatorinfoTable = () => {
     } else {
       return []
     }
-  }, [dictionaries])
+  }, [dictionaries, type])
 
   return (
     <>
@@ -56,10 +66,9 @@ const IndicatorinfoTable = () => {
         data={filtered ? filtered : dataSource}
         setData={setDataSource}
         loading={dictionaries.status !== 'success' ? true : false}
-        isEditable={true}
-        isDeletable={true}
       />
 
+      {/* модальное окно реализует отрисовку отдельной компоненты */}
       <Modal
         title={record && record.name}
         visible={open}
@@ -78,4 +87,4 @@ const IndicatorinfoTable = () => {
   )
 }
 
-export default React.memo(IndicatorinfoTable)
+export default React.memo(IndicatorTable)

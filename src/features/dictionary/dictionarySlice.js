@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
+//асинхронный get запрос по справочникам
 export const getDictionaries = createAsyncThunk(
   'admin/getDictionaries',
   async () => {
@@ -10,6 +11,7 @@ export const getDictionaries = createAsyncThunk(
   }
 )
 
+//асинхронный post запрос по справочникам
 export const postDictionary = createAsyncThunk(
   'admin/postDictionary',
   async (data) => {
@@ -21,6 +23,7 @@ export const postDictionary = createAsyncThunk(
   }
 )
 
+//асинхронный put запрос по справочникам
 export const putDictionary = createAsyncThunk(
   'admin/putDictionary',
   async (data) => {
@@ -32,6 +35,7 @@ export const putDictionary = createAsyncThunk(
   }
 )
 
+//асинхронный delete запрос по справочникам
 export const deleteDictionary = createAsyncThunk(
   'admin/deleteDictionary',
   async (id) => {
@@ -52,12 +56,13 @@ const dictionarySlice = createSlice({
     selected: 'Все справочники',
   },
   reducers: {
+    //меняем наименование выбранного справочника
     setSelected: (state, action) => {
       state.selected = action.payload
     },
   },
   extraReducers: {
-    //get dictionary
+    //get запрос справочников
     [getDictionaries.pending]: (state) => {
       state.status = 'loading'
     },
@@ -70,7 +75,7 @@ const dictionarySlice = createSlice({
       state.error = action.payload
     },
 
-    //post dictionary
+    //post запрос справочников
     [postDictionary.pending]: (state) => {
       state.status = 'loading'
     },
@@ -83,7 +88,7 @@ const dictionarySlice = createSlice({
       state.error = action.payload
     },
 
-    //put dictionary
+    //put запрос справочников
     [putDictionary.pending]: (state) => {
       state.status = 'loading'
     },
@@ -96,7 +101,7 @@ const dictionarySlice = createSlice({
       state.error = action.payload
     },
 
-    //delete dictionary
+    //delete запрос справочников
     [deleteDictionary.pending]: (state) => {
       state.status = 'loading'
     },

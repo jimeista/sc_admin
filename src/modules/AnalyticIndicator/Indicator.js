@@ -23,6 +23,7 @@ const Indicator = () => {
     dispatch(getDictionaries())
   }, [dispatch])
 
+  //отрисовка переключения по табам индикаторов
   return (
     <Tabs defaultActiveKey='1' tabPosition={'top'}>
       <TabPane tab='Аналитические индикаторы' key='1'>
