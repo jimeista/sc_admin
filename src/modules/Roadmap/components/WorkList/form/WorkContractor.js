@@ -4,10 +4,11 @@ import 'react-phone-input-2/lib/style.css'
 
 import { Input, Form } from 'antd'
 
-// const { TextArea } = Input
-
+//форма заполнения данных подрядчика ремонт дорог
 export const WorkContractor = () => {
   const [phone, setPhone] = useState()
+
+  //рендерим элекменты формы
   return (
     <>
       <Form.Item name='lot-name'>
@@ -30,12 +31,6 @@ export const WorkContractor = () => {
       <Form.Item name='warranty-period'>
         <Input placeholder='Гарантийный период' />
       </Form.Item>
-      {/* <Form.Item
-        name='contractor-comment-textarea'
-        rules={[{ required: true }]}
-      >
-        <TextArea style={{ height: 90 }} placeholder='Комментарий' />
-      </Form.Item> */}
     </>
   )
 }

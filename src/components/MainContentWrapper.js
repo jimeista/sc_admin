@@ -7,11 +7,13 @@ import { UserOutlined } from '@ant-design/icons'
 
 import { logout } from '../features/admin/adminSlice'
 
+// обертка для модулей
 const MainContentWrapper = ({ children }) => {
   const { auth } = useSelector((state) => state.admin)
   const dispatch = useDispatch()
   const history = useHistory()
 
+  // выйти из аккаунта
   const onLogout = () => {
     dispatch(logout())
     localStorage.removeItem('user')
@@ -27,6 +29,7 @@ const MainContentWrapper = ({ children }) => {
         <div className='MainContent_style_href'>
           {/* <a href='#'>ru</a> | <a href='#'>kaz</a> */}
         </div>
+        {/* шапка модулей */}
         <div className='MainContent_style_header'>
           <Avatar icon={<UserOutlined />} />
           <span
@@ -39,6 +42,7 @@ const MainContentWrapper = ({ children }) => {
           <Button onClick={onLogout}>Выйти</Button>
         </div>
       </div>
+      {/* модули */}
       <div className='main-content-wrapper MainContent_style_body'>
         {children}
       </div>

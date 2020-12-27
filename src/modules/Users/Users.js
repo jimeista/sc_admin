@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { getUsers } from '../../features/users/usersSlice'
+
 import UserTable from './UserTable'
 import UserControllers from './UserControllers'
 
@@ -14,9 +15,12 @@ const Users = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    //главная страница компоненты Пользователи
+    //делаем get запрос списка пользователей при инициализации компоненты если он авторизовался
     config && data.length === 0 && dispatch(getUsers(config))
-  }, [data, config])
+  }, [data, config, dispatch])
 
+  //подготовка селекта списка ролей
   const role_options = useMemo(() => {
     if (roles.status === 'success') {
       return roles.data.map((i) => ({ value: i.repr, id: i.id }))
@@ -25,6 +29,7 @@ const Users = () => {
     return []
   }, [roles])
 
+  //подготовка селекта списка организации
   const organisation_options = useMemo(() => {
     if (organisationList.status === 'success') {
       return organisationList.data.map((i) => ({
@@ -36,6 +41,7 @@ const Users = () => {
     return []
   }, [organisationList])
 
+  //подготовка селекта списка модулей
   const modules_options = useMemo(() => {
     if (modules.status === 'success') {
       return modules.data.map((i) => ({

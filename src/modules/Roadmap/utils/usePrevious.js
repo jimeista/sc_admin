@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 
+// кастомный хук сохранения пред состояния
 export const usePrevious = (value) => {
   const ref = useRef()
 

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
 import moment from 'moment'
 
 import {
@@ -18,6 +17,7 @@ import { CustomSteps as Steps } from '../../../common'
 
 const format = 'YYYY/MM/DD'
 
+//обертка формы модального окна ремонта дорог
 export const StepsWrapper = ({ form, callback, record }) => {
   const { current, organisations, regions, categories, formData } = useSelector(
     (state) => state.roadmap
@@ -43,6 +43,7 @@ export const StepsWrapper = ({ form, callback, record }) => {
       })
   }, [])
 
+  //отрисовка модального окна формы ремонт дорог
   return (
     <Steps
       steps={steps}
@@ -56,6 +57,7 @@ export const StepsWrapper = ({ form, callback, record }) => {
   )
 }
 
+//вспомогательная функция возвращающая массив с формами
 const setSteps = (
   organisations,
   regions,
@@ -64,6 +66,7 @@ const setSteps = (
   form,
   dispatch
 ) => [
+  //первый шаг формы заполнения данных описания
   {
     title: 'Описание работ',
     content: (
@@ -76,14 +79,17 @@ const setSteps = (
       />
     ),
   },
+  //второй шаг формы заполнения данных подрядчика
   {
     title: 'Данные подрядчика',
     content: <WorkContractor />,
   },
+  //третий шаг формы заполнения данных статуса
   {
     title: 'Статус работ',
     content: <WorkStatus />,
   },
+  //четвертый шаг формы проверки заполненых данных
   {
     title: 'Отправка данных',
     content: <WorkConfirm ob={formData} />,

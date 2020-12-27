@@ -9,14 +9,15 @@ import {
   Form,
   Select,
 } from 'antd'
-// import { Collapse } from 'react-collapse'
 
+//рендеринг элементов формы описании ремонта дорог по документации ant api
 import { UploadOutlined } from '@ant-design/icons'
 import moment from 'moment'
 
 const { TextArea } = Input
 const { Option } = Select
 
+// рендер селектов
 export const renderSelects = (prop) => {
   const { regions, organisations, categories } = prop
   const arr = [
@@ -73,6 +74,7 @@ export const renderSelects = (prop) => {
   )
 }
 
+// рендер текстового поля
 export const renderTextArea = (name, placeholder, isOpen) => {
   return (
     <Form.Item>
@@ -88,6 +90,7 @@ export const renderTextArea = (name, placeholder, isOpen) => {
   )
 }
 
+// рендер календаря
 export const renderDatePicker = (picker, handleChange, name, text) => {
   const picker_ = picker ? (
     <DatePicker
@@ -125,6 +128,7 @@ export const renderDatePicker = (picker, handleChange, name, text) => {
   )
 }
 
+// рендер формы загрузки файла
 export const renderUpload = () => (
   <Form.Item
     name='file-paths'

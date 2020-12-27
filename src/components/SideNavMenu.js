@@ -17,6 +17,7 @@ import { setSideNavMenu } from '../utils/menu_helper'
 
 const { SubMenu } = Menu
 
+// боковая панель навигации
 const SideNavMenu = ({ width }) => {
   const [state, setState] = useState({
     collapsed: false,
@@ -25,6 +26,7 @@ const SideNavMenu = ({ width }) => {
 
   const { authorities } = useSelector((state) => state.admin)
 
+  // адаптивность боковой панели
   useEffect(() => {
     width < 600 &&
       setState((state) => ({
@@ -34,12 +36,16 @@ const SideNavMenu = ({ width }) => {
       }))
   }, [width])
 
+  // кнопка открытия закрытия панели
   const toggleCollapsed = () => {
     setState((state) => ({ ...state, collapsed: !state.collapsed }))
   }
 
+  // список меню навигации панели
   const menu = useMemo(() => {
-    let permitted_modules = {}
+    let permitted_modules = {} //переменная списка доступных модулей авторизованного пользователя
+
+    // заполняем модули
     authorities.data.forEach((i) => {
       i.data.forEach((m) => {
         permitted_modules = {
@@ -49,8 +55,10 @@ const SideNavMenu = ({ width }) => {
       })
     })
 
+    // подгоняем под структуру меню ant menu
     let menu_ = setSideNavMenu(Object.values(permitted_modules))
 
+    // рендерим меню
     return menu_.map((i, index) => (
       <SubMenu
         key={i.submenu}
@@ -71,11 +79,13 @@ const SideNavMenu = ({ width }) => {
     ))
   }, [authorities])
 
+  // рендерин панели
   return (
     <div
       style={{ width: width < 600 ? '100%' : state.collapsed ? 80 : 350 }}
       className='SideNavMenu_style'
     >
+      {/* кнопка переключения пенели */}
       <Button
         type='primary'
         onClick={toggleCollapsed}
@@ -91,6 +101,7 @@ const SideNavMenu = ({ width }) => {
           'Панель администратора'
         )}
       </Button>
+      {/* меню */}
       <Menu
         defaultSelectedKeys={['1']}
         defaultOpenKeys={[

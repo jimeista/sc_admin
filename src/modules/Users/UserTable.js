@@ -7,6 +7,8 @@ import { deleteUser, putUser } from '../../features/users/usersSlice'
 import { setColumnsHelper, setDataSourceHelper } from '../../utils/users_table'
 import { onRequest } from '../../utils/users_helper'
 
+//данная компонента реализует:
+//отрисовку таблицы,редактирование и удаление пользователя
 const UserTable = ({ data, status, roles, organisations, modules }) => {
   const [dataSource, setDataSource] = useState([])
 
@@ -14,10 +16,12 @@ const UserTable = ({ data, status, roles, organisations, modules }) => {
 
   useEffect(() => {
     if (status === 'success') {
+      //при успешной загрузке, данные подстраиваются под структуру ant table
       setDataSource(setDataSourceHelper(data))
     }
   }, [data, status])
 
+  //реализация редактирования данных с таблицы
   const onEdit = (record_) => {
     let { post, record } = onRequest(record_, roles, organisations, modules)
 

@@ -7,9 +7,9 @@ import {
   deleteIndicatorInfoPopUp,
   putIndicatorInfoPopUp,
 } from '../../features/indicatorinfo/indicatorinfoSlice'
-import { CustomTable as Table } from '../../common/Table'
 
 import IndicatorInfoControllers from './IndicatorInfoControllers'
+import { CustomTable as Table } from '../../common/Table'
 
 //данная компонента реализует отрисовку формы и таблицы показателей индикаторов
 //так же, редактирование и удаление показателей в таблице

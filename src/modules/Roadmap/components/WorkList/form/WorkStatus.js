@@ -4,11 +4,13 @@ import { Input, Checkbox, Form, InputNumber } from 'antd'
 
 const { TextArea } = Input
 
+//форма статуса ремонт дорог
 export const WorkStatus = () => {
   const [disabled, setDisabled] = useState(true)
   const hanldeChange = (e) =>
     e.target.checked ? setDisabled(false) : setDisabled(true)
 
+  //рендерим элементы формы
   return (
     <>
       <Form.Item
@@ -44,13 +46,6 @@ export const WorkStatus = () => {
           Закуп работ отменен / приостановлен
         </Checkbox>
       </Form.Item>
-      {/* <Form.Item name='canceled-comment'>
-        <TextArea
-          style={{ height: 90 }}
-          placeholder='Комментарий'
-          disabled={disabled}
-        />
-      </Form.Item> */}
     </>
   )
 }

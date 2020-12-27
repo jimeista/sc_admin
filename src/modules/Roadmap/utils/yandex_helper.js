@@ -4,6 +4,7 @@ import { Button } from 'antd'
 import { FaDrawPolygon } from 'react-icons/fa'
 import { FcLineChart } from 'react-icons/fc'
 
+// рендер гео элементов по структуре данных из редакса
 export const renderGeoObjects = (mapData) => {
   return mapData.map((geo, index) => {
     switch (geo.type) {
@@ -47,6 +48,7 @@ export const renderGeoObjects = (mapData) => {
   })
 }
 
+// рендер кнопок на карте
 export const renderButtons = (active, setActive) => {
   return (
     <div>
@@ -69,6 +71,7 @@ export const renderButtons = (active, setActive) => {
   )
 }
 
+// рендер гео элемента для рисования на карте
 export const createGeoObject = (active, draw) => {
   const options = {
     editorDrawingCursor: 'crosshair',

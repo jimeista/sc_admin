@@ -14,22 +14,25 @@ import {
 } from '../utils/yandex_helper'
 import { usePrevious } from '../utils/usePrevious'
 
+// координаты Алматы
 const mapState = {
   center: [43.238949, 76.889709],
   zoom: 10,
 }
 
+// карта рендерит координаты работ и рисует новые координаты гео элементов
 export const CustomYandexMap = () => {
   const { current, mapData, intersectionsMapData } = useSelector(
     (state) => state.roadmap
   )
   const dispatch = useDispatch()
 
-  const [active, setActive] = useState('')
-  const [polygons, setPolygons] = useState([])
-  const previousState = usePrevious({ active, polygons })
+  const [active, setActive] = useState('') //состояние активной кнопки для рисования на карте
+  const [polygons, setPolygons] = useState([]) //состояние заполняемых данных координат при рисовке
+  const previousState = usePrevious({ active, polygons }) //кастомный хук для проверки предыдущего состояния данных
 
   useEffect(() => {
+    // сохраняем нарисованные гео элементы карты в редакс
     if (previousState && previousState.active !== active) {
       if (polygons.length > 0 && previousState.polygons === polygons) {
         dispatch(setMapData(polygons))
@@ -38,6 +41,8 @@ export const CustomYandexMap = () => {
     }
   }, [active, polygons, previousState])
 
+  // гео элемент с возможностью рисования на карте
+  // работа с api яндекс карты
   let geoObject = useMemo(() => {
     const draw = async (ref, type) => {
       ref.editor.startDrawing()
@@ -60,19 +65,24 @@ export const CustomYandexMap = () => {
     return createGeoObject(active, draw)
   }, [active])
 
+  // гео элементы уже нарисованных координат из редакса
   let geoObjects = useMemo(() => {
+    // отрисовка координат по пересечению работ
     if (intersectionsMapData.length > 0) {
       return renderGeoObjects(intersectionsMapData)
     }
+    // отрисовка координат по ремонту дорог
     return renderGeoObjects(mapData)
   }, [mapData, intersectionsMapData])
 
+  // очищаем карту
   const handleClearMap = () => {
     dispatch(resetMapData())
   }
 
   return (
     <>
+      {/* кнопки выбора гео элемента на карте */}
       {current === 0 && (
         <div
           style={{
@@ -86,6 +96,7 @@ export const CustomYandexMap = () => {
           <Button onClick={handleClearMap}>Очистить карту</Button>
         </div>
       )}
+      {/* яндекс карта */}
       <YMaps style={{ minWidth: '100%' }}>
         <Map
           width='100%'
@@ -94,6 +105,7 @@ export const CustomYandexMap = () => {
           defaultState={mapState}
           modules={['geoObject.addon.editor']}
         >
+          {/* рисуй если этап формы карты ремонта дорог находится на форме "описание ремонта дорог" */}
           {current === 0 && geoObject}
           {geoObjects}
         </Map>

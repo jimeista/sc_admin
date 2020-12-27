@@ -1,5 +1,6 @@
 import React from 'react'
 
+// вспомогательная функция создания структуры данных для фильтрации по таблице по ant table api
 export const setFilterSelectsHelper = (response) => {
   let ob = {}
   let result = []
@@ -13,6 +14,7 @@ export const setFilterSelectsHelper = (response) => {
   return result
 }
 
+//подгоняем ремонт дорог data под структуру antd table
 export const setWorkListDataSourceHelper = (arr) => {
   const dataSource = arr.map((i) => {
     let keys = { key: i.id }
@@ -35,6 +37,7 @@ export const setWorkListDataSourceHelper = (arr) => {
   return dataSource
 }
 
+//подгоняем пересечение работ data под структуру antd table
 export const setCrossListDataSourceHelper = (data, intersections) => {
   let dataSource = []
   if (intersections.status === 'success') {
@@ -72,6 +75,8 @@ export const setCrossListDataSourceHelper = (data, intersections) => {
   return dataSource
 }
 
+//подгоняем ремонт дорог columns под структуру antd table
+//добавляем возможность фильтрации и выпада опции при редактировании
 export const setWorkListTableColumnsHelper = (
   organisations,
   categories,
@@ -84,6 +89,7 @@ export const setWorkListTableColumnsHelper = (
     key: 'id',
     width: '2%',
     align: 'center',
+    // открываем модальное окно и передаем данные по строке на клик
     render: (text, record) => (
       <a
         onClick={() => {
@@ -152,6 +158,8 @@ export const setWorkListTableColumnsHelper = (
   },
 ]
 
+//подгоняем пересечение работ columns под структуру antd table
+//добавляем возможность фильтрации и выпада опции при редактировании
 export const setCrossListTableColumnsHelper = (
   setVisible,
   setRecord,
@@ -189,6 +197,7 @@ export const setCrossListTableColumnsHelper = (
       key: '№',
       width: '2%',
       align: 'center',
+      // открываем модальное окно и передаем данные по строке на клик
       render: (text, record) => {
         return (
           <a
@@ -228,33 +237,3 @@ const date_filters = ['2018', '2019', '2020', '2021', '2022']
     text: value,
   }))
   .reverse()
-
-// //hardcoded date filters on year v2.0
-// const year = [2018, 2019, 2020, 2021, 2022]
-// const month = [
-//   'Январь',
-//   'Февраль',
-//   'Март',
-//   'Апрель',
-//   'Май',
-//   'Июнь',
-//   'Июль',
-//   'Август',
-//   'Сентябрь',
-//   'Октябрь',
-//   'Ноябрь',
-//   'Декабрь',
-// ]
-
-// const date_filters = [
-//   {
-//     value: 'year',
-//     text: 'year',
-//     children: year.map((value) => ({ value, text: value })),
-//   },
-//   {
-//     value: 'month',
-//     text: 'month',
-//     children: month.map((value) => ({ value, text: value })),
-//   },
-// ]

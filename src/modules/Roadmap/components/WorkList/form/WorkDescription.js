@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
-import { Input, Checkbox, Form, DatePicker } from 'antd'
+import { Input, Checkbox, Form } from 'antd'
 
 import {
   renderDatePicker,
@@ -9,17 +8,17 @@ import {
   renderUpload,
 } from '../../../utils/worklist_form'
 
+//форма описания ремонт дорог
 export const WorkDescription = (props) => {
   const { organisations, regions, categories, form } = props
   const [iscanvas, setCanvas] = useState(false)
   const [isclosured, setClosured] = useState(false)
 
-  // const [type, setType] = useState('date')
-  //checkbox on datepicker
   const [pickerStart, setPickerStart] = useState(false)
   const [pickerEnd, setPickerEnd] = useState(false)
 
   useEffect(() => {
+    //данные проверки нужны для отображения данных при редактировании ремонт дорог
     form.getFieldValue('is-canvas-opened') &&
       setCanvas(form.getFieldValue('is-canvas-opened'))
     form.getFieldValue('is-closured') &&
@@ -35,17 +34,16 @@ export const WorkDescription = (props) => {
     }
   }, [form])
 
-  //checkbox on datepicker
-  const handleChangeYearStart = (e) =>
+  //проверка чекбокса выбора года по календарю начала
+  const onChangeYearStart = (e) =>
     setPickerStart(e.target.checked ? true : false)
 
-  const handleChangeYearEnd = (e) =>
-    setPickerEnd(e.target.checked ? true : false)
+  //проверка чекбокса выбора года по календарю конца
+  const onChangeYearEnd = (e) => setPickerEnd(e.target.checked ? true : false)
 
+  //рендерим элементы формы
   return (
     <>
-      {/* <Checkbox onChange={(e) => setType(e.target.checked ? 'year' : 'date')} />
-      {<PickerWithType type={type} />} */}
       {renderSelects({ regions, organisations, categories })}
       <Form.Item name='address'>
         <Input placeholder='Адрес/Улица' />
@@ -70,13 +68,13 @@ export const WorkDescription = (props) => {
       {renderTextArea('canvas-description', 'Описание вскрытия', iscanvas)}
       {renderDatePicker(
         pickerStart,
-        handleChangeYearStart,
+        onChangeYearStart,
         'start-date',
         'Дата начала'
       )}
       {renderDatePicker(
         pickerEnd,
-        handleChangeYearEnd,
+        onChangeYearEnd,
         'end-date',
         'Дата окончания'
       )}
@@ -84,7 +82,3 @@ export const WorkDescription = (props) => {
     </>
   )
 }
-// function PickerWithType({ type }) {
-//   if (type === 'date') return <DatePicker />
-//   return <DatePicker picker={type} />
-// }

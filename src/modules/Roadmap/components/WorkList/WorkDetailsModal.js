@@ -2,7 +2,6 @@ import React, { useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Modal, Form } from 'antd'
 
-import { StepsWrapper as Steps } from './form/StepsWrapper'
 import {
   resetFormData,
   resetMapData,
@@ -16,6 +15,9 @@ import {
   prepareToShowDetailsObToArr,
 } from '../../utils/helper'
 
+import { StepsWrapper as Steps } from './form/StepsWrapper'
+
+//данная компонента рендерит форму put запроса по ремонту дорог
 export const WorkDetailsModal = (props) => {
   const { visible, setVisible, record } = props
   const [form] = Form.useForm()
@@ -32,8 +34,10 @@ export const WorkDetailsModal = (props) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    //вытаскиваем координаты ремонта дорог при клике на id по таблице
     let coordinates = record.geometries.coordinates
 
+    //подгоняем под структуру яндекс карты
     if (coordinates.length > 0) {
       let arr = coordinates.map((i) => {
         if (i[0][0] == i[i.length - 1][0]) {
@@ -43,7 +47,7 @@ export const WorkDetailsModal = (props) => {
         return { type: 'polyline', coordinates: i }
       })
 
-      dispatch(setMapData(arr))
+      dispatch(setMapData(arr)) //отрисовка координат при открытии модального окна по таблице
     }
 
     return () => {
@@ -53,22 +57,23 @@ export const WorkDetailsModal = (props) => {
     }
   }, [])
 
-  // console.log('loaded')
+  //закрываем модальное окно
   const onCloseModal = () => {
     setVisible(false)
   }
 
+  //форма put запроса ремонта дорог
   const putFormData = useCallback(async () => {
     try {
-      let arr = prepareToShowDetailsObToArr(formData)
-      let ob = validateRoadWorkForm(arr, categories, organisations, regions)
-      const coordinates = setCoordinates(mapData)
+      let arr = prepareToShowDetailsObToArr(formData) //подготовка данных с формы модального окна для валидации
+      let ob = validateRoadWorkForm(arr, categories, organisations, regions) //валидация данных перед put запросом
+      const coordinates = setCoordinates(mapData) //подгоняем структуру объекта координат на сервер
 
-      // console.log(coordinates)
+      //структура объекта put запроса
       ob = { data: ob, geometries: coordinates }
 
-      dispatch(setCurrent(0))
-      dispatch(putRoadmap({ reedit: true, data: ob, id: record.id, mapData }))
+      dispatch(setCurrent(0)) //сбрасываем этап формы модального окна
+      dispatch(putRoadmap({ reedit: true, data: ob, id: record.id, mapData })) //делаем put запрос
       form.resetFields()
 
       status === 'success' && setVisible(false)
@@ -85,6 +90,7 @@ export const WorkDetailsModal = (props) => {
     record,
     setVisible,
     status,
+    dispatch,
   ])
 
   return (
@@ -102,6 +108,7 @@ export const WorkDetailsModal = (props) => {
           justifyContent: 'space-between',
         }}
       >
+        {/* форма модального окна по ремонту дорог */}
         <Steps form={form} callback={putFormData} record={record} />
       </div>
     </Modal>

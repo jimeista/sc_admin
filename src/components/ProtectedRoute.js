@@ -3,6 +3,9 @@ import { Route, Redirect } from 'react-router-dom'
 
 import Home from './Home'
 
+// защищенный роут страницы
+// проверка на авторизацию
+// перенаправление на страницу авторизации
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route

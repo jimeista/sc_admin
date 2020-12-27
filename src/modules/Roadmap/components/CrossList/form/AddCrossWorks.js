@@ -3,11 +3,13 @@ import { Form, Button, Input } from 'antd'
 
 import SelectGroup from './SelectGroup'
 
+//данная компонента рендерит динамичные селекты которые контролируются кнопками
 export const AddCrossWorks = ({ form }) => {
-  const [count, setCount] = useState([1, 2])
+  const [count, setCount] = useState([1, 2]) //подсчет количества динамичных селектов
 
   return (
     <div style={{ marginBottom: 20 }}>
+      {/* рендерим динамичные селекты */}
       <div
         style={{
           display: 'flex',
@@ -18,6 +20,7 @@ export const AddCrossWorks = ({ form }) => {
           <SelectGroup order={key} form={form} />
         ))}
       </div>
+      {/* добавляем и удаляем динамичные селекты*/}
       <div style={{ display: 'flex', alignItems: 'center', marginTop: 15 }}>
         <div style={{ marginRight: 25 }}>
           <Button
@@ -45,6 +48,7 @@ export const AddCrossWorks = ({ form }) => {
           <span style={{ marginLeft: 5 }}>Убрать</span>
         </>
       </div>
+      {/* поле ввода наименования пересечения улиц*/}
       <Form.Item name='area'>
         <Input
           placeholder={'Участок пересечения'}

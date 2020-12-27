@@ -1,8 +1,9 @@
 import React from 'react'
 import { Tag } from 'antd'
 
+//создаем наименования колонок под структуру antd table для пользователей
+//функция принимает options,roles для отображения опции при редактировании
 export const setColumnsHelper = (organisations, roles, modules) => {
-  console.log(organisations)
   return [
     {
       title: '№',
@@ -31,6 +32,7 @@ export const setColumnsHelper = (organisations, roles, modules) => {
       placeholder: 'Роль',
       type: 'multi-select',
       data: roles,
+      // рендерим мультиселект в таблице
       render: (tags) => {
         return (
           <span>
@@ -55,6 +57,7 @@ export const setColumnsHelper = (organisations, roles, modules) => {
   ]
 }
 
+//подгоняем data роль модулей под структуру antd table
 export const setDataSourceHelper = (data) => {
   return data.map((i, index) => {
     return {

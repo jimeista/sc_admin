@@ -1,6 +1,8 @@
 import React from 'react'
 import { Input, InputNumber, Form, Select, Tag } from 'antd'
 
+// данная компонента подставляет нужные элементы в таблицу строки при редактировании
+// так же выпадают соответсвующие данные по элементам
 export const EditableCell = ({
   editing,
   dataIndex,
@@ -15,6 +17,7 @@ export const EditableCell = ({
 }) => {
   const { Option } = Select
 
+  // проверка на тип элемента
   const switchCase = (type) => {
     switch (type) {
       case 'select':
@@ -75,8 +78,10 @@ export const EditableCell = ({
     }
   }
 
+  // элемент редактирования
   const inputNode = switchCase(inputType)
 
+  // валидация на редактируемость и отрисовка
   return (
     <td {...restProps}>
       {editing ? (

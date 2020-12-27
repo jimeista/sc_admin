@@ -78,6 +78,7 @@ const DictionaryForm = ({ form }) => {
     return (
       <Space direction={'vertical'} style={{ width: '100%' }}>
         <>
+          {/* наименование нового справочника */}
           <Form.Item
             style={{ width: '60%', marginRight: 20 }}
             name={'field_name'}
@@ -89,6 +90,7 @@ const DictionaryForm = ({ form }) => {
           </Button>
         </>
         <>
+          {/* список отраслей */}
           <Form.Item
             style={{ width: '60%', marginRight: 20 }}
             name={'selected'}
@@ -102,6 +104,7 @@ const DictionaryForm = ({ form }) => {
               ))}
             </Select>
           </Form.Item>
+          {/* наименование нового отрасля */}
           <Form.Item
             style={{ width: '60%', marginRight: 20 }}
             name={'unique_name'}
@@ -124,6 +127,7 @@ const DictionaryForm = ({ form }) => {
   ) {
     return (
       <>
+        {/* наименование нового справочника */}
         <Form.Item style={{ width: '60%', marginRight: 20 }} name={'name'}>
           <Input placeholder={'Добавить новый элемент'} />
         </Form.Item>
@@ -134,7 +138,7 @@ const DictionaryForm = ({ form }) => {
     )
   }
 
-  //форма недоступна при выборе всех справочников
+  //форма недоступна при выборе "Все справочники"
   return null
 }
 

@@ -9,7 +9,6 @@ import {
   getAuthorities,
 } from './features/admin/adminSlice'
 
-//styles
 import 'antd/dist/antd.css'
 import './App.css'
 
@@ -19,13 +18,15 @@ function App() {
 
   const dispatch = useDispatch()
 
+  //проверка уже авторизованного пользователя
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem('user'))
     if (user && auth.status === 'idle') {
       dispatch(setAuth({ auth: user.auth, config: user.config }))
     }
-  }, [auth])
+  }, [auth, dispatch])
 
+  //get запрос ролей
   useEffect(() => {
     if (roles.status === 'success' && auth.status === 'success') {
       roles.data.forEach((role) => {
@@ -35,16 +36,17 @@ function App() {
       })
       // dispatch(getAuthorities({config, roles:roles.data}))
     }
-  }, [auth, roles, config])
+  }, [auth, roles, config, dispatch])
 
+  //get запрос организации
   useEffect(() => {
     if (auth.status === 'success') {
       dispatch(getOrganisationList(config))
     }
-  }, [config, auth])
+  }, [config, auth, dispatch])
 
+  // get запрос доступных ролей и модулей авторизованного пользователя
   useEffect(() => {
-    //TASK:request all available roles and modules for form options
     if (auth.status === 'success') {
       if (roles.status === 'idle') {
         dispatch(getRoles({ auth: auth.data, config }))
@@ -53,7 +55,7 @@ function App() {
         dispatch(getModules(config))
       }
     }
-  }, [auth, roles, modules, config])
+  }, [auth, roles, modules, config, dispatch])
 
   return <Routes />
 }

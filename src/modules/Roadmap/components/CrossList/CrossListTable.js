@@ -6,14 +6,15 @@ import {
   setDeletedIntersectionId,
   deleteIntersection,
 } from '../../../../features/roadmap/roadmapSlice'
-
-import { CrossDetailsModal } from './CrossDetailsModal'
-import { CustomTable as Table } from '../../../../common/Table'
 import {
   setCrossListTableColumnsHelper,
   setCrossListDataSourceHelper,
 } from '../../utils/table_helper'
 
+import { CrossDetailsModal } from './CrossDetailsModal'
+import { CustomTable as Table } from '../../../../common/Table'
+
+//отрисовка таблицы по пересечению работ
 export const CrossListTable = () => {
   const {
     categories,
@@ -24,14 +25,15 @@ export const CrossListTable = () => {
   } = useSelector((state) => state.roadmap)
   const dispatch = useDispatch()
 
-  const [visible, setVisible] = useState(false)
-  const [record, setRecord] = useState({})
+  const [visible, setVisible] = useState(false) //состояние модального для отображение информации по пересечению
+  const [record, setRecord] = useState({}) //данные по работам отправляющиеся на модальное окно
   const [dataSource, setDataSource] = useState([])
   const [filtered, setFiltered] = useState()
 
   const [form] = Form.useForm()
 
   useEffect(() => {
+    //обновение после удалении данных если пользователь использует поисковик
     if (filtered && deletedIntersectionId) {
       setFiltered((state) =>
         state.filter((i) => i.id !== deletedIntersectionId)
@@ -40,10 +42,12 @@ export const CrossListTable = () => {
     }
   }, [dataSource, deletedIntersectionId, filtered])
 
+  //инициализация своиства ant table dataSource
   useMemo(() => {
     setDataSource(setCrossListDataSourceHelper(data, intersections))
   }, [data, intersections])
 
+  //инициализация своиства ant table columns
   const columns = useMemo(() => {
     return setCrossListTableColumnsHelper(
       setVisible,
@@ -53,10 +57,13 @@ export const CrossListTable = () => {
     )
   }, [setVisible, setRecord, intersections, categories])
 
+  //реализация удаление данных с таблицы
   const onDelete = (record) => {
     dispatch(deleteIntersection(record.id))
   }
 
+  //реализация поиска данных по таблице
+  //поиск данных по id пересечения и id работ
   const onSearch = (e) => {
     setFiltered(
       dataSource.filter((i) => {
@@ -80,6 +87,7 @@ export const CrossListTable = () => {
 
   return (
     <Form form={form}>
+      {/* поисковик */}
       <Form.Item name={'search'}>
         <Input
           allowClear
@@ -88,6 +96,7 @@ export const CrossListTable = () => {
           style={{ width: 300 }}
         />
       </Form.Item>
+      {/* таблица */}
       <Form.Item name='table'>
         <Table
           columns={columns}
@@ -98,6 +107,7 @@ export const CrossListTable = () => {
           isDeletable={true}
         />
       </Form.Item>
+      {/* модальное окно отображения информации по пересечению работ */}
       {visible && (
         <Form.Item name='modal'>
           <CrossDetailsModal

@@ -1,4 +1,6 @@
+//вспомогательная функция возвращает объекты для отправки на сервер и обновления клиента
 export const onRequest = (record, roles, organisations, modules) => {
+  //структура отправки данных на сервер
   let post = {
     name: record.name,
     'organisation-id': organisations.find(
@@ -12,7 +14,7 @@ export const onRequest = (record, roles, organisations, modules) => {
       : [],
   }
 
-  //client post object
+  //структура отрисовки данных на клиенте
   record = {
     ...record,
     organisation: {

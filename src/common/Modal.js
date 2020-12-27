@@ -1,6 +1,7 @@
 import React from 'react'
 import { Modal, Button } from 'antd'
 
+// кастомное модальное окно
 export default class CustomModal extends React.Component {
   state = { visible: false }
 

@@ -2,8 +2,6 @@ import React, { useState, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button, Modal, Form } from 'antd'
 
-import { StepsWrapper as Steps } from './form/StepsWrapper'
-
 import {
   setCurrent,
   postRoadmap,
@@ -15,8 +13,11 @@ import {
   prepareToShowDetailsObToArr,
 } from '../../utils/helper'
 
+import { StepsWrapper as Steps } from './form/StepsWrapper'
+
+//данная компонента рендерит форму post запроса по ремонту дорог
 export const WorkListModal = () => {
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false) //состояния модального окна
   const dispatch = useDispatch()
 
   const {
@@ -29,17 +30,21 @@ export const WorkListModal = () => {
   } = useSelector((state) => state.roadmap)
   const [form] = Form.useForm()
 
+  //делаем post запрос по форме
   const postFormData = useCallback(async () => {
     try {
       let record = prepareToShowDetailsObToArr(formData)
+      //проводим валидацию данных формы перед отпракой на сервер
       let ob = validateRoadWorkForm(record, categories, organisations, regions)
 
+      //подгоняем структуру объекта координат на post запрос
       const coordinates = setCoordinates(mapData)
 
+      //форма объекта post запроса
       ob = { data: ob, geometries: coordinates, mapData }
-      dispatch(postRoadmap(ob))
-      dispatch(setCurrent(0))
-      dispatch(resetMapData())
+      dispatch(postRoadmap(ob)) //делаем post запрос
+      dispatch(setCurrent(0)) //сбрасываем этап формы модального окна ремонт дорог
+      dispatch(resetMapData()) //сбрасываем координаты на яндекс карте на редакс
 
       status === 'success' && setVisible(false)
     } catch (err) {
@@ -49,6 +54,7 @@ export const WorkListModal = () => {
 
   return (
     <>
+      {/* кнопка открытия модального окна */}
       <Button
         type='primary'
         onClick={() => {
@@ -82,6 +88,7 @@ export const WorkListModal = () => {
               justifyContent: 'space-between',
             }}
           >
+            {/* форма модального окна по ремонту дорог */}
             <Steps form={form} callback={postFormData} />
           </div>
         </Modal>

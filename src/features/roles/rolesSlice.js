@@ -242,13 +242,13 @@ const adminSlice = createSlice({
     },
     [deleteRoleModule.fulfilled]: (state, action) => {
       state.role_modules.status = 'success'
-      //удаляем роль модули
+      //удаляем роль модули по id
       let index = state.role_modules.data.findIndex(
         (i) => i.id === action.payload
       )
       state.role_modules.data.splice(index, 1)
 
-      //удаляем роль
+      //удаляем роль по id
       let indx = state.roles.data.findIndex((i) => i.id === action.payload)
       state.roles.data.splice(indx, 1)
     },

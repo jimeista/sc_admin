@@ -7,6 +7,7 @@ import { getAuth } from '../../features/admin/adminSlice'
 
 import './SignInForm.css'
 
+// форма авторизации
 export const SignInForm = () => {
   const [form] = Form.useForm()
   const history = useHistory()
@@ -15,6 +16,7 @@ export const SignInForm = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    // валидация на авторизацию
     if (auth.status === 'success') {
       message.success('Авторизация прошла успешно')
     }
@@ -32,10 +34,12 @@ export const SignInForm = () => {
     form.resetFields()
   }
 
+  // проверка на авторизацию get запрос
   const onSubmit = async () => {
     const record = await form.validateFields()
-    const auth = `Basic ${btoa(`${record.username}:${record.password}`)}`
+    const auth = `Basic ${btoa(`${record.username}:${record.password}`)}` //хэш код
 
+    // записываем конфиг авторизации
     const config = { headers: { Authorization: auth } }
 
     dispatch(getAuth({ config, user: config }))

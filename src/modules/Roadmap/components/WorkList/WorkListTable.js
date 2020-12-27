@@ -15,6 +15,7 @@ import {
   setDeletedId,
 } from '../../../../features/roadmap/roadmapSlice'
 
+//отрисовка таблицы по ремонту дорог
 export const WorkListTable = () => {
   const {
     organisations,
@@ -26,17 +27,15 @@ export const WorkListTable = () => {
   } = useSelector((state) => state.roadmap)
   const dispatch = useDispatch()
 
-  const [visible, setVisible] = useState(false)
-  const [record, setRecord] = useState({})
+  const [visible, setVisible] = useState(false) //состояние модального окна которая открывается при клике на id работы
+  const [record, setRecord] = useState({}) //данные работы которые передаются в модальное окно
   const [dataSource, setDataSource] = useState([])
   const [filtered, setFiltered] = useState()
 
   const [form] = Form.useForm()
 
+  //инициализация своиства ant table columns
   const columns = useMemo(() => {
-    //TASK: set table columns labeling and operations
-    //LOGIC:pass filters' options and track popup visible state user click on id
-    //set row records on click
     return setWorkListTableColumnsHelper(
       organisations,
       categories,
@@ -46,9 +45,7 @@ export const WorkListTable = () => {
   }, [organisations, categories, setVisible, setRecord])
 
   useEffect(() => {
-    //TASK:show changes made on filtered table's row after put || delete requests
-    //LOGIC:check if user still remains on filtered data
-    //if so, update filtered state data and set id null on redux store for further checkups
+    //обновение после редактирование или удалении данных если пользователь использует поисковик
     if (filtered) {
       if (editedId) {
         let item = dataSource.find((i) => i.id === editedId)
@@ -60,17 +57,15 @@ export const WorkListTable = () => {
         dispatch(setDeletedId())
       }
     }
-  }, [dataSource, deletedId, editedId, filtered])
+  }, [dataSource, deletedId, editedId, filtered, dispatch])
 
+  //инициализация своиства ant table dataSource
   useMemo(() => {
-    // TASK: set table data
-    //LOGIC: pass data to adjust data to ant table's dataSource format
     setDataSource(setWorkListDataSourceHelper(data))
   }, [data])
 
+  //реализация редактирования данных с таблицы
   const onEdit = (record) => {
-    //TASK: edit record
-    //LOGIC: request edit on redux side
     dispatch(
       putRoadmap({
         reedit: false,
@@ -82,12 +77,12 @@ export const WorkListTable = () => {
     )
   }
 
+  //реализация удаление данных с таблицы
   const onDelete = (record) => {
-    //TASK: delete record
-    //LOGIC: request delete on redux side
     dispatch(deleteRoadmap(record.id))
   }
 
+  //реализация поиска данных по таблице
   const onSearch = (e) => {
     setFiltered(
       dataSource.filter((i) => {
@@ -105,6 +100,7 @@ export const WorkListTable = () => {
 
   return (
     <Form form={form}>
+      {/* поисковик */}
       <Form.Item name={'search'}>
         <Input
           allowClear
@@ -113,6 +109,7 @@ export const WorkListTable = () => {
           style={{ width: 300 }}
         />
       </Form.Item>
+      {/* таблица */}
       <Form.Item name='table'>
         <Table
           columns={columns}
@@ -125,6 +122,7 @@ export const WorkListTable = () => {
           isDeletable={true}
         />
       </Form.Item>
+      {/* модальное окно по выбранной работе */}
       {visible && (
         <Form.Item name='modal'>
           <WorkDetailsModal

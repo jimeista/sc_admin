@@ -122,7 +122,7 @@ const indicatorSlice = createSlice({
     },
     [deleteIndicator.fulfilled]: (state, action) => {
       state.status = 'success'
-      //удаляем объект
+      //удаляем индикатор по индексу в массиве
       let index = state.data.findIndex((i) => i.id === action.payload)
       state.data.splice(index, 1)
       state.deletedId = action.payload

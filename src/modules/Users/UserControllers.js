@@ -5,12 +5,15 @@ import { useDispatch } from 'react-redux'
 import { postNewUser } from '../../features/users/usersSlice'
 import { onRequest } from '../../utils/users_helper'
 
+//компонента управления формы пользователи
+//данная компонента делает post запрос
 const UserControllers = ({ roles, organisations, modules }) => {
   const [form] = Form.useForm()
   const { Option } = Select
 
   const dispatch = useDispatch()
 
+  //post запрос данных для нового пользователя
   const onAdd = async () => {
     let record = await form.validateFields()
     if (typeof record.roles === 'undefined') {
@@ -25,94 +28,97 @@ const UserControllers = ({ roles, organisations, modules }) => {
   }
 
   return (
-    <div>
-      <Form form={form} className='admin-controller Roles_block_style'>
-        <Form.Item
-          name='name'
-          style={{ width: '60%' }}
-          rules={[
-            {
-              required: true,
-              message: `Введите имя пользователя!`,
-            },
-          ]}
+    <Form form={form} className='admin-controller Roles_block_style'>
+      {/*поле ФИО пользователя  */}
+      <Form.Item
+        name='name'
+        style={{ width: '60%' }}
+        rules={[
+          {
+            required: true,
+            message: `Введите имя пользователя!`,
+          },
+        ]}
+      >
+        <Input placeholder='ФИО' />
+      </Form.Item>
+      {/*селект списка ораганизации*/}
+      <Form.Item
+        name='organisation'
+        style={{ width: '60%' }}
+        rules={[
+          {
+            required: true,
+            message: `Выберите название организации!`,
+          },
+        ]}
+      >
+        <Select placeholder='Организация' allowClear>
+          {organisations.map((o) => (
+            <Option key={o.value}>{o.value}</Option>
+          ))}
+        </Select>
+      </Form.Item>
+      {/*селект списка роли*/}
+      <Form.Item
+        name='roles'
+        style={{ width: '60%' }}
+        // rules={[
+        //   {
+        //     required: true,
+        //     message: `Выберите роль пользователя!`,
+        //   },
+        // ]}
+      >
+        <Select
+          placeholder='Роли'
+          allowClear
+          mode='multiple'
+          tagRender={tagRender}
+          options={roles}
+        />
+      </Form.Item>
+      {/*поле логин пользователя  */}
+      <Form.Item
+        name='username'
+        style={{ width: '60%' }}
+        rules={[
+          {
+            required: true,
+            message: `Введите логин`,
+          },
+        ]}
+      >
+        <Input placeholder='Логин' />
+      </Form.Item>
+      {/*поле пароль пользователя  */}
+      <Form.Item
+        name='password'
+        style={{ width: '60%' }}
+        rules={[
+          {
+            required: true,
+            message: `Введите пароль пользователя!`,
+          },
+        ]}
+      >
+        <Input
+          placeholder='Пароль'
+          type={'password'}
+          className='password_style_user'
+        />
+      </Form.Item>
+      <Form.Item>
+        <Button
+          type='primary'
+          htmlType='submit'
+          // className='standard_btn_admin'
+          onClick={onAdd}
         >
-          <Input placeholder='ФИО' />
-        </Form.Item>
-        <Form.Item
-          name='organisation'
-          style={{ width: '60%' }}
-          rules={[
-            {
-              required: true,
-              message: `Выберите название организации!`,
-            },
-          ]}
-        >
-          <Select placeholder='Организация' allowClear>
-            {organisations.map((o) => (
-              <Option key={o.value}>{o.value}</Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.Item
-          name='roles'
-          style={{ width: '60%' }}
-          // rules={[
-          //   {
-          //     required: true,
-          //     message: `Выберите роль пользователя!`,
-          //   },
-          // ]}
-        >
-          <Select
-            placeholder='Роли'
-            allowClear
-            mode='multiple'
-            tagRender={tagRender}
-            options={roles}
-          />
-        </Form.Item>
-        <Form.Item
-          name='username'
-          style={{ width: '60%' }}
-          rules={[
-            {
-              required: true,
-              message: `Введите логин`,
-            },
-          ]}
-        >
-          <Input placeholder='Логин' />
-        </Form.Item>
-        <Form.Item
-          name='password'
-          style={{ width: '60%' }}
-          rules={[
-            {
-              required: true,
-              message: `Введите пароль пользователя!`,
-            },
-          ]}
-        >
-          <Input
-            placeholder='Пароль'
-            type={'password'}
-            className='password_style_user'
-          />
-        </Form.Item>
-        <Form.Item>
-          <Button
-            type='primary'
-            htmlType='submit'
-            // className='standard_btn_admin'
-            onClick={onAdd}
-          >
-            Добавить
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
+          Добавить
+        </Button>
+      </Form.Item>
+    </Form>
   )
 }
 

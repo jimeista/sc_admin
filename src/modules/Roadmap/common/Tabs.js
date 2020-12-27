@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Tabs } from 'antd'
 
+// компонента рендерит кастомные табы
 export const CustomTabs = ({ tabs }) => {
   const { TabPane } = Tabs
 
@@ -21,11 +22,3 @@ export const CustomTabs = ({ tabs }) => {
 
   return <div className='card-container'>{renderTabs()}</div>
 }
-
-//props stucture
-// const tabs = [
-//     {
-//         title: 'name',
-//         child: component
-//     }
-// ]

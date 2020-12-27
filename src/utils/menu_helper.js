@@ -1,3 +1,4 @@
+// отрисовка боковой меню навигации по роутам
 export const setSideNavMenu = (modules) => {
   let sidenavmenu_ = {}
 
@@ -8,6 +9,7 @@ export const setSideNavMenu = (modules) => {
   return Object.values(sidenavmenu_)
 }
 
+// подгонка под вложенности панели навигации
 const checkModule = (menu, module) => {
   switch (module) {
     case 'Аналитические индикаторы':
@@ -29,6 +31,8 @@ const checkModule = (menu, module) => {
   }
 }
 
+// проверка дополнения модулей под одним меню навигации
+// пример: Управление мастер-данными включает в себя справочники и карту ремонтных дорог
 const configure = (menu, submenu, module) => {
   let item = menu[submenu]
   if (item) {

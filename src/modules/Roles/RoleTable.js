@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { CustomTable as Table } from '../../common/Table'
 import {
   deleteRoleModule,
   putRoleModule,
 } from '../../features/roles/rolesSlice'
 import { setRoleColumns, setRoleDataSource } from '../../utils/roles_table'
+
+import { CustomTable as Table } from '../../common/Table'
 
 const RoleTable = ({ role_modules, options, modules }) => {
   const dispatch = useDispatch()
@@ -19,8 +20,8 @@ const RoleTable = ({ role_modules, options, modules }) => {
   }, [role_modules])
 
   //реализация редактирования данных с таблицы
+  //данная функция делает проверку на список новодобавленных и удаленных модулей из таблицы
   const onEdit = (record) => {
-    //данная функция делает проверку на список новодобавленных и удаленных модулей из таблицы
     let arr = record.modules.map((i) => i['permitted-module']) //записываем наименования всех модулей
 
     //проверка на добавление нового модуля

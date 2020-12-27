@@ -7,31 +7,37 @@ const BASE_CATEGORIES_URL = '/sc-roadworks/api/categories'
 const BASE_ROADMAP_URL = '/sc-roadworks/api/roadworks'
 const BASE_INTERSECTIONS_URL = '/sc-roadworks/api/intersections'
 
+//асинхронный get запрос по списку организации
 export const getRoadmapOrganisations = createAsyncThunk(
   'roadmap/getRoadmapOrganisations',
   async () => await axios.get(BASE_ORGANIZATIONS_URL).then((r) => r.data)
 )
 
+//асинхронный get запрос по списку районов
 export const getRoadmapRegions = createAsyncThunk(
   'roadmap/getRoadmapRegions',
   async () => await axios.get(BASE_REGIONS_URL).then((r) => r.data)
 )
 
+//асинхронный get запрос по списку категории
 export const getRoadmapCategories = createAsyncThunk(
   'roadmap/getRoadmapCategories',
   async () => await axios.get(BASE_CATEGORIES_URL).then((r) => r.data)
 )
 
+//асинхронный get запрос по списку ремонта дорог
 export const getRoadmap = createAsyncThunk(
   'roadmap/getRoadmap',
   async () => await axios.get(BASE_ROADMAP_URL).then((r) => r.data)
 )
 
+//асинхронный get запрос по списку пересечения дорог
 export const getIntersections = createAsyncThunk(
   'roadmap/getIntersections',
   async () => await axios.get(BASE_INTERSECTIONS_URL).then((r) => r.data)
 )
 
+//асинхронный post запрос по списку ремонта дорог
 export const postRoadmap = createAsyncThunk(
   'roadmap/postRoadmap',
   async (ob) => {
@@ -60,6 +66,7 @@ export const postRoadmap = createAsyncThunk(
   }
 )
 
+//асинхронный put запрос по списку пересечения дорог
 export const postIntersections = createAsyncThunk(
   'roadmap/postIntersections',
   async (initialPost) => {
@@ -72,6 +79,7 @@ export const postIntersections = createAsyncThunk(
   }
 )
 
+//асинхронный put запрос по списку пересечения дорог
 export const putRoadmap = createAsyncThunk(
   'roadmap/putRoadmap',
   async (post) => {
@@ -114,6 +122,7 @@ export const putRoadmap = createAsyncThunk(
   }
 )
 
+//асинхронный delete запрос по списку ремонта дорог
 export const deleteRoadmap = createAsyncThunk(
   'roadmap/deleteRoadmap',
   async (id) => {
@@ -121,7 +130,7 @@ export const deleteRoadmap = createAsyncThunk(
     return id
   }
 )
-
+//асинхронный delete запрос по списку пересечения дорог
 export const deleteIntersection = createAsyncThunk(
   'roadmap/deleteIntersection',
   async (id) => {
@@ -133,34 +142,39 @@ export const deleteIntersection = createAsyncThunk(
 export const roadmapSlice = createSlice({
   name: 'roadmap',
   initialState: {
+    // организации работ
     organisations: {
       status: 'idle',
       data: [],
       error: null,
     },
+    // районы работ
     regions: {
       status: 'idle',
       data: [],
       error: null,
     },
+    // категории работ
     categories: {
       status: 'idle',
       data: [],
       error: null,
     },
+    // ремонт дорог
     data: [],
     status: 'idle',
     error: null,
 
-    formData: {}, //modal form submit values
-    current: 0, //modal current step
+    formData: {}, //состояние данных формы модального окна
+    current: 0, //этап формы модального окна
 
-    mapData: [], //modal yandex map coordinates data for road works
-    intersectionsMapData: [], //modal yandex map coordinates data for intersections
+    mapData: [], //состояние координат яндекс карты ремонта дорог
+    intersectionsMapData: [], //состояние координат яндекс карты пересечению работ
 
-    editedId: null,
-    deletedId: null,
-    deletedIntersectionId: null,
+    editedId: null, //id редактируемой данной ремонта дорог
+    deletedId: null, //id удаляемой данной ремонта дорог
+    deletedIntersectionId: null, //id редактируемой данной пересечению работ
+    // пересечение работ
     intersections: {
       status: 'idle',
       error: null,
@@ -208,7 +222,7 @@ export const roadmapSlice = createSlice({
     },
   },
   extraReducers: {
-    //get organisation list
+    //get запрос по организации
     [getRoadmapOrganisations.fulfilled]: (state, action) => {
       state.organisations.status = 'success'
       state.organisations.data = action.payload
@@ -221,12 +235,12 @@ export const roadmapSlice = createSlice({
       state.organisations.error = action.payload
     },
 
-    //get region list
+    //get запрос по районам
     [getRoadmapRegions.fulfilled]: (state, action) => {
       state.regions.status = 'success'
       state.regions.data = action.payload
     },
-    [getRoadmapRegions.pending]: (state, action) => {
+    [getRoadmapRegions.pending]: (state) => {
       state.regions.status = 'loading'
     },
     [getRoadmapRegions.rejected]: (state, action) => {
@@ -234,12 +248,12 @@ export const roadmapSlice = createSlice({
       state.regions.error = action.payload
     },
 
-    //get categories list
+    //get запрос по категории работ
     [getRoadmapCategories.fulfilled]: (state, action) => {
       state.categories.status = 'success'
       state.categories.data = action.payload
     },
-    [getRoadmapCategories.pending]: (state, action) => {
+    [getRoadmapCategories.pending]: (state) => {
       state.categories.status = 'loading'
     },
     [getRoadmapCategories.rejected]: (state, action) => {
@@ -247,12 +261,12 @@ export const roadmapSlice = createSlice({
       state.categories.error = action.payload
     },
 
-    //get road works
+    //get запрос по ремонту дорог
     [getRoadmap.fulfilled]: (state, action) => {
       state.status = 'success'
       state.data = action.payload
     },
-    [getRoadmap.pending]: (state, action) => {
+    [getRoadmap.pending]: (state) => {
       state.status = 'loading'
     },
     [getRoadmap.rejected]: (state, action) => {
@@ -260,7 +274,7 @@ export const roadmapSlice = createSlice({
       state.error = action.payload
     },
 
-    //post road new work
+    //post запрос по ремонту дорог
     [postRoadmap.pending]: (state) => {
       state.status = 'loading'
     },
@@ -282,8 +296,8 @@ export const roadmapSlice = createSlice({
       state.data = [ob, ...state.data]
     },
 
-    //update road work
-    [putRoadmap.pending]: (state, action) => {
+    //put запрос по ремонту дорог
+    [putRoadmap.pending]: (state) => {
       state.status = 'loading'
     },
     [putRoadmap.fulfilled]: (state, action) => {
@@ -320,7 +334,7 @@ export const roadmapSlice = createSlice({
       }
     },
 
-    //delete road work
+    //delete запрос по ремонту дорог
     [deleteRoadmap.pending]: (state) => {
       state.status = 'loading'
     },
@@ -331,7 +345,7 @@ export const roadmapSlice = createSlice({
       state.deletedId = action.payload
     },
 
-    //get intersections
+    //get запрос по пересечению работ
     [getIntersections.fulfilled]: (state, action) => {
       state.intersections.status = 'success'
       state.intersections.data = action.payload
@@ -344,7 +358,7 @@ export const roadmapSlice = createSlice({
       state.intersections.error = action.payload
     },
 
-    //post new intersection
+    //post запрос по пересечению работ
     [postIntersections.pending]: (state) => {
       state.intersections.status = 'loading'
     },
@@ -353,7 +367,7 @@ export const roadmapSlice = createSlice({
       state.intersections.data = [action.payload, ...state.intersections.data]
     },
 
-    //delete intersection
+    //delete запрос по пересечению работ
     [deleteIntersection.pending]: (state) => {
       state.intersections.status = 'loading'
     },

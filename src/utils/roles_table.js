@@ -1,6 +1,8 @@
 import React from 'react'
 import { Tag } from 'antd'
 
+//создаем наименования колонок под структуру antd table для роль модулей
+//функция принимает options для отображения опции при редактировании
 export const setRoleColumns = (options) => {
   return [
     {
@@ -40,6 +42,7 @@ export const setRoleColumns = (options) => {
   ]
 }
 
+//подгоняем data роль модулей под структуру antd table
 export const setRoleDataSource = (data) => {
   return data.map((i, index) => {
     return {

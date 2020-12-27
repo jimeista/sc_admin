@@ -4,12 +4,13 @@ import { useDispatch } from 'react-redux'
 
 import { postRoleModules } from '../../features/roles/rolesSlice'
 
-//UI: render form controllers
+//компонента управления формы роли
+//данная компонента делает post запрос
 const RoleControllers = ({ options }) => {
   const [form] = Form.useForm()
   const dispatch = useDispatch()
 
-  //post запрос данных по новой роли
+  //post запрос данных для новой роли
   const onAdd = useCallback(async () => {
     try {
       let row = await form.validateFields()

@@ -16,6 +16,7 @@ import indicatorinfoReducer from './features/indicatorinfo/indicatorinfoSlice'
 import './index.css'
 import App from './App'
 
+//база состояния данных редакс
 const store = configureStore({
   reducer: {
     roadmap: roadmapReducer,

@@ -1,4 +1,4 @@
-//translate server variables' naming to show on client
+//переименовка наименования элемента формы на русс яз
 export const nameEnToRuWorkListHelper = (name) => {
   switch (name) {
     case 'area':
@@ -58,9 +58,12 @@ export const nameEnToRuWorkListHelper = (name) => {
   }
 }
 
-//validate antd form before post|put requests
+//валидация формы до post put запроса
+//избавляемся от пропущенных значении формы при заполнении
+//проверка булеанов
+//проверка выбора даты
 export const prepareToShowDetailsObToArr = (ob) => {
-  const arr = []
+  const arr = [] //преобразование данных
 
   Object.keys(ob).map((key) => {
     if (key === 'start-date') {
@@ -92,7 +95,7 @@ export const prepareToShowDetailsObToArr = (ob) => {
   return arr
 }
 
-//configure client to server data format
+//подгоняем данные формы под структуру put post запросов
 export const validateRoadWorkForm = (
   data,
   categories,
@@ -114,7 +117,6 @@ export const validateRoadWorkForm = (
       item.name !== 'is-end-date' ||
       item.name !== 'is-start-date'
     ) {
-      //save status values
       if (item.name === 'percentage') {
         percentage = item.value
       }
@@ -143,6 +145,7 @@ export const validateRoadWorkForm = (
     }
   })
 
+  // структура запроса
   ob = {
     ...ob,
     status: {
@@ -156,7 +159,7 @@ export const validateRoadWorkForm = (
   return ob
 }
 
-//
+//подгоняем данные координат под структуру put post запроса
 export const setCoordinates = (data) => {
   return data.map((i) => {
     let arr = []

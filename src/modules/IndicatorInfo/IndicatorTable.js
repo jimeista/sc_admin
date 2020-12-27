@@ -2,9 +2,10 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { Input, Modal } from 'antd'
 
+import { setTableColumns, setTableData } from '../../utils/indicator_table'
+
 import IndicatorinfoModalContent from './IndicatorinfoModalContent'
 import { CustomTable as Table } from '../../common/Table'
-import { setTableColumns, setTableData } from '../../utils/indicator_table'
 
 //главная страница отрисовки таблицы индикаторов
 //индикаторы таблицы, не редактируемые и не удаляемые
